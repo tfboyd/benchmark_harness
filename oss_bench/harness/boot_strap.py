@@ -8,9 +8,6 @@ import yaml
 
 parser = argparse.ArgumentParser()
 
-# Temp global variables during development
-# Absolute path to a workspace
-#workspace = '/usr/local/google/home/tobyboyd/auto_run_play'
 workspace = '/workspace'
 # path to store the git repos
 logs_dir = os.path.join(workspace, 'logs')
@@ -62,9 +59,10 @@ def _git_clone(git_repo, local_folder, branch=None, sha_hash=None):
 
 
 def main():
-  _git_clone('https://github.com/tfboyd/tf-tools.git',
-              os.path.join(FLAGS.workspace, 'harness'),
-              branch='auto_run')
+  global workspace
+  workspace = FLAGS.workspace
+  _git_clone('https://github.com/tfboyd/benchmark_harness.git',
+              os.path.join(FLAGS.workspace, 'harness'))
 
   docker_base = 'tensorflow/tensorflow:latest-gpu'
   docker_test = 'tobyboyd/tf-gpu'
@@ -81,8 +79,8 @@ def main():
   run_benchmarks = ('nvidia-docker run --rm' +
             ' -v /usr/local/google/home/tobyboyd/service_account_auth_tokens:/service_account_auth_tokens' +
             ' -v {}:/workspace {}' +
-            ' python /workspace/harness/benchmark/auto/test_controller.py')
-  run_benchmarks = run_benchmarks.format(FLAGS.workspace, docker_test)
+            ' python /workspace/harness/oss_bench/harness/test_controller.py')
+  run_benchmarks = run_benchmarks.format(FLAGS.workspace, docker_test, workspace)
   print run_benchmarks
 
   run_local_command(run_benchmarks, stdout=None)
