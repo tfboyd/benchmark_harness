@@ -62,7 +62,7 @@ def _git_clone(git_repo, local_folder, branch=None, sha_hash=None):
     run_local_command(sync_to_hash_cmd)
 
 def _call_tf_benchmarks_tests(auto_config):
-  import auto_run.run_benchmark as run_benchmark
+  import test_runners.tf_cnn_bench.run_benchmark as run_benchmark
   # For testing this is not how to do this.
   config = os.path.join(git_repo_base,
                         'tf-tools/benchmark/auto_run/configs/local_config.yaml')
@@ -91,9 +91,8 @@ def _clone_repos():
   _git_clone('https://github.com/tensorflow/benchmarks.git',
               os.path.join(git_repo_base, 'benchmarks'),
               sha_hash='267d7e81977f23998078f39afd48e9a97c3acf5a')
-  _git_clone('https://github.com/tfboyd/tf-tools.git',
-              os.path.join(git_repo_base, 'tf-tools'),
-              branch='auto_run')
+  _git_clone('https://github.com/tfboyd/benchmark_harness.git',
+              os.path.join(git_repo_base, 'benchmark_harness'))
 
 
 def main():
@@ -120,7 +119,7 @@ def main():
 
   # Modify the python path for the libraries for the tests to run and then
   # import them.
-  git_python_lib_paths = ['tf-tools/benchmark']  
+  git_python_lib_paths = ['benchmark_harness/oss_bench']  
   for lib_path in git_python_lib_paths:
     sys.path.append(os.path.join(git_repo_base, lib_path))
   _call_tf_benchmarks_tests(test_config)
