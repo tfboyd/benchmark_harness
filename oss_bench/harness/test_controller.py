@@ -64,8 +64,12 @@ def _git_clone(git_repo, local_folder, branch=None, sha_hash=None):
 def _call_tf_benchmarks_tests(auto_config):
   import test_runners.tf_cnn_bench.run_benchmark as run_benchmark
   # For testing this is not how to do this.
-  config = os.path.join(git_repo_base,
-                        'benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/local_config.yaml')
+  rel_config_paths = auto_config['tf_cnn_bench_configs']
+  config_paths = []
+  for rel_config_path in rel_config_paths:
+    config_paths.append(os.path.join(git_repo_base, rel_config_path))
+
+  config = ','.join(config_paths)
 
   tf_cnn_bench_path = os.path.join(git_repo_base,
                         'benchmarks/scripts/tf_cnn_benchmarks')
