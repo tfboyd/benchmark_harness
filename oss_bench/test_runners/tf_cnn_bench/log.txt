@@ -1,0 +1,160 @@
+git log
+commit cc0ea946bdfc795df7b831ea44441c756f6559f8
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Mon Dec 4 10:01:14 2017 -0800
+    Module to upload test results to BigQuery.
+commit a94a9c6bf646bad830d2efd3258cdca057285527
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Mon Aug 7 21:01:15 2017 -0700
+    Delete global_aws.yaml
+commit 691a611033cb6af14093ef02205e78c44b89a95e
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Mon Aug 7 21:00:57 2017 -0700
+    Update and rename multi_server to multi_server.yaml
+commit e91eadd8c29f3b5f602673f6b7a264f5941accb1
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Mon Aug 7 21:00:12 2017 -0700
+    Create multi_server
+commit b260ee59c62d19a6ea1b8480699c1c1f70d0482c
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Mon Aug 7 20:58:28 2017 -0700
+    Create global_aws.yaml
+commit 6e974933a55c78c349972f47023590ebcf195381
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Mon Aug 7 20:56:55 2017 -0700
+    Create command_builder.py
+commit 9d4e6447f03f2980b5d238462a816383e09a734b
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Mon Aug 7 18:03:12 2017 -0700
+    Create util.py
+commit fa661a446581f422f10ccbd769a89955aa6ba656
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Mon Aug 7 18:01:47 2017 -0700
+    Create cluster_aws.py
+commit 13083f1d2f1728a06f706734b9b88815f7155c00
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Sun Apr 2 08:54:23 2017 -0700
+    Added ldconfig info
+commit 325c85d9553b91e3dea69801fea92f9713517802
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Sun Apr 2 08:53:58 2017 -0700
+    updated ldconfig info
+commit dca9c2842b7cc4de4c67bafc489481f5ba1bafa9
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Sat Apr 1 13:58:36 2017 -0700
+    Changed to "total images/sec"
+commit 202bd0486977d9f331a8edff08be44a958e8299a
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Fri Mar 31 22:47:57 2017 -0700
+    added data_name
+commit 7498f15b0d02d6a8b5734f41325633f39be6cd2b
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Wed Mar 15 14:52:54 2017 -0700
+    EFS driver install
+commit 9418581ce2596fa27e521a5ddb05ec7dd6932add
+Merge: c89460a 3a253dc
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Thu Mar 9 11:18:47 2017 -0800
+    Merge branch 'master' of github.com:tfboyd/tf-tools
+commit c89460af796ae1605614fc980bfe1b5959a43c48
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Thu Mar 9 11:17:33 2017 -0800
+    Moved tf_cnn_home and Images to images to match output
+commit 3a253dc8a74cc816fceb38bfa91c86f82f6d9996
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Wed Mar 8 14:32:32 2017 -0800
+    upgraded to latest CUDA download
+commit e6f9a19b0a577ee9475aa95b86cd842fb8a9af05
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Wed Mar 8 14:27:50 2017 -0800
+    nvidia-378 up from 375
+commit 290bd4d5d8eac258bce18de60a8ed663c174b39b
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Wed Mar 8 14:22:28 2017 -0800
+    Added tracing lib to ubuntu install
+commit 1e6a4e0a4889744d6a40469c7a6d1f0422137969
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Wed Mar 8 14:14:43 2017 -0800
+    Enhanced Networking added
+commit 7941f7147e49ddb0fcedebb25744d037eafa3359
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Tue Feb 28 15:11:14 2017 -0800
+    New Ubuntu for AWS and small tweaks to Amazon Linux for AWS.
+commit d630aee197994b7d9a45f6716529236fed4e7e59
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Sun Feb 12 17:15:30 2017 -0800
+    grep ^Images to avoid extra junk in log and append log_summary to
+    results.txt
+commit 5361ade794963d1f0401315aa1ac5a86554f4ddc
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Sun Feb 12 17:14:55 2017 -0800
+    Added ldconfig and some minor edits
+commit d670343d9a05d78157e32beb6cdf5527c3624b8f
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Sun Feb 12 10:30:05 2017 -0800
+    Fixed incorrect if syntax, added paranoid kill of stats_monitor, and
+    made flag to turn off stats_monitor default on.
+commit 7ad68fd981ef51f917410b117a2b4568271e4b2f
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Sun Feb 12 09:04:08 2017 -0800
+    Minor tweaks
+commit d2459db37a7079d6665bd395955ce0e6ddff09b9
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Sun Feb 12 09:02:04 2017 -0800
+    Update aws_amzlinux.md
+commit 73db7e1fc12bed5033af2f4081aedd22b2c6d173
+Merge: 9517d7d d78e107
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Sun Feb 12 08:57:32 2017 -0800
+    Merge branch 'master' of github.com:tfboyd/tf-tools
+commit 9517d7dabff778f84e521d6016298aef51da973d
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Sun Feb 12 08:56:04 2017 -0800
+    AWS Amazon Linux install Guide v0.1 (rough)
+commit d78e1074646caf6e8950992433b00bb470a156c9
+Author: tfboyd <tobyboyd@google.com>
+Date:   Sat Feb 11 19:36:16 2017 -0800
+    Added tracking nvidia-smi stats during runs to bubble up GPU throttling
+commit da8ae93c5ad12fce0e0ae2da9463ef7f90816f73
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Sat Feb 11 03:30:11 2017 -0800
+    Added data_dir flags
+commit ee1764a89c8e437b8d2d017bc38c28e0ea452d97
+Author: Toby Boyd <tobyboyd@belwar.mtv.corp.google.com>
+Date:   Mon Feb 6 12:05:22 2017 -0800
+    Run core benchmarks
+git log
+commit cc0ea946bdfc795df7b831ea44441c756f6559f8
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Mon Dec 4 10:01:14 2017 -0800
+    Module to upload test results to BigQuery.
+commit a94a9c6bf646bad830d2efd3258cdca057285527
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Mon Aug 7 21:01:15 2017 -0700
+    Delete global_aws.yaml
+commit 691a611033cb6af14093ef02205e78c44b89a95e
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Mon Aug 7 21:00:57 2017 -0700
+    Update and rename multi_server to multi_server.yaml
+commit e91eadd8c29f3b5f602673f6b7a264f5941accb1
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Mon Aug 7 21:00:12 2017 -0700
+    Create multi_server
+commit b260ee59c62d19a6ea1b8480699c1c1f70d0482c
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Mon Aug 7 20:58:28 2017 -0700
+    Create global_aws.yaml
+commit 6e974933a55c78c349972f47023590ebcf195381
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Mon Aug 7 20:56:55 2017 -0700
+    Create command_builder.py
+commit 9d4e6447f03f2980b5d238462a816383e09a734b
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Mon Aug 7 18:03:12 2017 -0700
+    Create util.py
+commit fa661a446581f422f10ccbd769a89955aa6ba656
+Author: Toby Boyd <tobyboyd@google.com>
+Date:   Mon Aug 7 18:01:47 2017 -0700
+    Create cluster_aws.py
+commit 13083f1d2f1728a06f706734b9b88815f7155c00
+Author: Toby Boyd <tobyboyd@google.com>
