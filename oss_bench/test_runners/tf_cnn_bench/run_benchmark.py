@@ -303,25 +303,6 @@ class TestRunner(object):
         virtual_env_path=full_config.get('virtual_env_path')) as instances:
       self.run_test_suite(full_config, instances)
 
-  def reset_select_attributes(self, full_config):
-    """Reset select attributes between configs.
-    
-    This is a hack to reset some attributes between runs that is a remnant
-    before encapsulating the code into a class.
-
-    """
-    if full_config.get('cloud_type') in ['gce', 'ssh', 'local'
-                                        ] and self.username == 'ubuntu':
-      # os.getlogin does not work in docker containers
-      self.username = pwd.getpwuid(os.getuid())[0]
-    else:
-      self.username = username
-
-    if full_config.get('cloud_type') in ['aws', 'gce']:
-      self.sudo  = True
-    else:
-      self.sudo  = False
-
   def load_yaml_configs(self, config_paths, base_dir=None):
     """Convert string of config paths into list of yaml objects
 
@@ -357,9 +338,6 @@ class TestRunner(object):
           for k, v in global_config.iteritems():
             if k != 'run_configs':
               full_config[k] = v
-
-        # Initialize global variables and setup the workspace
-        self.reset_select_attributes(full_config)
 
         if self.action is None:
           self.local_benchmarks(full_config)
