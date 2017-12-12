@@ -64,7 +64,7 @@ def _call_tf_benchmarks_tests(auto_config):
   rel_config_paths = auto_config['tf_cnn_bench_configs']
   config_paths = []
   for rel_config_path in rel_config_paths:
-    config_paths.append(os.path.join(git_repo_base, rel_config_path))
+    config_paths.append(os.path.join(GIT_REPO_BASE, rel_config_path))
 
   config = ','.join(config_paths)
 
