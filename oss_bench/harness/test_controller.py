@@ -8,16 +8,14 @@ import yaml
 
 parser = argparse.ArgumentParser()
 
-# Temp global variables during development
-# Absolute path to a workspace
-#workspace = '/usr/local/google/home/tobyboyd/auto_run_play'
-workspace = '/workspace'
-# path to store the git repos
-git_repo_base = os.path.join(workspace, 'git')
-logs_dir = os.path.join(workspace, 'logs')
+# Globals set in the main.
+WORKSPACE = ''
+# Git repo and log paths.
+git_repo_base = ''
+LOGS_DIR = ''
 
 
-def run_local_command(cmd, stdout=os.path.join(logs_dir, 'log.txt')):
+def run_local_command(cmd, stdout=os.path.join(LOGS_DIR, 'log.txt')):
   """Run a command in a subprocess and log result.
 
   Args:
@@ -64,14 +62,14 @@ def _git_clone(git_repo, local_folder, branch=None, sha_hash=None):
 def _call_tf_benchmarks_tests(auto_config):
   import test_runners.tf_cnn_bench.run_benchmark as run_benchmark
   # For testing this is not how to do this.
-  config = os.path.join(git_repo_base,
+  config = os.path.join(GIT_REPO_BASE,
                         'benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/local_config.yaml')
 
-  tf_cnn_bench_path = os.path.join(git_repo_base,
+  tf_cnn_bench_path = os.path.join(GIT_REPO_BASE,
                         'benchmarks/scripts/tf_cnn_benchmarks')
   
   test_runner = run_benchmark.TestRunner(config,
-                        os.path.join(logs_dir, 'tf_cnn_workspace'),
+                        os.path.join(LOGS_DIR, 'tf_cnn_workspace'),
                         tf_cnn_bench_path,
                         auto_test_config=auto_config)
   test_runner.run_tests()
@@ -89,17 +87,21 @@ def _load_config():
 
 def _clone_repos():
   _git_clone('https://github.com/tensorflow/benchmarks.git',
-              os.path.join(git_repo_base, 'benchmarks'),
+              os.path.join(GIT_REPO_BASE, 'benchmarks'),
               sha_hash='267d7e81977f23998078f39afd48e9a97c3acf5a')
   _git_clone('https://github.com/tfboyd/benchmark_harness.git',
-              os.path.join(git_repo_base, 'benchmark_harness'))
+              os.path.join(GIT_REPO_BASE, 'benchmark_harness'))
 
 
 def main():
+  global WORKSPACE, GIT_REPO_BASE, LOGS_DIR
+  WORKSPACE = FLAGS.workspace
+  GIT_REPO_BASE = os.path.join(WORKSPACE, 'git')
+  LOGS_DIR = os.path.join(WORKSPACE, 'logs')
   try: 
-    os.makedirs(logs_dir)
+    os.makedirs(LOGS_DIR)
   except OSError:
-    if not os.path.isdir(logs_dir):
+    if not os.path.isdir(LOGS_DIR):
       raise
   test_config = _load_config()
   print test_config
@@ -121,7 +123,7 @@ def main():
   # import them.
   git_python_lib_paths = ['benchmark_harness/oss_bench']  
   for lib_path in git_python_lib_paths:
-    sys.path.append(os.path.join(git_repo_base, lib_path))
+    sys.path.append(os.path.join(GIT_REPO_BASE, lib_path))
   _call_tf_benchmarks_tests(test_config)
 
 if __name__ == '__main__':
