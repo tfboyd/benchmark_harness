@@ -15,13 +15,16 @@ git_repo_base = ''
 LOGS_DIR = ''
 
 
-def run_local_command(cmd, stdout=os.path.join(LOGS_DIR, 'log.txt')):
+def run_local_command(cmd, stdout=None):
   """Run a command in a subprocess and log result.
 
   Args:
     cmd (str): Command to
     stdout (str, optional): File to write standard out.
   """
+  if stdout is None:
+    stdout=os.path.join(LOGS_DIR, 'log.txt')
+  print cmd
   f = None
   if stdout:
     f = open(stdout, 'a')
