@@ -1,7 +1,6 @@
 """Cluster implementation that runs locally without SSH."""
 import os
 import time
-import util
 from contextlib import contextmanager
 from subprocess import call
 import threading
