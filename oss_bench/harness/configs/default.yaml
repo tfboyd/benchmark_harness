@@ -7,7 +7,7 @@ platform: 'workstation'
 platform_type: 'z420'
 
 # reporting
-report_auth: '/service_account_auth_tokens/tensorflow_performance_upload_tb.json'
+report_auth: 'tensorflow_performance_upload_tb.json'
 report_project: 'google.com:tensorflow-performance'
 report_dataset: 'benchmark_results_dev'
 report_table: 'result'

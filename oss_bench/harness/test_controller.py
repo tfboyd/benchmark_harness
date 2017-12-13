@@ -110,10 +110,9 @@ def main():
     if not os.path.isdir(LOGS_DIR):
       raise
   test_config = _load_config()
-  print test_config
-
-  os.environ[
-      'GOOGLE_APPLICATION_CREDENTIALS'] = '/service_account_auth_tokens/tensorflow_performance_upload_tb.json'
+  
+  auth_token_path = os.path.join('/auth_tokens/',test_config['report_auth'])
+  os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = auth_token_path
 
   # pick a directory, download tfboyd for auto_run and then tf_cnn_benchmarks
   # then kick off some tests via auto_run.  
