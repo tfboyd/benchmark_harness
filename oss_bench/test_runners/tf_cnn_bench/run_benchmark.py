@@ -10,6 +10,7 @@ import command_builder
 import reporting
 import yaml
 import pwd
+import util
 
 # System variables
 PS_PORT = 50000
