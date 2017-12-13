@@ -81,11 +81,11 @@ def main():
 
   # kick off the tests via docker
   run_benchmarks = ('nvidia-docker run --rm' +
-            ' -v /usr/local/google/home/tobyboyd/service_account_auth_tokens:/service_account_auth_tokens' +
+            ' -v {}:/auth_tokens' +
             ' -v {}:/workspace {}' +
             ' python /workspace/harness/oss_bench/harness/test_controller.py --workspace=/workspace' +
             ' --test_config={}')
-  run_benchmarks = run_benchmarks.format(FLAGS.workspace, docker_test, FLAGS.test_config)
+  run_benchmarks = run_benchmarks.format(FLAGS.auth_token_dir, FLAGS.workspace, docker_test, FLAGS.test_config)
 
   run_local_command(run_benchmarks)
 
@@ -98,6 +98,12 @@ if __name__ == '__main__':
       type=str,
       default='/usr/local/google/home/tobyboyd/auto_run_play',
       help='Workspace that will be mounted to the docker.') 
+
+  parser.add_argument(
+      '--auth_token_dir',
+      type=str,
+      default='',
+      help='Directory with service authentication tokens mounted to docker at /auth_tokens') 
 
   parser.add_argument(
       '--test_config',
