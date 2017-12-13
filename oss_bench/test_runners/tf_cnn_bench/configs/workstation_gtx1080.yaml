@@ -6,13 +6,13 @@ repeat: 1
 workers: 1
 
 # Worker settings override
-gpus: 1
 num_batches: 20
 
 sub_configs:
   - 'tests/resnet/resnet50.1_gpu.32.ps_gpu.yaml'
   - 'tests/resnet/resnet50.1_gpu.32.replicated_nccl.yaml'
-
+  - 'tests/vgg/vgg16.1_gpu.32.ps_gpu.yaml'
+  - 'tests/vgg/vgg16.1_gpu.32.ps_cpu.yaml'
 
 # Debug Only
 #tf_url: https://s3-us-west-2.amazonaws.com/tf-benchmark/tf_binary/tensorflow-1.3.0rc2.FINAL.cuDNN6.d984e91-cp27-cp27mu-linux_x86_64.whl
