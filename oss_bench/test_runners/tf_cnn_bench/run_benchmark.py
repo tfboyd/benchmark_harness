@@ -5,13 +5,9 @@ import os
 import StringIO
 import tarfile
 import time
-#import cluster
-#import cluster_gce
 import cluster_local
-#import cluster_ssh
 import command_builder
 import reporting
-import util
 import yaml
 import pwd
 
