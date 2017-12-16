@@ -103,11 +103,11 @@ def UseLocalInstances(virtual_env_path=''):
   try:
     instance = LocalInstance('localhost', virtual_env_path=virtual_env_path)
     instances.append(instance)
-    print('All {} instances ready!!!'.format(len(instances)))
     yield instances
   finally:
     CloseInstances(instances)
 
 
 def CloseInstances(instances):
-  print('Closing local instance..doing nothing...')
+  # remnant of system that used SSH.
+  return True
