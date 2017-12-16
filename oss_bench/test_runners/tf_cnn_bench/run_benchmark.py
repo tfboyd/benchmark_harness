@@ -76,15 +76,6 @@ class TestRunner(object):
     run_config['timestamp'] = int(time.time())
     run_config['workspace'] = self.workspace
 
-    worker_list = map(
-        int, command_builder.WorkerUtil(run_config['workers']).split(','))
-    if 'ps_servers' in run_config:
-      ps_list = map(
-          int, command_builder.WorkerUtil(run_config['ps_servers']).split(','))
-    else:
-      ps_list = []
-    assert len(worker_list) > 0
-
     test_home = self.bench_home
     result_dir = self.results_directory(run_config)
 
@@ -94,46 +85,17 @@ class TestRunner(object):
     config_out.write(yaml.dump(run_config))
     config_out.close()
 
-    ps_hosts = ','.join(
-        ['%s:%d' % (instances[i].hostname, PS_PORT) for i in ps_list])
-    worker_hosts = ','.join(
-        ['%s:%d' % (instances[i].hostname, WORKER_PORT) for i in worker_list])
-
-    ps_threads = []
-    for i, ps in enumerate(ps_list):
-      cmd = command_builder.BuildDistributedCommandPS(run_config, worker_hosts,
-                                                      ps_hosts, i)
-      cmd = 'cd {}; {}'.format(test_home, cmd)
-      print('[{}] ps_server | Run benchmark({}):{}'.format(
-          run_config.get('copy', '0'), run_config['test_id'], cmd))
-
-      stdout_file = os.path.join(result_dir, 'ps_%d_stdout.log' % i)
-      stderr_file = os.path.join(result_dir, 'ps_%d_stderr.log' % i)
-      # Starts the ps server on the instance matching the index in the list.
-      # Which allows control over which servers are ps servers.
-      ps_threads.append(instances[int(ps)].ExecuteCommandInThread(
-          cmd, stdout_file, stderr_file, util.ExtractErrorToConsole))
-
+    # TODO(tobyboyd@): No longer distributed remove threads
     worker_threads = []
-    for i, worker in enumerate(worker_list):
-      cmd = command_builder.BuildDistributedCommandWorker(
-          run_config, worker_hosts, ps_hosts, i)
-      cmd = 'cd {}; {}'.format(test_home, cmd)
-      print('[{}] worker | Run benchmark({}):{}'.format(
-          run_config.get('copy', '0'), run_config['test_id'], cmd))
-      stdout_file = os.path.join(result_dir, 'worker_%d_stdout.log' % i)
-      stderr_file = os.path.join(result_dir, 'worker_%d_stderr.log' % i)
-      if i == 0:
-        t = instances[worker].ExecuteCommandInThread(
-            cmd, stdout_file, stderr_file, util.ExtractToStdout, print_error=True)
-      else:
-        t = instances[worker].ExecuteCommandInThread(
-            cmd,
-            stdout_file,
-            stderr_file,
-            util.ExtractErrorToConsole,
-            print_error=True)
-      worker_threads.append(t)
+    i = 0
+    cmd = command_builder.BuildDistributedCommandWorker(run_config)
+    cmd = 'cd {}; {}'.format(test_home, cmd)
+    print('[{}] worker | Run benchmark({}):{}'.format(run_config.get('copy', '0'), run_config['test_id'], cmd))
+    stdout_file = os.path.join(result_dir, 'worker_%d_stdout.log' % i)
+    stderr_file = os.path.join(result_dir, 'worker_%d_stderr.log' % i)
+    t = instances[0].ExecuteCommandInThread(
+        cmd, stdout_file, stderr_file, util.ExtractToStdout, print_error=True)
+    worker_threads.append(t)
 
     for t in worker_threads:
       t.join()

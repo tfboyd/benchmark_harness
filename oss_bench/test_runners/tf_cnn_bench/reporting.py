@@ -93,23 +93,14 @@ def parse_result_files(result_file_path):
       result['config'] = config
       result['result_dir'] = result_file_path
 
-      if 'ps_servers' in config:
-        total = len(command_builder.WorkerUtil(config['ps_servers']).split(','))
-        result['ps_servers'] = str(total)
-      else:
-        result['ps_servers'] = 'N/A'
-
       if 'data_dir' in config:
         result['data_type'] = 'real'
       else:
         result['data_type'] = 'synth'
 
-      # Number of servers = number of workers
-      servers = len(command_builder.WorkerUtil(config['workers']).split(','))
-      result['servers'] = servers
       # Number of gpus = number of servers * number of gpus
       if 'gpus' in config:
-        result['gpu'] = servers * int(config['gpus'])
+        result['gpu'] = int(config['gpus'])
 
       results.append(result)
       # Avoids files that might have multiple total lines in them.

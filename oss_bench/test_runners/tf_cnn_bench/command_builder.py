@@ -1,6 +1,5 @@
 
-def BuildDistributedCommandWorker(run_config, worker_hosts, ps_hosts,
-                                  task_index):
+def BuildDistributedCommandWorker(run_config):
   """Build command to start distributed worker."""
 
   run_script = 'python tf_cnn_benchmarks.py'
@@ -80,52 +79,9 @@ def BuildDistributedCommandWorker(run_config, worker_hosts, ps_hosts,
       trace_file = trace_file + '.txt'
     run_cmd_list.append('--trace_file=' + trace_file)
 
-  if ps_hosts:
-    # Set flags needed for running in distributed mode.
-    run_cmd_list.append('--worker_hosts=' + worker_hosts)
-    run_cmd_list.append('--ps_hosts=' + ps_hosts)
-    run_cmd_list.append('--job_name=worker')
-    run_cmd_list.append('--task_index={}'.format(task_index))
-
   run_cmd = '{} {}'.format(run_script, ' '.join(run_cmd_list))
 
   return run_cmd
-
-
-def BuildDistributedCommandPS(run_config, worker_hosts, ps_hosts, task_index):
-  """Build command to start distributed parameter server.
-
-  """
-  print('Build Distributed Parameter Run Command')
-
-  run_script = "CUDA_VISIBLE_DEVICES='' python tf_cnn_benchmarks.py"
-  # Build command line
-  run_cmd_list = []
-
-  if 'sync_on_finish' in run_config:
-    run_cmd_list.append(
-        '--sync_on_finish={}'.format(run_config['sync_on_finish']))
-
-  run_cmd_list.append('--local_parameter_device=' + run_config['ps_server'])
-  run_cmd_list.append('--worker_hosts=' + worker_hosts)
-  run_cmd_list.append('--ps_hosts=' + ps_hosts)
-  run_cmd_list.append('--job_name=ps')
-  run_cmd_list.append('--task_index={}'.format(task_index))
-
-  run_cmd = '{} {}'.format(run_script, ' '.join(run_cmd_list))
-
-  return run_cmd
-
-
-def WorkerUtil(workers):
-  """Handles different entries options for workers and ps_servers"""
-  if (type(workers) is int):
-    if workers == 0:
-      return '0'
-    else:
-      return ','.join(str(n) for n in range(workers))
-  else:
-    return workers
 
 
 def GpuDecode(raw_gpu_input):
