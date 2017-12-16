@@ -12,10 +12,6 @@ import yaml
 import pwd
 import util
 
-# System variables
-PS_PORT = 50000
-WORKER_PORT = 50001
-
 class TestRunner(object):
   """Run benchmark tests and record results.
 
@@ -65,12 +61,12 @@ class TestRunner(object):
     return result_dir
 
 
-  def run_benchmark(self, run_config, instances):
+  def run_benchmark(self, run_config, instance):
     """Run single distributed tests for the passed config
 
     Args:
       run_config: Config representing the test to run.
-      instances: Instances to run the tests against.
+      instance: Instance to run the tests against.
     """
     # Timestamp and other values added for reporting
     run_config['timestamp'] = int(time.time())
@@ -93,7 +89,7 @@ class TestRunner(object):
     print('[{}] worker | Run benchmark({}):{}'.format(run_config.get('copy', '0'), run_config['test_id'], cmd))
     stdout_file = os.path.join(result_dir, 'worker_%d_stdout.log' % i)
     stderr_file = os.path.join(result_dir, 'worker_%d_stderr.log' % i)
-    t = instances[0].ExecuteCommandInThread(
+    t = instance.ExecuteCommandInThread(
         cmd, stdout_file, stderr_file, util.ExtractToStdout, print_error=True)
     worker_threads.append(t)
 
@@ -103,12 +99,12 @@ class TestRunner(object):
     return result_dir
 
 
-  def run_test_suite(self, full_config, instances):
+  def run_test_suite(self, full_config, instance):
     """Run distributed benchmarks
 
     Args:
       configs: Configs representing the tests to run.
-      instances: Instances to run the tests against.
+      instance: Instance to run the tests against.
 
     """
     # Folder to store suite results
@@ -131,7 +127,7 @@ class TestRunner(object):
             print('OOM testing--> low:{} high:{} next_val:{}'.format(
                 low, high, next_val))
             test_config['batch_size'] = next_val
-            result_dir = self.run_benchmark(test_config, instances)
+            result_dir = self.run_benchmark(test_config, instance)
             oom = reporting.check_oom(
                 os.path.join(result_dir, 'worker_0_stdout.log'))
             if oom and next_val < lowest_oom:
@@ -140,7 +136,7 @@ class TestRunner(object):
                 low, high, next_val, oom)
             print 'Lowest OOM Value:{}'.format(lowest_oom)
         else:
-          result_dir = self.run_benchmark(test_config, instances)
+          result_dir = self.run_benchmark(test_config, instance)
 
       suite_dir_name = '{}_{}'.format(last_config['test_suite_start_time'], last_config['test_id'])
       reporting.process_results_folder(
@@ -152,10 +148,12 @@ class TestRunner(object):
 
     """
     print('Running Local Benchmarks')
+    # Left over from system that could have multiple instances for distributed
+    # tests. Currently returns first and only instance from list.
+    instances = cluster_local.UseLocalInstances(
+        virtual_env_path=full_config.get('virtual_env_path'))
+    self.run_test_suite(full_config, instances[0])
 
-    with cluster_local.UseLocalInstances(
-        virtual_env_path=full_config.get('virtual_env_path')) as instances:
-      self.run_test_suite(full_config, instances)
 
   def load_yaml_configs(self, config_paths, base_dir=None):
     """Convert string of config paths into list of yaml objects

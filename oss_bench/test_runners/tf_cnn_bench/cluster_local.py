@@ -1,4 +1,4 @@
-"""Cluster implementation that runs locally without SSH."""
+"""Util to execute commands in the local shell"""
 import os
 import time
 from contextlib import contextmanager
@@ -12,10 +12,6 @@ class LocalInstance(object):
   def __init__(self, host, virtual_env_path=''):
     self.hostname = host
     self.virtual_env_path = virtual_env_path
-
-  def CleanSshClient(self):
-    # remnant of system that used SSH.
-    return True
 
   @property
   def state(self):
@@ -55,13 +51,6 @@ class LocalInstance(object):
     t.start()
     return t
 
-  def RetrieveFile(self, remote_file, local_file):
-    print('RetrieveFile not suported')
-
-  def UploadFile(self, local_file, remote_file):
-    print('UploadFile Not Supported from local:{} to remote:{}'.format(
-        local_file, remote_file))
-
   def addVirtualEnv(self, cmd):
     """Adds virtual env to command if configured"""
     if self.virtual_env_path:
@@ -85,29 +74,19 @@ def RunLocalCommand(
   p = subprocess.Popen(
       cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
   while (True):
-    retcode = p.poll()  #returns None while subprocess is running
+    retcode = p.poll()
     line = p.stdout.readline()
     yield line
     if (retcode is not None):
       break
 
-
-@contextmanager
 def UseLocalInstances(virtual_env_path=''):
-  """Creates instances to ssh into based on host names.
+  """Returns an instance to run tests against
 
   Args:
     virtual_env_path: path to the virtual environment to use.
   """
   instances = []
-  try:
-    instance = LocalInstance('localhost', virtual_env_path=virtual_env_path)
-    instances.append(instance)
-    yield instances
-  finally:
-    CloseInstances(instances)
-
-
-def CloseInstances(instances):
-  # remnant of system that used SSH.
-  return True
+  instance = LocalInstance('localhost', virtual_env_path=virtual_env_path)
+  instances.append(instance)
+  return instances
