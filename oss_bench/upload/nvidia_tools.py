@@ -6,8 +6,9 @@ import subprocess
 def get_gpu_info():
   """Returns driver and gpu info using nvidia-smi.
 
-  Note: Assumes if the system has multiple GPUs that they are all the same.
-  The first result in the list is returned.
+  Note: Assumes if the system has multiple GPUs that they are all the same with
+  one exception.  If the first result is a Quadro, the heuristic assumes
+  this may be a workstation and takes the second entry.  
 
   Returns:
     Tuple of device driver version and gpu name.
@@ -17,7 +18,11 @@ def get_gpu_info():
   lines = result.splitlines()
   if retcode == 0 and len(lines) > 1:
     gpu_info = lines[1].split(',')
-    return gpu_info[0].strip(), gpu_info[1].strip()
+    if "Quadro" in gpu_info[1] and len(lines) > 2:
+      gpu_info = lines[2].split(',')
+      return gpu_info[0].strip(), gpu_info[1].strip()
+    else:
+      return gpu_info[0].strip(), gpu_info[1].strip()
   else:
     print('nvidia-smi did not return as expected:{}'.format(result))
     return '', ''
