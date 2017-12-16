@@ -109,7 +109,7 @@ if __name__ == '__main__':
       '--test_config',
       type=str,
       default='default',
-      help='Path to the test_config or default to run default config') 
+      help='Absolute Path to the test_config as mounted on docker or default to run default config') 
 
   FLAGS, unparsed = parser.parse_known_args()
 
