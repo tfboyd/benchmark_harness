@@ -64,6 +64,7 @@ def _git_clone(git_repo, local_folder, branch=None, sha_hash=None):
 
 def _call_tf_benchmarks_tests(auto_config):
   import test_runners.tf_cnn_bench.run_benchmark as run_benchmark
+
   rel_config_paths = auto_config['tf_cnn_bench_configs']
   config_paths = []
   for rel_config_path in rel_config_paths:
@@ -129,6 +130,10 @@ def main():
   git_python_lib_paths = ['benchmark_harness/oss_bench']  
   for lib_path in git_python_lib_paths:
     sys.path.append(os.path.join(GIT_REPO_BASE, lib_path))
+
+  import upload.nvidia_tools as nvidia_tools
+  # Sets system GPU info on test_config for child modules to consume.
+  test_config['gpu_driver'], test_config['accel_type'] = nvidia_tools.get_gpu_info()  
   _call_tf_benchmarks_tests(test_config)
 
 if __name__ == '__main__':
