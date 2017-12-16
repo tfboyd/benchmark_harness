@@ -20,6 +20,7 @@ def process_results_folder(folder_path, report_config={}):
     folder_path: Folder to recursively search for results files, e.g.
     worker_0_stdout.log
   """
+  report_config = {} if report_config is None else report_config
   results = []
   for r, d, f in os.walk(folder_path):
     for file in f:

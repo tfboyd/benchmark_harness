@@ -1,16 +1,16 @@
 """Runs benchmarks on various cloud or local systems."""
+from __future__ import print_function
 import argparse
 import datetime
 import os
-import StringIO
-import tarfile
 import time
+
 import cluster_local
 import command_builder
 import reporting
-import yaml
-import pwd
 import util
+import yaml
+
 
 class TestRunner(object):
   """Run benchmark tests and record results.
@@ -20,12 +20,13 @@ class TestRunner(object):
     workspace (str): 
     bench_home (str): 
   """
+
   def __init__(self,
-              configs,
-              workspace,
-              bench_home,
-              auto_test_config=None,
-              debug_level=1):
+               configs,
+               workspace,
+               bench_home,
+               auto_test_config=None,
+               debug_level=1):
     """Initalize the TestRunner with values."""
     self.auto_test_config = auto_test_config
     self.configs = configs
@@ -41,17 +42,18 @@ class TestRunner(object):
       print('Making log directory:{}'.format(self.local_local_dir))
       os.makedirs(self.local_local_dir)
 
-
   def results_directory(self, run_config):
     """Determine and create the results directory
 
     Args:
       run_config: Config representing the test to run.  
     """
-    suite_dir_name = '{}_{}'.format(run_config['test_suite_start_time'], run_config['test_id'])
+    suite_dir_name = '{}_{}'.format(run_config['test_suite_start_time'],
+                                    run_config['test_id'])
     datetime_str = datetime.datetime.now().strftime('%Y%m%dT%H%M%S')
     test_result_dir = '{}'.format(datetime_str)
-    result_dir = os.path.join(self.workspace, 'results', suite_dir_name, test_result_dir)
+    result_dir = os.path.join(self.workspace, 'results', suite_dir_name,
+                              test_result_dir)
 
     # Creates workspace and default log folder
     if not os.path.exists(result_dir):
@@ -59,7 +61,6 @@ class TestRunner(object):
       os.makedirs(result_dir)
 
     return result_dir
-
 
   def run_benchmark(self, run_config, instance):
     """Run single distributed tests for the passed config
@@ -81,12 +82,13 @@ class TestRunner(object):
     config_out.write(yaml.dump(run_config))
     config_out.close()
 
-    # TODO(tobyboyd@): No longer distributed remove threads
+    # TODO(tobyboyd@): No longer distributed remove threads.
     worker_threads = []
     i = 0
     cmd = command_builder.BuildDistributedCommandWorker(run_config)
     cmd = 'cd {}; {}'.format(test_home, cmd)
-    print('[{}] worker | Run benchmark({}):{}'.format(run_config.get('copy', '0'), run_config['test_id'], cmd))
+    print('[{}] worker | Run benchmark({}):{}'.format(
+        run_config.get('copy', '0'), run_config['test_id'], cmd))
     stdout_file = os.path.join(result_dir, 'worker_%d_stdout.log' % i)
     stderr_file = os.path.join(result_dir, 'worker_%d_stderr.log' % i)
     t = instance.ExecuteCommandInThread(
@@ -98,7 +100,6 @@ class TestRunner(object):
 
     return result_dir
 
-
   def run_test_suite(self, full_config, instance):
     """Run distributed benchmarks
 
@@ -108,10 +109,12 @@ class TestRunner(object):
 
     """
     # Folder to store suite results
-    full_config['test_suite_start_time'] =  datetime.datetime.now().strftime('%Y%m%dT%H%M%S')
-    
+    full_config['test_suite_start_time'] = datetime.datetime.now().strftime(
+        '%Y%m%dT%H%M%S')
+
     # Configs for the test suite
-    test_suite = command_builder.LoadYamlRunConfig(full_config, self.debug_level)
+    test_suite = command_builder.LoadYamlRunConfig(full_config,
+                                                   self.debug_level)
 
     for i, test_configs in enumerate(test_suite):
       last_config = None
@@ -134,14 +137,15 @@ class TestRunner(object):
               lowest_oom = next_val
             low, high, next_val = reporting.oom_batch_size_search(
                 low, high, next_val, oom)
-            print 'Lowest OOM Value:{}'.format(lowest_oom)
+            print('Lowest OOM Value:{}'.format(lowest_oom))
         else:
           result_dir = self.run_benchmark(test_config, instance)
 
-      suite_dir_name = '{}_{}'.format(last_config['test_suite_start_time'], last_config['test_id'])
+      suite_dir_name = '{}_{}'.format(last_config['test_suite_start_time'],
+                                      last_config['test_id'])
       reporting.process_results_folder(
-          os.path.join(self.workspace, 'results', suite_dir_name),report_config=self.auto_test_config)
-
+          os.path.join(self.workspace, 'results', suite_dir_name),
+          report_config=self.auto_test_config)
 
   def local_benchmarks(self, full_config):
     """ Run Local benchmark tests
@@ -154,7 +158,6 @@ class TestRunner(object):
         virtual_env_path=full_config.get('virtual_env_path'))
     self.run_test_suite(full_config, instances[0])
 
-
   def load_yaml_configs(self, config_paths, base_dir=None):
     """Convert string of config paths into list of yaml objects
 
@@ -163,7 +166,7 @@ class TestRunner(object):
     configs = []
     for _, config_path in enumerate(config_paths):
       if base_dir is not None:
-        config_path = os.path.join(base_dir,config_path) 
+        config_path = os.path.join(base_dir, config_path)
       f = open(config_path)
       config = yaml.safe_load(f)
       config['config_path'] = config_path
@@ -177,10 +180,11 @@ class TestRunner(object):
     configs = self.load_yaml_configs(self.configs.split(','))
 
     # For each config (parent) loop over each sub_config.
-    for i, global_config in enumerate(configs):
+    for _, global_config in enumerate(configs):
       base_dir = os.path.dirname(global_config['config_path'])
-      sub_configs = self.load_yaml_configs(global_config['sub_configs'], base_dir=base_dir)
-      for j, run_config in enumerate(sub_configs):
+      sub_configs = self.load_yaml_configs(
+          global_config['sub_configs'], base_dir=base_dir)
+      for _, run_config in enumerate(sub_configs):
         full_config = run_config.copy()
 
         # Override config with global config, used to change projects
@@ -194,11 +198,9 @@ class TestRunner(object):
         self.local_benchmarks(full_config)
 
 
-def Main():
+def main():
   """Program main, called after args are parsed into FLAGS."""
-  test_runner = TestRunner(FLAGS.config,
-                        FLAGS.workspace,
-                        FLAGS.bench_home)
+  test_runner = TestRunner(FLAGS.config, FLAGS.workspace, FLAGS.bench_home)
   test_runner.run_tests()
 
 
@@ -229,4 +231,4 @@ if __name__ == '__main__':
 
   FLAGS, unparsed = parser.parse_known_args()
 
-  Main()
+  main()
