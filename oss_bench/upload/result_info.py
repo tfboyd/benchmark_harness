@@ -1,4 +1,4 @@
-"""Structures for a vareity of different test results."""
+"""Structures for a variety of different test results."""
 
 
 def build_test_result(test_id,
