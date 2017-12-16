@@ -14,7 +14,8 @@ class LocalInstance(object):
     self.virtual_env_path = virtual_env_path
 
   def CleanSshClient(self):
-    print('SshClient cleaned..nothing to do')
+    # remnant of system that used SSH.
+    return True
 
   @property
   def state(self):

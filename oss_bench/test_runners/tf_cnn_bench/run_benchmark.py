@@ -23,25 +23,12 @@ class TestRunner(object):
     configs (str): 
     workspace (str): 
     bench_home (str): 
-    ssh_key (str, optional):
-    username (str, optional): 
-    tf_url (str, optional):
-    mount (Boolean, optional):
-    sudo (Boolean, optional):
-    action (str, optional):
-
   """
   def __init__(self,
               configs,
               workspace,
               bench_home,
               auto_test_config=None,
-              ssh_key=None,
-              username=None,
-              tf_url = None,
-              mount = None,
-              sudo=False,
-              action=None,
               debug_level=1):
     """Initalize the TestRunner with values."""
     self.auto_test_config = auto_test_config
@@ -51,90 +38,12 @@ class TestRunner(object):
     self.local_stdout_file = os.path.join(self.local_local_dir, 'stdout.log')
     self.local_stderr_file = os.path.join(self.local_local_dir, 'stderr.log')
     self.bench_home = bench_home
-    self.sudo = sudo
-    self.action = action
-    self.ssh_key = ssh_key
-    self.tf_url = tf_url
     self.debug_level = debug_level
 
     # Creates workspace and default log folder
     if not os.path.exists(self.local_local_dir):
       print('Making log directory:{}'.format(self.local_local_dir))
       os.makedirs(self.local_local_dir)
-
-    # Set global username
-    self.username = 'ubuntu'
-
-    print('Using {} as username to access remote hosts.'.format(self.username))
-
-
-  def setup_servers(self, instance, full_config):
-    """Setup remote servers with tools and software to run tests
-
-    Args:
-      instance: instance object representing the server
-    """
-    print('Setting up instance: {}'.format(instance.instance_id))
-    self.kill_running_processes(instance)
-
-    if self.tf_url is not None or 'tf_url' in full_config:
-      # Command line overrides config tf_url
-      tf_url = self.tf_url if self.tf_url else full_config['tf_url']
-      self.install_tensorflow(instance, tf_url)
-
-
-  def kill_running_processes(self, instance):
-    """Kill benchmark processes for a clean start
-
-    This is useful if there is a need to stop in the middle.  The ps_servers, for
-    example will not always stop.  This kills all processes related to the 
-    benchmark run owned by the user.
-
-    Args:
-      instance: instance object representing the server
-
-    """
-    sudo = ''
-    if self.sudo:
-      sudo = 'sudo '
-
-    cmd = '{}pkill -f "python tf_cnn" -u {}'.format(sudo, self.username)
-    instance.ExecuteCommandAndStreamOutput(
-        cmd,
-        self.local_stdout_file,
-        self.local_stderr_file,
-        util.ExtractToStdout,
-        print_error=True,
-        ok_exit_status=[0, 1, -1])
-
-
-  def install_tensorflow(self, instance, tf_path):
-    """Installs the ensorflow pip package located at the tf_url passed in.
-    
-    pip command is executed directly on the tf_url so it will also install
-    from PyPI if that "tensorflow" is used as tf_url rather than a link to
-    s3 or some other http style location.  
-
-    Args:
-      instance: instance object representing the server
-      tf_path: url or path to the tensorflow to install
-
-    """
-    print('{}: Installing tensorflow:{}'.format(instance.instance_id, tf_path))
-    sudo = ''
-    if self.sudo:
-      sudo = 'sudo '
-    # --force-reinstall creates issues on occasion
-    cmd = '{}pip install --quiet --upgrade {}'.format(sudo, tf_path)
-    # Error will print if install fails
-    t = instance.ExecuteCommandInThread(
-        cmd,
-        self.local_stdout_file,
-        self.local_stderr_file,
-        util.ExtractToStdout,
-        print_error=True)
-    t.join()
-    print('{}: Tensorflow installed'.format(instance.instance_id))
 
 
   def results_directory(self, run_config):
@@ -246,10 +155,6 @@ class TestRunner(object):
     # Configs for the test suite
     test_suite = command_builder.LoadYamlRunConfig(full_config, self.debug_level)
 
-    # Setup instances with code and install TensorFlow if desired
-    for instance in instances:
-      self.setup_servers(instance, full_config)
-
     for i, test_configs in enumerate(test_suite):
       last_config = None
       for i, test_config in enumerate(test_configs):
@@ -275,16 +180,6 @@ class TestRunner(object):
         else:
           result_dir = self.run_benchmark(test_config, instances)
 
-        # Cleans up by killing proceses and closing ssh cilents
-        for instance in instances:
-          # Kills running processes but seems to create more issues
-          # sometimes than just killing the ssh sessions.
-          self.kill_running_processes(instance)
-          instance.CleanSshClient()
-
-        # Wait for 15 seconds just to let things settle
-        print 'Waiting 15 seconds for services to shutdown.'
-        time.sleep(5)
       suite_dir_name = '{}_{}'.format(last_config['test_suite_start_time'], last_config['test_id'])
       reporting.process_results_folder(
           os.path.join(self.workspace, 'results', suite_dir_name),report_config=self.auto_test_config)
@@ -336,26 +231,14 @@ class TestRunner(object):
             if k != 'run_configs':
               full_config[k] = v
 
-        if self.action is None:
-          self.local_benchmarks(full_config)
-        else:
-          if self.action == 'results':
-            reporting.process_results_folder(FLAGS.results_folder)
-          else:
-            print('Action unknown, doing nothing:{}'.format(self.action))
+        self.local_benchmarks(full_config)
 
 
 def Main():
   """Program main, called after args are parsed into FLAGS."""
   test_runner = TestRunner(FLAGS.config,
                         FLAGS.workspace,
-                        FLAGS.tf_cnn_bench_dir,
-                        ssh_key = FLAGS.ssh_key,
-                        username = FLAGS.username,
-                        tf_url = None if FLAGS.tf_url == '' else FLAGS.tf_url,
-                        mount = FLAGS.mount,
-                        sudo = False if FLAGS.sudo == '' else FLAGS.sudo,
-                        action = None if FLAGS.action == '' else FLAGS.action)
+                        FLAGS.bench_home)
   test_runner.run_tests()
 
 
@@ -374,52 +257,15 @@ if __name__ == '__main__':
       default='/tmp/benchmark_workspace',
       help='Local workspace to hold logs and results')
   parser.add_argument(
-      '--tf_url',
-      type=str,
-      default='',
-      help='If set this version of TensorFlow is installed')
-  parser.add_argument(
-      '--ssh_key',
-      type=str,
-      default='.ssh/tf_perf_aws.pem',
-      help='Set to ssh_key path relative to users home folder')
-  parser.add_argument(
       '--debug_level',
       type=int,
       default=1,
       help='Set to debug level: 0, 1, 5. Default 1')
   parser.add_argument(
-      '--mount',
-      type=str,
-      default=True,
-      help='Set to '
-      ' to not mount data drives')
-  parser.add_argument(
       '--bench_home',
       type=str,
       default=os.path.join(os.environ['HOME'], 'tf_cnn_bench'),
       help='Path to the benchmark scripts')
-  # Less used Flags
-  parser.add_argument(
-      '--action',
-      type=str,
-      default='',
-      help='If set this action is taken rather than run the entire script')
-  parser.add_argument(
-      '--results_folder',
-      type=str,
-      default='',
-      help='full or relative path to local result to process')
-  parser.add_argument(
-      '--username',
-      type=str,
-      default='ubuntu',
-      help='Username for ssh sessions to remote hosts')
-  parser.add_argument(
-      '--sudo',
-      type=str,
-      default='',
-      help='If true, sudo can be used if False sudo cannot be used.')
 
   FLAGS, unparsed = parser.parse_known_args()
 
