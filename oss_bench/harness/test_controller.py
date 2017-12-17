@@ -1,161 +1,183 @@
-"""Run auto tests."""
-from subprocess import call
-import subprocess
+"""Sets up the environment and runs the test suites."""
+from __future__ import print_function
 import argparse
 import os
+import subprocess
 import sys
 import yaml
 
-parser = argparse.ArgumentParser()
 
-# Globals set in the main.
-WORKSPACE = ''
-# Git repo and log paths.
-git_repo_base = ''
-LOGS_DIR = ''
-
-
-def run_local_command(cmd, stdout=None):
-  """Run a command in a subprocess and log result.
+class BenchmarkRunner(object):
+  """Setup environment an execute suite of tests.
 
   Args:
-    cmd (str): Command to
-    stdout (str, optional): File to write standard out.
+    workspace (str): workspace to download git code and store logs in. Path is
+      either absolute to the host or mounted path on docker if using docker.
   """
-  if stdout is None:
-    stdout=os.path.join(LOGS_DIR, 'log.txt')
-  print cmd
-  f = None
-  if stdout:
-    f = open(stdout, 'a')
-    f.write(cmd + '\n')
-  for line in _run_local_command(cmd):
-    if (line.strip('\n')):
-      print(line.strip('\n'))
-      if f:
-        f.write(line.strip('\n') + '\n')
 
+  def __init__(self, workspace):
+    """Initalize the BenchmarkRunner with values."""
+    self.workspace = workspace
+    self.git_repo_base = os.path.join(self.workspace, 'git')
+    self.logs_dir = os.path.join(self.workspace, 'logs')
 
-def _run_local_command(cmd):
-  p = subprocess.Popen(
-      cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
-  while (True):
-    retcode = p.poll()  #returns None while subprocess is running
-    line = p.stdout.readline()
-    yield line
-    if (retcode is not None):
-      break
+  def run_local_command(self, cmd, stdout=None):
+    """Run a command in a subprocess and log result.
 
-def _git_clone(git_repo, local_folder, branch=None, sha_hash=None):
+    Args:
+      cmd (str): Command to run.
+      stdout (str, optional): File to write standard out.
+    """
+    if stdout is None:
+      stdout = os.path.join(self.logs_dir, 'log.txt')
+    print(cmd)
+    f = None
+    if stdout:
+      f = open(stdout, 'a')
+      f.write(cmd + '\n')
+    for line in self._run_local_command(cmd):
+      if line.strip('\n'):
+        print(line.strip('\n'))
+        if f:
+          f.write(line.strip('\n') + '\n')
 
-  if os.path.isdir(local_folder):
-    git_clone_or_pull = 'git -C {} pull'.format(local_folder)
-  else:
-    git_clone_or_pull = 'git clone {} {}'.format(git_repo, local_folder)
-  run_local_command(git_clone_or_pull)
+  def _run_local_command(self, cmd):
+    p = subprocess.Popen(
+        cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
+    while True:
+      retcode = p.poll()
+      line = p.stdout.readline()
+      yield line
+      if retcode is not None:
+        break
 
-  if branch is not None:
-    branch_cmd = 'git -C {} checkout {}'.format(local_folder, branch)
-    run_local_command(branch_cmd)
+  def _git_clone(self, git_repo, local_folder, branch=None, sha_hash=None):
+    """Clone, update, or synce a repo.
 
-  if sha_hash is not None:
-    sync_to_hash_cmd = 'git -C {} reset --hard {}'.format(local_folder, sha_hash)
-    run_local_command(sync_to_hash_cmd)
+    If the clone already exists the repo will be updated via a pull.
 
-def _call_tf_benchmarks_tests(auto_config):
-  import test_runners.tf_cnn_bench.run_benchmark as run_benchmark
+    Args:
+      git_repo (str): Command to
+      local_folder (str): Where to clone repo into.
+      branch (str, optional): Branch to checkout.
+      sha_hash (str, optional): Hash to sync to.
+    """
+    if os.path.isdir(local_folder):
+      git_clone_or_pull = 'git -C {} pull'.format(local_folder)
+    else:
+      git_clone_or_pull = 'git clone {} {}'.format(git_repo, local_folder)
+    self.run_local_command(git_clone_or_pull)
 
-  rel_config_paths = auto_config['tf_cnn_bench_configs']
-  config_paths = []
-  for rel_config_path in rel_config_paths:
-    config_paths.append(os.path.join(GIT_REPO_BASE, rel_config_path))
+    if branch is not None:
+      branch_cmd = 'git -C {} checkout {}'.format(local_folder, branch)
+      self.run_local_command(branch_cmd)
 
-  config = ','.join(config_paths)
+    if sha_hash is not None:
+      sync_to_hash_cmd = 'git -C {} reset --hard {}'.format(
+          local_folder, sha_hash)
+      self.run_local_command(sync_to_hash_cmd)
 
-  tf_cnn_bench_path = os.path.join(GIT_REPO_BASE,
-                        'benchmarks/scripts/tf_cnn_benchmarks')
-  
-  test_runner = run_benchmark.TestRunner(config,
-                        os.path.join(LOGS_DIR, 'tf_cnn_workspace'),
-                        tf_cnn_bench_path,
-                        auto_test_config=auto_config)
-  test_runner.run_tests()
+  def _call_tf_benchmarks_tests(self, auto_config):
+    """Runs tests based on tf_cnn_benchmarks.
 
-def _load_config():
-  """Returns auto_run config for the environment."""
-  config_path = None
-  if FLAGS.test_config == 'default':
-    config_path = os.path.join(os.path.dirname(__file__), 'configs/default.yaml')
-  else:
-    config_path = FLAGS.test_config
-  f = open(config_path)
-  return yaml.safe_load(f)
+    Args:
+      auto_config: Parent test config with information useful to child test
+        framework.
+    """
+    # Module is loaded by this module.
+    # pylint: disable=C6204
+    import test_runners.tf_cnn_bench.run_benchmark as run_benchmark
 
+    rel_config_paths = auto_config['tf_cnn_bench_configs']
+    config_paths = []
+    for rel_config_path in rel_config_paths:
+      config_paths.append(os.path.join(self.git_repo_base, rel_config_path))
 
-def _clone_repos():
-  _git_clone('https://github.com/tensorflow/benchmarks.git',
-              os.path.join(GIT_REPO_BASE, 'benchmarks'),
-              sha_hash='267d7e81977f23998078f39afd48e9a97c3acf5a')
-  _git_clone('https://github.com/tfboyd/benchmark_harness.git',
-              os.path.join(GIT_REPO_BASE, 'benchmark_harness'))
+    config = ','.join(config_paths)
+
+    tf_cnn_bench_path = os.path.join(self.git_repo_base,
+                                     'benchmarks/scripts/tf_cnn_benchmarks')
+
+    test_runner = run_benchmark.TestRunner(
+        config,
+        os.path.join(self.logs_dir, 'tf_cnn_workspace'),
+        tf_cnn_bench_path,
+        auto_test_config=auto_config)
+    test_runner.run_tests()
+
+  def _load_config(self):
+    """Returns auto_run config for the environment."""
+    config_path = None
+    if FLAGS.test_config == 'default':
+      config_path = os.path.join(
+          os.path.dirname(__file__), 'configs/default.yaml')
+    else:
+      config_path = FLAGS.test_config
+    f = open(config_path)
+    return yaml.safe_load(f)
+
+  def _clone_repos(self):
+    """Clone repos with modules containing tests or utility modules."""
+    self._git_clone(
+        'https://github.com/tensorflow/benchmarks.git',
+        os.path.join(self.git_repo_base, 'benchmarks'),
+        sha_hash='267d7e81977f23998078f39afd48e9a97c3acf5a')
+    self._git_clone('https://github.com/tfboyd/benchmark_harness.git',
+                    os.path.join(self.git_repo_base, 'benchmark_harness'))
+
+  def run_tests(self):
+    """Runs the benchmark suite."""
+    try:
+      os.makedirs(self.logs_dir)
+    except OSError:
+      if not os.path.isdir(self.logs_dir):
+        raise
+    test_config = self._load_config()
+
+    auth_token_path = os.path.join('/auth_tokens/', test_config['report_auth'])
+    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = auth_token_path
+
+    # pick a directory, download tfboyd for auto_run and then tf_cnn_benchmarks
+    # then kick off some tests via auto_run.
+    self._clone_repos()
+
+    # Modify the python path for the libraries for the tests to run and then
+    # import them.
+    git_python_lib_paths = ['benchmark_harness/oss_bench']
+    for lib_path in git_python_lib_paths:
+      sys.path.append(os.path.join(self.git_repo_base, lib_path))
+
+    # Module is loaded by this module.
+    # pylint: disable=C6204
+    import upload.nvidia_tools as nvidia_tools
+    # Sets system GPU info on test_config for child modules to consume.
+    test_config['gpu_driver'], test_config[
+        'accel_type'] = nvidia_tools.get_gpu_info()
+    self._call_tf_benchmarks_tests(test_config)
 
 
 def main():
-  global WORKSPACE, GIT_REPO_BASE, LOGS_DIR
-  WORKSPACE = FLAGS.workspace
-  GIT_REPO_BASE = os.path.join(WORKSPACE, 'git')
-  LOGS_DIR = os.path.join(WORKSPACE, 'logs')
-  try: 
-    os.makedirs(LOGS_DIR)
-  except OSError:
-    if not os.path.isdir(LOGS_DIR):
-      raise
-  test_config = _load_config()
-  
-  auth_token_path = os.path.join('/auth_tokens/',test_config['report_auth'])
-  os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = auth_token_path
+  runner = BenchmarkRunner(FLAGS.workspace)
+  runner.run_tests()
 
-  # pick a directory, download tfboyd for auto_run and then tf_cnn_benchmarks
-  # then kick off some tests via auto_run.  
-  _clone_repos()
-
-
-  # Upgrade SAVE script to match what Anjili and I discussed.
-
-  # run_benchmark code should just need to know the test workspace and then
-  # it could find the code via the git paths to tf_cnn_benchmark.  
-
-  # Modify the python path for the libraries for the tests to run and then
-  # import them.
-  git_python_lib_paths = ['benchmark_harness/oss_bench']  
-  for lib_path in git_python_lib_paths:
-    sys.path.append(os.path.join(GIT_REPO_BASE, lib_path))
-
-  import upload.nvidia_tools as nvidia_tools
-  # Sets system GPU info on test_config for child modules to consume.
-  test_config['gpu_driver'], test_config['accel_type'] = nvidia_tools.get_gpu_info()  
-  _call_tf_benchmarks_tests(test_config)
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
-
   parser.add_argument(
       '--debug_level',
       type=int,
       default=1,
       help='Set to debug level: 0, 1, 5. Default 1')
-
   parser.add_argument(
       '--test_config',
       type=str,
       default='default',
-      help='Path to the test_config or default to run default config') 
-
+      help='Path to the test_config or default to run default config')
   parser.add_argument(
       '--workspace',
       type=str,
       default='/workspace',
-      help='Path to the workspace') 
+      help='Path to the workspace')
 
   FLAGS, unparsed = parser.parse_known_args()
 
