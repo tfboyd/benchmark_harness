@@ -9,6 +9,3 @@ sub_configs:
   - 'tests/resnet/resnet50.1_gpu.32.replicated_nccl.yaml'
   - 'tests/vgg/vgg16.1_gpu.32.ps_gpu.yaml'
   - 'tests/vgg/vgg16.1_gpu.32.ps_cpu.yaml'
-
-# Debug Only
-#env_vars: 'LD_LIBRARY_PATH=/usr/local/google/home/tobyboyd/lib/cuda-9.0/lib64'
