@@ -15,11 +15,12 @@ class BenchmarkRunner(object):
       either absolute to the host or mounted path on docker if using docker.
   """
 
-  def __init__(self, workspace):
+  def __init__(self, workspace, test_config):
     """Initalize the BenchmarkRunner with values."""
     self.workspace = workspace
     self.git_repo_base = os.path.join(self.workspace, 'git')
     self.logs_dir = os.path.join(self.workspace, 'logs')
+    self.test_config = test_config
 
   def run_local_command(self, cmd, stdout=None):
     """Run a command in a subprocess and log result.
@@ -108,11 +109,11 @@ class BenchmarkRunner(object):
   def _load_config(self):
     """Returns auto_run config for the environment."""
     config_path = None
-    if FLAGS.test_config == 'default':
-      config_path = os.path.join(
-          os.path.dirname(__file__), 'configs/default.yaml')
+    if self.test_config.startswith('/'):
+      config_path = self.test_config
     else:
-      config_path = FLAGS.test_config
+      config_path = os.path.join(
+            os.path.dirname(__file__), self.test_config)
     f = open(config_path)
     return yaml.safe_load(f)
 
@@ -157,21 +158,16 @@ class BenchmarkRunner(object):
 
 
 def main():
-  runner = BenchmarkRunner(FLAGS.workspace)
+  runner = BenchmarkRunner(FLAGS.workspace, FLAGS.test_config)
   runner.run_tests()
 
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
   parser.add_argument(
-      '--debug_level',
-      type=int,
-      default=1,
-      help='Set to debug level: 0, 1, 5. Default 1')
-  parser.add_argument(
-      '--test_config',
+      '--test-config',
       type=str,
-      default='default',
+      default='configs/default.yaml',
       help='Path to the test_config or default to run default config')
   parser.add_argument(
       '--workspace',
