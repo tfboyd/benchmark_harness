@@ -1,7 +1,7 @@
 # gpu without NCCL is the fastest followed by with NCCL. CPU is ok
 # but seems to vary and dropped a little as of TF 1.4.
 run_configs:
-  - test_id: resnet50.1_gpu.64.replicated_nccl
+  - test_id: resnet50.8_gpu.64.replicated_nccl
     gpus: 8
     model: 'resnet50'
     ps_server: gpu
