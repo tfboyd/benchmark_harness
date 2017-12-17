@@ -120,7 +120,7 @@ if __name__ == '__main__':
   parser.add_argument(
       '--test-config',
       type=str,
-      default='default',
+      default='configs/default.yaml',
       help=
       'Absolute Path to the test_config as mounted on docker or default to run '
       'default config.')
