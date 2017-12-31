@@ -23,6 +23,11 @@ def upload_result(test_result,
                   extras=None):
   """Upload test result.
 
+  Note: Using Insert likely limits the number of inserts per day to 1000
+  according to the bigquery quota page. I (tobyboyd@) noticed this after the
+  fact.  Will upgrade to streaming inserts in near future, which is nearly
+  unlimited 50k+
+
   Note: BigQuery maps unicode() to STRING for python2.  If str is used that is
   mapped to BYTE.
 
