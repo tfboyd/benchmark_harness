@@ -93,6 +93,7 @@ def build_system_info(platform=None,
 
 
 def build_test_info(framework='tensorflow',
+                    framework_version=None,
                     batch_size=None,
                     model=None,
                     accel_cnt=None):
@@ -117,4 +118,6 @@ def build_test_info(framework='tensorflow',
     test_info['model'] = model
   if accel_cnt:
     test_info['accel_cnt'] = accel_cnt
+  if framework_version:
+    test_info['framework_version'] = framework_version
   return test_info

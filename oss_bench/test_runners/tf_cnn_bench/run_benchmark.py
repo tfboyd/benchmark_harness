@@ -16,9 +16,13 @@ class TestRunner(object):
   """Run benchmark tests and record results.
 
   Args:
-    configs (str): 
-    workspace (str): 
-    bench_home (str): 
+    configs (str): Comma delimited string of paths to yaml config files that
+      detail the tests to run.
+    workspace (str): Path to workspace to store logs and results.
+    bench_home (str): Path to tf_cnn_benchmark script.
+    auto_test_config (dict): Supplemental config values from oss_test harness,
+      e.g. tensorflow version and hashes for tf_cnn_benchmark repo.
+    debug_level (int): Debug level with supported values 0 and 1.
   """
 
   def __init__(self,
@@ -31,22 +35,28 @@ class TestRunner(object):
     self.auto_test_config = auto_test_config
     self.configs = configs
     self.workspace = workspace
-    self.local_local_dir = os.path.join(self.workspace, 'logs')
-    self.local_stdout_file = os.path.join(self.local_local_dir, 'stdout.log')
-    self.local_stderr_file = os.path.join(self.local_local_dir, 'stderr.log')
+    self.local_log_dir = os.path.join(self.workspace, 'logs')
+    self.local_stdout_file = os.path.join(self.local_log_dir, 'stdout.log')
+    self.local_stderr_file = os.path.join(self.local_log_dir, 'stderr.log')
     self.bench_home = bench_home
     self.debug_level = debug_level
 
+    self._make_log_dir(self.local_log_dir)
+
+  def _make_log_dir(self, local_log_dir):
     # Creates workspace and default log folder
-    if not os.path.exists(self.local_local_dir):
-      print('Making log directory:{}'.format(self.local_local_dir))
-      os.makedirs(self.local_local_dir)
+    if not os.path.exists(local_log_dir):
+      print('Making log directory:{}'.format(local_log_dir))
+      os.makedirs(local_log_dir)
 
   def results_directory(self, run_config):
-    """Determine and create the results directory
+    """Determine and create the results directory.
 
     Args:
-      run_config: Config representing the test to run.  
+      run_config: Config representing the test to run.
+
+    Returns:
+      Path to store results of the test.
     """
     suite_dir_name = '{}_{}'.format(run_config['test_suite_start_time'],
                                     run_config['test_id'])
@@ -63,11 +73,14 @@ class TestRunner(object):
     return result_dir
 
   def run_benchmark(self, run_config, instance):
-    """Run single distributed tests for the passed config
+    """Run single distributed tests for the passed config.
 
     Args:
       run_config: Config representing the test to run.
       instance: Instance to run the tests against.
+
+    Returns:
+      Path to results of the test.
     """
     # Timestamp and other values added for reporting
     run_config['timestamp'] = int(time.time())
@@ -100,14 +113,18 @@ class TestRunner(object):
 
     return result_dir
 
-  def run_test_suite(self, full_config, instance):
-    """Run distributed benchmarks
+  def run_test_suite(self, full_config):
+    """Run benchmarks defined by full_config.
 
     Args:
-      configs: Configs representing the tests to run.
-      instance: Instance to run the tests against.
-
+      full_config: Config representing tests to run.
     """
+
+    # Left over from system that could have multiple instances for distributed
+    # tests. Currently uses first and only instance from list.
+    instance = cluster_local.UseLocalInstances(
+        virtual_env_path=full_config.get('virtual_env_path'))
+
     # Folder to store suite results
     full_config['test_suite_start_time'] = datetime.datetime.now().strftime(
         '%Y%m%dT%H%M%S')
@@ -116,9 +133,9 @@ class TestRunner(object):
     test_suite = command_builder.LoadYamlRunConfig(full_config,
                                                    self.debug_level)
 
-    for i, test_configs in enumerate(test_suite):
+    for _, test_configs in enumerate(test_suite):
       last_config = None
-      for i, test_config in enumerate(test_configs):
+      for _, test_config in enumerate(test_configs):
         last_config = test_config
         # Executes oom test or the normal benchmark.
         if test_config.get('oom_test'):
@@ -143,25 +160,19 @@ class TestRunner(object):
 
       suite_dir_name = '{}_{}'.format(last_config['test_suite_start_time'],
                                       last_config['test_id'])
-      reporting.process_results_folder(
+      reporting.process_folder(
           os.path.join(self.workspace, 'results', suite_dir_name),
           report_config=self.auto_test_config)
 
-  def local_benchmarks(self, full_config):
-    """ Run Local benchmark tests
-
-    """
-    print('Running Local Benchmarks')
-    # Left over from system that could have multiple instances for distributed
-    # tests. Currently returns first and only instance from list.
-    instances = cluster_local.UseLocalInstances(
-        virtual_env_path=full_config.get('virtual_env_path'))
-    self.run_test_suite(full_config, instances[0])
-
   def load_yaml_configs(self, config_paths, base_dir=None):
-    """Convert string of config paths into list of yaml objects
+    """Convert string of config paths into list of yaml objects.
 
-      If configs_string is empty a list with a single empty object is returned
+    Args:
+      config_paths: Paths to yaml configs to load.
+      base_dir: Base directory prefixed to each config_path.
+
+    Returns:
+      List of config dicts.
     """
     configs = []
     for _, config_path in enumerate(config_paths):
@@ -195,7 +206,7 @@ class TestRunner(object):
             if k != 'run_configs':
               full_config[k] = v
 
-        self.local_benchmarks(full_config)
+        self.run_test_suite(full_config)
 
 
 def main():

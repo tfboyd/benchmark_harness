@@ -1,0 +1,22 @@
+# General settings
+repeat: 3
+
+# Worker settings override
+num_batches: 20
+
+sub_configs:
+  - 'resnet50.1_gpu.64.ps_cpu.yaml'
+
+run_configs:
+  - test_id: resnet50.1_gpu.64.ps_cpu
+    gpus: 1
+    model: 'resnet50'
+    ps_server: cpu
+    data_format: NCHW
+    variable_update: parameter_server
+    num_batches: 100
+    batch_size: 64
+    optimizer: 'sgd'
+    all_reduce_spec: ''''''
+
+config_path: 'test_runners/tf_cnn_bench/test_configs/basic_run_config.yaml'
