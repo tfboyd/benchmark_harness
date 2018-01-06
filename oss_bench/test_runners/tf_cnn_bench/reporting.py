@@ -42,6 +42,7 @@ def process_folder(folder_path, report_config=None):
 
   test_info = result_info.build_test_info(
       framework_version=report_config.get('framework_version'),
+      framework_describe=report_config.get('framework_describe'),
       batch_size=agg_result['config']['batch_size'],
       model=agg_result['config']['model'],
       accel_cnt=agg_result['gpu'])

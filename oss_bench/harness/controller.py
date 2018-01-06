@@ -137,12 +137,8 @@ class BenchmarkRunner(object):
     information is stored in test_config for downstream tests to store
     as part of their results.
     """
-    self._git_clone(
-        'https://github.com/tensorflow/benchmarks.git',
-        os.path.join(self.git_repo_base, 'benchmarks'),
-        sha_hash='267d7e81977f23998078f39afd48e9a97c3acf5a')
-    self._git_clone('https://github.com/tfboyd/benchmark_harness.git',
-                    os.path.join(self.git_repo_base, 'benchmark_harness'))
+    self._git_clone('https://github.com/tensorflow/benchmarks.git',
+                    os.path.join(self.git_repo_base, 'benchmarks'))
 
   def _make_logs_dir(self):
     try:
@@ -198,7 +194,9 @@ class BenchmarkRunner(object):
     import tools.tf_version as tf_version
     # Sets system GPU info on test_config for child modules to consume.
     test_config['gpu_driver'], test_config['accel_type'] = nvidia.get_gpu_info()
-    test_config['framework_version'] = tf_version.get_tf_full_version()
+    version, git_version = tf_version.get_tf_full_version()
+    test_config['framework_version'] = version
+    test_config['framework_describe'] = git_version
     self._tf_cnn_bench(test_config)
 
 

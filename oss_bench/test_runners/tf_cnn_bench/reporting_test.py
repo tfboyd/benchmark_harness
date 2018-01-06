@@ -49,6 +49,8 @@ class TestReporting(unittest.TestCase):
     arg_test_info = mock_upload.call_args[1]['test_info']
     self.assertEqual(arg_test_info['framework_version'],
                      report_config['framework_version'])
+    self.assertEqual(arg_test_info['framework_describe'],
+                     report_config['framework_describe'])
 
     self.assertEqual(arg_test_info['git_info']['benchmarks']['describe'],
                      'a2384503f')
@@ -79,7 +81,8 @@ class TestReporting(unittest.TestCase):
     report_config['test_environment'] = 'unit_test_env'
     report_config['accel_type'] = 'GTX 940'
     report_config['platform'] = 'test_platform_name'
-    report_config['framework_version'] = 'v1.3.0-rc1-2884-g2d5b76169'
+    report_config['framework_version'] = 'v1.5RC0-dev20171027'
+    report_config['framework_describe'] = 'v1.3.0-rc1-2884-g2d5b76169'
     # git repo info with expected repo info.
     report_config['git_repo_info'] = {}
     # benchmark repo info

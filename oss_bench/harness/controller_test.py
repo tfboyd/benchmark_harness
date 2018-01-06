@@ -26,7 +26,7 @@ class TestRunBenchmark(unittest.TestCase):
         '/workspace', 'test_configs/basic_test_config.yaml')
     gpu_info.return_value = [387.11, 'GTX 970']
 
-    expected_version = 'v1.3.0-rc1-2884-g2d5b76169'
+    expected_version = ['1.5RC0-dev20171001', 'v1.3.0-rc1-2884-g2d5b76169']
     get_tf_full_version.return_value = expected_version
 
     benchmark_runner.run_tests()
@@ -41,7 +41,8 @@ class TestRunBenchmark(unittest.TestCase):
     arg0 = tf_cnn_bench.call_args[0][0]
     self.assertEqual(arg0['accel_type'], 'GTX 970')
     self.assertEqual(arg0['gpu_driver'], 387.11)
-    self.assertEqual(arg0['framework_version'], expected_version)
+    self.assertEqual(arg0['framework_version'], expected_version[0])
+    self.assertEqual(arg0['framework_describe'], expected_version[1])
 
   @patch('test_runners.tf_cnn_bench.run_benchmark.TestRunner')
   def test_tf_cnn_bench(self, test_runner_mock):
