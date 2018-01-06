@@ -82,8 +82,7 @@ def main():
   git_workspace = os.path.join(FLAGS.workspace, 'git')
   git_clone(
       'https://github.com/tfboyd/benchmark_harness.git',
-      os.path.join(git_workspace, 'benchmark_harness'),
-      branch='staging')
+      os.path.join(git_workspace, 'benchmark_harness'))
 
   docker_base = FLAGS.docker
   docker_save_name = FLAGS.docker_save_tag
