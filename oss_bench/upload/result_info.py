@@ -68,11 +68,11 @@ def build_system_info(platform=None,
   """Information about the system the test was executed on.
 
   Args:
-      platform (str): Higher level platform, e.g. aws, gce, or workstation.
-      platform_type (str): Type of platform, DGX-1, p3.8xlarge, or z420.
-      accel_type (str, optional): Type of accelerator, e.g. K80 or P100.
-      cpu_cores (str, optional): Number of physical cpu cores.
-      cpu_type (str, optional): Type of cpu.
+    platform (str): Higher level platform, e.g. aws, gce, or workstation.
+    platform_type (str): Type of platform, DGX-1, p3.8xlarge, or z420.
+    accel_type (str, optional): Type of accelerator, e.g. K80 or P100.
+    cpu_cores (str, optional): Number of physical cpu cores.
+    cpu_type (str, optional): Type of cpu.
 
   Returns:
     `dict` with system info.
@@ -93,17 +93,21 @@ def build_system_info(platform=None,
 
 
 def build_test_info(framework='tensorflow',
+                    framework_version=None,
+                    framework_describe=None,
                     batch_size=None,
                     model=None,
                     accel_cnt=None):
-  """Initialize TestInfo object.
+  """Returns test info in a dict.
 
   Args:
-    framework (str, optional): Framework being tested, e.g. tesnsorflow,
+    framework (str, optional): Framework being tested, e.g. tensorflow,
       mxnet, or caffe2.  Defaults to tensorflow.
+    framework_version: Version of the framework tested.
+    framework_describe: More info on the framework version, often git describe.
     batch_size (int, optional): Total batch size.
-    model: Model being tested.
-    accel_cnt (int, optional): Number of accelerators bieng utilized.
+    model (str, optional): Model being tested.
+    accel_cnt (int, optional): Number of accelerators being utilized.
 
   Returns:
     `dict` with test info.
@@ -117,4 +121,8 @@ def build_test_info(framework='tensorflow',
     test_info['model'] = model
   if accel_cnt:
     test_info['accel_cnt'] = accel_cnt
+  if framework_version:
+    test_info['framework_version'] = framework_version
+  if framework_describe:
+    test_info['framework_describe'] = framework_describe
   return test_info

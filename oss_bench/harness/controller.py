@@ -10,9 +10,23 @@ import yaml
 class BenchmarkRunner(object):
   """Setup environment an execute suite of tests.
 
+  Example:
+    Run from command line with:
+      python controller.py --workspace=/path/to/where/to/clone/repos
+
+    Note: Note that this will pull fresh code from git to the workspace folder
+      and will not use your local changes beyond this module.  For this to work
+      with the default.yaml do the following:
+        - Add .json credentials, e.g. 'tensorflow_performance_upload_tb.json' to
+         /auth_tokens or update configs/default.yaml.
+        - Current code can be copied to workspace/git/benchmark_harness, do
+          development from the workspace folder directly, or adjust the code
+          below to put desired code into `sys.path`.
+
   Args:
     workspace (str): workspace to download git code and store logs in. Path is
       either absolute to the host or mounted path on docker if using docker.
+    test_config (str): path to yaml config file.
   """
 
   def __init__(self, workspace, test_config):
@@ -78,7 +92,7 @@ class BenchmarkRunner(object):
           local_folder, sha_hash)
       self.run_local_command(sync_to_hash_cmd)
 
-  def _call_tf_benchmarks_tests(self, auto_config):
+  def _tf_cnn_bench(self, auto_config):
     """Runs tests based on tf_cnn_benchmarks.
 
     Args:
@@ -112,27 +126,51 @@ class BenchmarkRunner(object):
     if self.test_config.startswith('/'):
       config_path = self.test_config
     else:
-      config_path = os.path.join(
-            os.path.dirname(__file__), self.test_config)
+      config_path = os.path.join(os.path.dirname(__file__), self.test_config)
     f = open(config_path)
     return yaml.safe_load(f)
 
   def _clone_repos(self):
-    """Clone repos with modules containing tests or utility modules."""
-    self._git_clone(
-        'https://github.com/tensorflow/benchmarks.git',
-        os.path.join(self.git_repo_base, 'benchmarks'),
-        sha_hash='267d7e81977f23998078f39afd48e9a97c3acf5a')
-    self._git_clone('https://github.com/tfboyd/benchmark_harness.git',
-                    os.path.join(self.git_repo_base, 'benchmark_harness'))
+    """Clone repos with modules containing tests or utility modules.
 
-  def run_tests(self):
-    """Runs the benchmark suite."""
+    After cloning and optionally moving to a specific branch or hash, repo
+    information is stored in test_config for downstream tests to store
+    as part of their results.
+    """
+    self._git_clone('https://github.com/tensorflow/benchmarks.git',
+                    os.path.join(self.git_repo_base, 'benchmarks'))
+
+  def _make_logs_dir(self):
     try:
       os.makedirs(self.logs_dir)
     except OSError:
       if not os.path.isdir(self.logs_dir):
         raise
+
+  def _store_repo_info(self, test_config):
+    """Stores info about git repos in test_config.
+
+    Note: Assumes benchmark_harness/oss_bench has been added to sys.path.
+
+    Args:
+      test_config: dict to add git repo info.
+    """
+    # Module cannot be loaded until after repo is cloned and added to sys.path.
+    # pylint: disable=C6204
+    import tools.git_info as git_info
+    git_dirs = ['benchmark_harness', 'benchmarks']
+    test_config['git_repo_info'] = {}
+    for repo_dir in git_dirs:
+      full_path = os.path.join(self.git_repo_base, repo_dir)
+      git_info_dict = {}
+      git_info_dict['describe'] = git_info.git_repo_describe(full_path)
+      git_info_dict['last_commit_id'] = git_info.git_repo_last_commit_id(
+          full_path)
+      test_config['git_repo_info'][repo_dir] = git_info_dict
+
+  def run_tests(self):
+    """Runs the benchmark suite."""
+    self._make_logs_dir()
     test_config = self._load_config()
 
     auth_token_path = os.path.join('/auth_tokens/', test_config['report_auth'])
@@ -148,13 +186,18 @@ class BenchmarkRunner(object):
     for lib_path in git_python_lib_paths:
       sys.path.append(os.path.join(self.git_repo_base, lib_path))
 
-    # Module is loaded by this module.
+    self._store_repo_info(test_config)
+    # Modules are loaded by this function.
     # pylint: disable=C6204
-    import upload.nvidia_tools as nvidia_tools
+    import tools.nvidia as nvidia
+    # pylint: disable=C6204
+    import tools.tf_version as tf_version
     # Sets system GPU info on test_config for child modules to consume.
-    test_config['gpu_driver'], test_config[
-        'accel_type'] = nvidia_tools.get_gpu_info()
-    self._call_tf_benchmarks_tests(test_config)
+    test_config['gpu_driver'], test_config['accel_type'] = nvidia.get_gpu_info()
+    version, git_version = tf_version.get_tf_full_version()
+    test_config['framework_version'] = version
+    test_config['framework_describe'] = git_version
+    self._tf_cnn_bench(test_config)
 
 
 def main():

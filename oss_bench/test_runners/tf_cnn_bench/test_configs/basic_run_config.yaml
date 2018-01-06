@@ -1,0 +1,11 @@
+# General settings
+repeat: 3
+
+# Worker settings override
+num_batches: 20
+
+sub_configs:
+  - 'resnet50.1_gpu.64.ps_cpu.yaml'
+
+# Debug Only
+#env_vars: 'LD_LIBRARY_PATH=/usr/local/google/home/tobyboyd/lib/cuda-9.0/lib64'

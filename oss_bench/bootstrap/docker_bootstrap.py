@@ -79,33 +79,52 @@ def main():
   global WORKSPACE, BOOTSTRAP_LOG
   WORKSPACE = FLAGS.workspace
   BOOTSTRAP_LOG = './log.txt'
-  git_clone('https://github.com/tfboyd/benchmark_harness.git',
-            os.path.join(FLAGS.workspace, 'harness'))
+  git_workspace = os.path.join(FLAGS.workspace, 'git')
+  git_clone(
+      'https://github.com/tfboyd/benchmark_harness.git',
+      os.path.join(git_workspace, 'benchmark_harness'),
+      branch='staging')
 
-  docker_base = 'tensorflow/tensorflow:latest-gpu'
-  docker_test = 'tobyboyd/tf-gpu'
+  docker_base = FLAGS.docker
+  docker_save_name = FLAGS.docker_save_tag
 
   # update docker pull
   docker_pull = 'docker pull {}'.format(docker_base)
   run_local_command(docker_pull)
 
   # do a fresh build of the docker images
-  docker_build = 'docker build -t {} ./docker/'.format(docker_test)
+  docker_build = 'docker build -t {} {}'.format(docker_save_name,
+                                                FLAGS.docker_folder)
   run_local_command(docker_build)
 
   # kick off the tests via docker
   run_benchmarks = (
-      'nvidia-docker run --rm -v {}:/auth_tokens -v {}:/workspace {}'
-      ' python /workspace/harness/oss_bench/harness/test_controller.py '
+      'nvidia-docker run --rm -v {}:/auth_tokens -v {}:/workspace {} python '
+      '/workspace/git/benchmark_harness/oss_bench/harness/controller.py '
       '--workspace=/workspace --test-config={}')
   run_benchmarks = run_benchmarks.format(FLAGS.auth_token_dir, FLAGS.workspace,
-                                         docker_test, FLAGS.test_config)
+                                         docker_save_name, FLAGS.test_config)
 
   run_local_command(run_benchmarks)
 
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
+  parser.add_argument(
+      '--docker',
+      type=str,
+      default='tensorflow/tensorflow:nightly-gpu',
+      help='Docker to container to use that will also get pulled.')
+  parser.add_argument(
+      '--docker-folder',
+      type=str,
+      default='./docker/nightly_gpu',
+      help='Folder with docker build file.')
+  parser.add_argument(
+      '--docker-save-tag',
+      type=str,
+      default='tobyboyd/tf-gpu',
+      help='Name and optional tag for docker image created by build.')
   parser.add_argument(
       '--workspace',
       type=str,
@@ -114,7 +133,7 @@ if __name__ == '__main__':
   parser.add_argument(
       '--auth-token-dir',
       type=str,
-      default='',
+      default='/auth_tokens',
       help='Directory with service authentication tokens mounted to docker at '
       '/auth_tokens')
   parser.add_argument(

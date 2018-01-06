@@ -8,7 +8,7 @@ def get_gpu_info():
 
   Note: Assumes if the system has multiple GPUs that they are all the same with
   one exception.  If the first result is a Quadro, the heuristic assumes
-  this may be a workstation and takes the second entry.  
+  this may be a workstation and takes the second entry.
 
   Returns:
     Tuple of device driver version and gpu name.
@@ -18,7 +18,7 @@ def get_gpu_info():
   lines = result.splitlines()
   if retcode == 0 and len(lines) > 1:
     gpu_info = lines[1].split(',')
-    if "Quadro" in gpu_info[1] and len(lines) > 2:
+    if 'Quadro' in gpu_info[1] and len(lines) > 2:
       gpu_info = lines[2].split(',')
       return gpu_info[0].strip(), gpu_info[1].strip()
     else:

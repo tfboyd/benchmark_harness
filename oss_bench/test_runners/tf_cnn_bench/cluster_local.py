@@ -69,8 +69,7 @@ class LocalInstance(object):
           f.write(line.strip('\n') + '\n')
 
 
-def RunLocalCommand(
-    cmd,):
+def RunLocalCommand(cmd,):
   p = subprocess.Popen(
       cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
   while (True):
@@ -80,13 +79,12 @@ def RunLocalCommand(
     if (retcode is not None):
       break
 
+
 def UseLocalInstances(virtual_env_path=''):
   """Returns an instance to run tests against
 
   Args:
     virtual_env_path: path to the virtual environment to use.
   """
-  instances = []
   instance = LocalInstance('localhost', virtual_env_path=virtual_env_path)
-  instances.append(instance)
-  return instances
+  return instance
