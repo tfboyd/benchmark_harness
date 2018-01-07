@@ -1,4 +1,4 @@
-# Default config assumes usage of docker and local GPU at least GTX1080
+# Config for a DGX-1 P100 reporting to production schema.
 test_harness: 'tf_cnn_benchmark'
 test_environment: 'brain-lab'
 # System basics
@@ -6,9 +6,9 @@ platform: 'NVIDIA'
 platform_type: 'DGX-1 (P100)'
 
 # reporting
-report_auth: 'tensorflow_performance_upload_tb.json'
+report_auth: 'brain_lab_benchmarks.json'
 report_project: 'google.com:tensorflow-performance'
-report_dataset: 'benchmark_results_dev'
+report_dataset: 'benchmark_results'
 report_table: 'result'
 
 # tf-cnn-benchmarks
