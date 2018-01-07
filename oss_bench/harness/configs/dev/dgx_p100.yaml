@@ -6,7 +6,7 @@ platform: 'NVIDIA'
 platform_type: 'DGX-1 (P100)'
 
 # reporting
-report_auth: 'tensorflow_performance_upload_tb.json'
+report_auth: 'nightly_benchmark_dev.json'
 report_project: 'google.com:tensorflow-performance'
 report_dataset: 'benchmark_results_dev'
 report_table: 'result'
