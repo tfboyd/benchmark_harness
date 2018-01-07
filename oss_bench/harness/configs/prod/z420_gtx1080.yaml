@@ -1,15 +1,14 @@
-# Default config assumes usage of docker and local GPU at least GTX1080
-test_harness: 'tf_cnn_bench'
-test_environment: 'development-docker'
+# Config for a z420 with GTX-1080 reporting to production schema.
+test_harness: 'tf_cnn_benchmark'
+test_environment: 'google-workstation'
 # System basics
-accel_type: 'GTX1080'
 platform: 'workstation'
 platform_type: 'z420'
 
 # reporting
 report_auth: 'tensorflow_performance_upload_tb.json'
 report_project: 'google.com:tensorflow-performance'
-report_dataset: 'benchmark_results_dev'
+report_dataset: 'benchmark_results'
 report_table: 'result'
 
 # tf-cnn-benchmarks
