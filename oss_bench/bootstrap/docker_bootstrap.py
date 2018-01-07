@@ -82,7 +82,8 @@ def main():
   git_workspace = os.path.join(FLAGS.workspace, 'git')
   git_clone(
       'https://github.com/tfboyd/benchmark_harness.git',
-      os.path.join(git_workspace, 'benchmark_harness'))
+      os.path.join(git_workspace, 'benchmark_harness'),
+      branch=FLAGS.harness_branch)
 
   docker_base = FLAGS.docker
   docker_save_name = FLAGS.docker_save_tag
@@ -109,6 +110,11 @@ def main():
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
+  parser.add_argument(
+      '--harness-branch',
+      type=str,
+      default=None,
+      help='Set to harness branch to use, used for testing harness.')
   parser.add_argument(
       '--docker',
       type=str,
@@ -138,7 +144,7 @@ if __name__ == '__main__':
   parser.add_argument(
       '--test-config',
       type=str,
-      default='configs/default.yaml',
+      default='configs/dev/default.yaml',
       help=
       'Absolute Path to the test_config as mounted on docker or default to run '
       'default config.')
