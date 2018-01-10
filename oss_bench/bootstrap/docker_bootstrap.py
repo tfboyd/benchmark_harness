@@ -3,6 +3,8 @@ from __future__ import print_function
 import argparse
 import os
 import subprocess
+import sys
+import time
 
 parser = argparse.ArgumentParser()
 
@@ -43,6 +45,33 @@ def _run_local_command(cmd):
       break
 
 
+def safety_check():
+  """Checks if system is open for testing.
+
+  Watches the system periodically for 5 minutes to see if the GPUs are being
+  used.
+
+  Returns:
+    True if system looks available and GPUs are free.
+  """
+  # Modules are added to sys.path at runtime.
+  # pylint: disable=C6204
+  import tools.nvidia as nvidia
+  totaltime = 0
+  maxtime = 300
+  print('Checking if existing processes are running on GPUs for {} seconds'
+        .format(maxtime))
+  while True:
+    if not nvidia.is_ok_to_run():
+      return False
+    if totaltime > maxtime:
+      return True
+    print('No GPU processes found watching for {} more seconds'.format(
+        maxtime - totaltime))
+    time.sleep(20)  # Delay for 1 minute (60 seconds).
+    totaltime += 20
+
+
 def git_clone(git_repo, local_folder, branch=None, sha_hash=None):
   """Clone, update, or synce a repo.
 
@@ -79,6 +108,16 @@ def main():
   global WORKSPACE, BOOTSTRAP_LOG
   WORKSPACE = FLAGS.workspace
   BOOTSTRAP_LOG = './log.txt'
+
+  # Adding 'package' to the system path to make modules available and simplify
+  # usage by not having to 'use python -m'.
+  sys.path.append('../')
+
+  if FLAGS.gpu_process_check:
+    if not safety_check():
+      print('Existing GPU processes were running aborting test run!!!')
+      return
+
   git_workspace = os.path.join(FLAGS.workspace, 'git')
   git_clone(
       'https://github.com/tfboyd/benchmark_harness.git',
@@ -110,6 +149,11 @@ def main():
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
+  parser.add_argument(
+      '--gpu-process-check',
+      type=bool,
+      default=False,
+      help='Set to true to not run if there are active GPU processes.')
   parser.add_argument(
       '--harness-branch',
       type=str,
