@@ -1,8 +1,7 @@
 """Extract information about the system GPU."""
 from __future__ import print_function
-import local_command
 import re
-import subprocess
+import local_command
 
 
 def get_gpu_info():
