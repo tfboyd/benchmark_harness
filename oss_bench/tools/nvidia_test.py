@@ -27,18 +27,18 @@ class TestNvidiaTools(unittest.TestCase):
 
   @patch('tools.local_command.run_local_command')
   def test_is_ok_to_run_false(self, run_local_command_mock):
-    """"""
+    """Tests ok_to_run finding existing processes."""
     smi_test = 'tools/test_files/example_nvidia-smi_processes.txt'
-    f = open(smi_test)
-    run_local_command_mock.return_value = [0, f.read()]
+    with open(smi_test) as f:
+      run_local_command_mock.return_value = [0, f.read()]
     ok_to_run = nvidia.is_ok_to_run()
     self.assertFalse(ok_to_run)
 
   @patch('tools.local_command.run_local_command')
   def test_is_ok_to_run(self, run_local_command_mock):
-    """"""
+    """Tests ok_to_run not finding existing processes."""
     smi_test = 'tools/test_files/example_nvidia-smi_no_processes.txt'
-    f = open(smi_test)
-    run_local_command_mock.return_value = [0, f.read()]
+    with open(smi_test) as f:
+      run_local_command_mock.return_value = [0, f.read()]
     ok_to_run = nvidia.is_ok_to_run()
     self.assertTrue(ok_to_run)
