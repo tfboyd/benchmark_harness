@@ -34,14 +34,10 @@ Tue Jan  9 09:34:25 2018
 | Processes:                                                       GPU Memory |
 |  GPU       PID   Type   Process name                             Usage      |
 |=============================================================================|
-|    0     44454      C   python                                     15631MiB |
-|    1     44454      C   python                                     15471MiB |
-|    2     44454      C   python                                     15471MiB |
-|    3     44454      C   python                                     15471MiB |
-|    4     44454      C   python                                     15471MiB |
-|    5     44454      C   python                                     15471MiB |
-|    6     44454      C   python                                     15471MiB |
-|    7     44454      C   python                                     15471MiB |
+|    0     44454      C   /usr/bin/python                            15631MiB |
+|    1     44454      C   /usr/bin/python                            15471MiB |
+|    2     44454      C   /usr/bin/python                            15471MiB |
+|    3     44454      C   /usr/bin/python                            15471MiB |
 +-----------------------------------------------------------------------------+
 
 

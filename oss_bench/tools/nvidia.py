@@ -71,6 +71,6 @@ def is_ok_to_run():
   processes = get_running_processes()
   for process in processes:
     # Checks process name position for process named 'python'.
-    if 'python' == process[3]:
+    if process[3].lower().find('python') > 0:
       return False
   return True
