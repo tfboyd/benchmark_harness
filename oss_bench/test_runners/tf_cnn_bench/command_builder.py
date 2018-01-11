@@ -1,3 +1,6 @@
+"""Build command line to execute tf_cnn_benchmarks."""
+from __future__ import print_function
+
 
 def BuildDistributedCommandWorker(run_config):
   """Build command to start distributed worker."""
@@ -15,11 +18,10 @@ def BuildDistributedCommandWorker(run_config):
   pass_through_args = [
       'data_format', 'batch_size', 'num_batches', 'model', 'data_dir',
       'optimizer', 'learning_rate', 'sync_on_finish', 'weight_decay',
-      'data_name', 'variable_update', 'num_intra_threads',
-      'num_inter_threads', 'mkl', 'num_warmup_batches', 'forward_only',
-      'kmp_blocktime', 'device', 'staged_vars', 'staged_grads',
-      'cross_replica_sync', 'all_reduce_spec', 'use_datasets',
-      'batch_group_size', 'use_nccl'
+      'data_name', 'variable_update', 'num_intra_threads', 'num_inter_threads',
+      'mkl', 'num_warmup_batches', 'forward_only', 'kmp_blocktime', 'device',
+      'staged_vars', 'staged_grads', 'cross_replica_sync', 'all_reduce_spec',
+      'use_datasets', 'batch_group_size', 'use_nccl', 'use_fp16'
   ]
 
   for arg in pass_through_args:
@@ -27,46 +29,17 @@ def BuildDistributedCommandWorker(run_config):
       run_cmd_list.append('--{}={}'.format(arg, run_config[arg]))
 
   if 'ps_server' in run_config:
-    run_cmd_list.append(
-        '--local_parameter_device={}'.format(run_config['ps_server']))
+    run_cmd_list.append('--local_parameter_device={}'.format(
+        run_config['ps_server']))
 
   if 'gpus' in run_config:
     run_cmd_list.append('--num_gpus={}'.format(run_config['gpus']))
 
-  # Setting the train_dir results in summaries and checkpoints
-  # being written unless turned off.
-  if 'train_dir' in run_config and task_index == 0:
-    run_cmd_list.append('--train_dir={}'.format(run_config['train_dir']))
-    if 'save_model_secs' in run_config:
-      run_cmd_list.append(
-          '--save_model_secs={}'.format(run_config['save_model_secs']))
-    else:
-      # Defaults to saving every 10 minutes (10*60).
-      run_cmd_list.append('--save_model_secs=600')
-
-    if 'summary_verbosity' in run_config:
-      run_cmd_list.append(
-          '--summary_verbosity={}'.format(run_config['summary_verbosity']))
-    else:
-      # Defaults to 1 for basic summaries
-      run_cmd_list.append('--summary_verbosity=1')
-
-    if 'save_summaries_steps' in run_config:
-      run_cmd_list.append('--save_summaries_steps={}'.format(
-          run_config['save_summaries_steps']))
-    else:
-      # This is local not global steps.
-      run_cmd_list.append('--save_summaries_steps=500')
-
-  # Set to pickup training from a checkpoint
-  if 'pretrain_dir' in run_config and task_index == 0:
-    run_cmd_list.append('--pretrain_dir={}'.format(run_config['pretrain_dir']))
-
   # Forces no distortions, which is the most common for benchmarks.
   run_cmd_list.append('--nodistortions')
   if 'display_every' in run_config:
-    run_cmd_list.append(
-        '--display_every={}'.format(run_config['display_every']))
+    run_cmd_list.append('--display_every={}'.format(
+        run_config['display_every']))
   else:
     run_cmd_list.append('--display_every=10')
 
@@ -76,7 +49,7 @@ def BuildDistributedCommandWorker(run_config):
     if 'gpus' in run_config:
       trace_file = trace_file + '_' + str(run_config['gpus']) + '.txt'
     else:
-      trace_file = trace_file + '.txt'
+      trace_file += '.txt'
     run_cmd_list.append('--trace_file=' + trace_file)
 
   run_cmd = '{} {}'.format(run_script, ' '.join(run_cmd_list))
@@ -85,7 +58,7 @@ def BuildDistributedCommandWorker(run_config):
 
 
 def GpuDecode(raw_gpu_input):
-  """Handles different entries options for workers and ps_servers"""
+  """Handles different entries options for workers and ps_servers."""
   if type(raw_gpu_input) is int:
     return str(raw_gpu_input)
   else:
@@ -93,7 +66,7 @@ def GpuDecode(raw_gpu_input):
 
 
 def LoadYamlRunConfig(full_config, debug_level):
-  """Processes config file into list of configs
+  """Processes config file into list of configs.
 
   Reads the config made up of repeating 'run_configs'  The first first config as
   is treated as the base. Each config entry after the first is merged with the
@@ -137,7 +110,7 @@ def LoadYamlRunConfig(full_config, debug_level):
         repeat_model_config['copy'] = i
         test_configs.append(repeat_model_config)
     else:
-      test_configs.append(model_config)
+      test_configs.append(config)
     if debug_level > 0:
       print('Config:{} \n{}'.format(config['test_id'], config))
   return suite

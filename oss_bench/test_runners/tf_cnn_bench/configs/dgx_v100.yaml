@@ -15,3 +15,6 @@ sub_configs:
   - 'tests/vgg/vgg16.8_gpu.64.replicated_nccl.yaml'
   - 'tests/vgg/vgg16.1_gpu.128.ps_gpu.yaml'
   - 'tests/vgg/vgg16.8_gpu.128.replicated_nccl.yaml'
+#  - 'tests/resnet/resnet50.1_gpu.128.ps_gpu.fp16.yaml'
+#  - 'tests/resnet/resnet50.8_gpu.128.replicated_nccl.fp16.yaml'
+#  - 'tests/resnet/resnet50.8_gpu.128.ps_cpu.fp16.yaml'
