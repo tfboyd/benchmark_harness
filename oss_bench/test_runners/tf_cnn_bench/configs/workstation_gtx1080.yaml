@@ -1,8 +1,8 @@
 # General settings
-repeat: 1
+repeat: 3
 
 # Worker settings override
-num_batches: 20
+num_batches: 100
 
 sub_configs:
   - 'tests/resnet/resnet50.1_gpu.32.ps_gpu.yaml'
