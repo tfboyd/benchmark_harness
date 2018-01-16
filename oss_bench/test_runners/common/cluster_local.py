@@ -33,7 +33,6 @@ class LocalInstance(object):
                                     cmd,
                                     stdout_file=None,
                                     stderr_file=None,
-                                    line_extractor=None,
                                     print_error=False,
                                     ok_exit_status=[0]):
     cmd = self.addVirtualEnv(cmd)
@@ -43,7 +42,6 @@ class LocalInstance(object):
                              command,
                              stdout_file=None,
                              stderr_file=None,
-                             line_extractor=None,
                              print_error=False):
     command = self.addVirtualEnv(command)
     t = threading.Thread(

@@ -1,15 +1,14 @@
-"""Runs benchmarks on various cloud or local systems."""
+"""Runs tf_cnn_benchmark based tests."""
 from __future__ import print_function
 import argparse
 import datetime
 import os
 import time
 
-import cluster_local
 import command_builder
 import reporting
-import util
 import yaml
+from test_runners.common import cluster_local
 
 
 class TestRunner(object):
@@ -105,7 +104,7 @@ class TestRunner(object):
     stdout_file = os.path.join(result_dir, 'worker_%d_stdout.log' % i)
     stderr_file = os.path.join(result_dir, 'worker_%d_stderr.log' % i)
     t = instance.ExecuteCommandInThread(
-        cmd, stdout_file, stderr_file, util.ExtractToStdout, print_error=True)
+        cmd, stdout_file, stderr_file, print_error=True)
     worker_threads.append(t)
 
     for t in worker_threads:

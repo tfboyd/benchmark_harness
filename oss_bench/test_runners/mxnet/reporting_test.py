@@ -1,4 +1,4 @@
-"""Tests reporting module."""
+"""Tests mxnet reporting module."""
 from __future__ import print_function
 
 import unittest
@@ -8,15 +8,11 @@ import reporting
 
 
 class TestReporting(unittest.TestCase):
-  """Tests for reporting module."""
+  """Tests for mxnet reporting module."""
 
-  @patch('test_runners.tf_cnn_bench.reporting._collect_results')
+  @patch('test_runners.mxnet.reporting._collect_results')
   @patch('upload.result_upload.upload_result')
-  def test_process_folder(
-      self,
-      mock_upload,
-      mock_collect_results,
-  ):
+  def test_process_folder(self, mock_upload, mock_collect_results):
     """Tests process folder and verifies args passed to upload_result."""
     # Results to process
     test_id_0 = 'made.up.test_id'
@@ -34,7 +30,7 @@ class TestReporting(unittest.TestCase):
     test_result = mock_upload.call_args[0][0]
 
     # Spot checks test_result.
-    self.assertEqual(test_result['test_harness'], 'tf_cnn_benchmark')
+    self.assertEqual(test_result['test_harness'], 'mxnet')
     self.assertEqual(test_result['test_environment'],
                      report_config['test_environment'])
     self.assertEqual(test_result['test_id'], test_id_0)
@@ -53,11 +49,7 @@ class TestReporting(unittest.TestCase):
     arg_test_info = mock_upload.call_args[1]['test_info']
     self.assertEqual(arg_test_info['framework_version'],
                      report_config['framework_version'])
-    self.assertEqual(arg_test_info['framework_describe'],
-                     report_config['framework_describe'])
-
-    self.assertEqual(arg_test_info['git_info']['benchmarks']['describe'],
-                     'a2384503f')
+    self.assertEqual(arg_test_info['accel_cnt'], 2)
 
     # Spot checks system_info.
     arg_system_info = mock_upload.call_args[1]['system_info']
@@ -65,44 +57,20 @@ class TestReporting(unittest.TestCase):
 
     # Very spotty check of extras to confirm a random field is passed.
     arg_extras = mock_upload.call_args[1]['extras']
+    # Checks that the config is saved in the extras field.
     self.assertIn('config', arg_extras)
+    self.assertIn('batches_sampled', arg_extras)
 
   def test_parse_result_file(self):
     """Tests parsing one results file."""
     result = reporting.parse_result_file(
-        'test_runners/tf_cnn_bench/test_configs/results/resnet50/'
-        'worker_0_stdout.log')
+        'test_runners/mxnet/unittest_files/test_result.txt')
 
-    self.assertEqual(result['imgs_sec'], 80.01)
-    self.assertEqual(result['test_id'], 'resnet50.1_gpu.32.replicated_nccl')
-    self.assertEqual(result['gpu'], 1)
+    self.assertEqual(result['imgs_sec'], 178.55300000000003)
+    self.assertEqual(result['batches_sampled'], 10)
+    self.assertEqual(result['test_id'], 'resnet50.gpu_1.32.real')
+    self.assertEqual(result['gpu'], 2)
     self.assertIn('config', result)
-
-  def _report_config_example(self):
-    """Returns a mocked up expected report_config with some values left out."""
-    report_config = {}
-    report_config['test_environment'] = 'unit_test_env'
-    report_config['accel_type'] = 'GTX 940'
-    report_config['platform'] = 'test_platform_name'
-    report_config['framework_version'] = 'v1.5RC0-dev20171027'
-    report_config['framework_describe'] = 'v1.3.0-rc1-2884-g2d5b76169'
-    # git repo info with expected repo info.
-    report_config['git_repo_info'] = {}
-    # benchmark repo info
-    git_info_dict = {}
-    git_info_dict['describe'] = 'a2384503f'
-    git_info_dict['last_commit_id'] = '267d7e81977f23998078f39afd48e9a97c3acf5a'
-    report_config['git_repo_info']['benchmarks'] = git_info_dict
-
-    return report_config
-
-  def _mock_result(self, test_id, imgs_sec):
-    result = {}
-    result['config'] = self._mock_config(test_id)
-    result['imgs_sec'] = imgs_sec
-    result['test_id'] = test_id
-    result['gpu'] = 2
-    return result
 
   def _mock_config(self, test_id):
     config = {}
@@ -111,3 +79,22 @@ class TestReporting(unittest.TestCase):
     config['gpus'] = 2
     config['model'] = 'resnet50'
     return config
+
+  def _mock_result(self, test_id, imgs_sec):
+    result = {}
+    result['config'] = self._mock_config(test_id)
+    result['imgs_sec'] = imgs_sec
+    result['test_id'] = test_id
+    result['gpu'] = 2
+    result['batches_sampled'] = 100
+    return result
+
+  def _report_config_example(self):
+    """Returns a mocked up expected report_config with some values left out."""
+    report_config = {}
+    report_config['test_environment'] = 'unit_test_env'
+    report_config['accel_type'] = 'GTX 940'
+    report_config['platform'] = 'test_platform_name'
+    report_config['framework_version'] = 'v1.5RC0-dev20171027'
+
+    return report_config
