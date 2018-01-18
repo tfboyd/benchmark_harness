@@ -213,7 +213,7 @@ class TestRunner(object):
     """Tests ResNet50 synthetic data on 1 GPU with batch size 64."""
     test_id = 'resnet50v1.gpu_1.64'
     args = {}
-    config = self.build_test_config(test_id, args, batch_size=64, gpus=8)
+    config = self.build_test_config(test_id, args, batch_size=64, gpus=1)
     self.run_test_suite(config)
 
   def renset50v1_64_gpu_8(self):
