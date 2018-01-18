@@ -104,13 +104,9 @@ def git_clone(git_repo, local_folder, branch=None, sha_hash=None):
             git_repo))
 
 
-def run_tensorflow():
-  # docker_base = FLAGS.docker
+def run_tests():
+  """Builds and runs docker image with specified test config."""
   docker_save_name = FLAGS.docker_save_tag
-
-  # update docker pull
-  # docker_pull = 'docker pull {}'.format(docker_base)
-  # run_local_command(docker_pull)
 
   # do a fresh build of the docker images
   docker_build = 'docker build --pull -t {} {}'.format(docker_save_name,
@@ -121,33 +117,10 @@ def run_tensorflow():
   run_benchmarks = (
       'nvidia-docker run --rm -v {}:/auth_tokens -v {}:/workspace {} python '
       '/workspace/git/benchmark_harness/oss_bench/harness/controller.py '
-      '--workspace=/workspace --test-config={}')
+      '--workspace=/workspace --test-config={} --framework={}')
   run_benchmarks = run_benchmarks.format(FLAGS.auth_token_dir, FLAGS.workspace,
-                                         docker_save_name, FLAGS.test_config)
-
-  run_local_command(run_benchmarks)
-
-
-def run_mxnet():
-  # docker_base = FLAGS.docker
-  docker_save_name = FLAGS.docker_save_tag
-
-  # update docker pull
-  # docker_pull = 'docker pull {}'.format(docker_base)
-  # run_local_command(docker_pull)
-
-  # do a fresh build of the docker images
-  docker_build = 'docker build --pull -t {} {}'.format(docker_save_name,
-                                                       FLAGS.docker_folder)
-  run_local_command(docker_build)
-
-  # kick off the tests via docker
-  run_benchmarks = (
-      'nvidia-docker run --rm -v {}:/auth_tokens -v {}:/workspace {} python '
-      '/workspace/git/benchmark_harness/oss_bench/harness/controller.py '
-      '--workspace=/workspace --test-config={} --framework=mxnet')
-  run_benchmarks = run_benchmarks.format(FLAGS.auth_token_dir, FLAGS.workspace,
-                                         docker_save_name, FLAGS.test_config)
+                                         docker_save_name, FLAGS.test_config,
+                                         FLAGS.framework)
 
   run_local_command(run_benchmarks)
 
@@ -172,10 +145,8 @@ def main():
       os.path.join(git_workspace, 'benchmark_harness'),
       branch=FLAGS.harness_branch)
 
-  if FLAGS.framework == 'tensorflow':
-    run_tensorflow()
-  elif FLAGS.framework == 'mxnet':
-    run_mxnet()
+  if FLAGS.framework == 'tensorflow' or FLAGS.framework == 'mxnet':
+    run_tests()
   else:
     raise ValueError('FLAGS.framework is an unknown value{}'.format(
         FLAGS.framework))
@@ -193,11 +164,6 @@ if __name__ == '__main__':
       type=str,
       default=None,
       help='Set to harness branch to use, used for testing harness.')
-  parser.add_argument(
-      '--docker',
-      type=str,
-      default='tensorflow/tensorflow:nightly-gpu',
-      help='Docker to container to use that will also get pulled.')
   parser.add_argument(
       '--docker-folder',
       type=str,
