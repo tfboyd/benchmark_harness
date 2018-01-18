@@ -1,19 +1,20 @@
-"""Generates and updates test results from stored log files."""
+"""Generates and uploads test results for mxnet based tests."""
+from __future__ import print_function
 import os
 
-from test_runners.common import util
 from upload import result_info
 from upload import result_upload
 import yaml
+from test_runners.common import util
 
 
 def process_folder(folder_path, report_config=None):
-  """Process and print aggregated results found in folder.
+  """Process one or more results of a single test found in the folder path.
 
   Args:
     folder_path: Folder to recursively search for results files, e.g.
       worker_0_stdout.log
-    report_config: dict config information normally passed down from a
+    report_config: dict based config information normally passed down from a
       higher level harness with high level system information.
   """
   report_config = {} if report_config is None else report_config
@@ -22,7 +23,7 @@ def process_folder(folder_path, report_config=None):
 
   # Sets defaults on report_config if any required values are missing.
   report_config = util.report_config_defaults(
-      report_config, test_harness='tf_cnn_benchmark')
+      report_config, test_harness='mxnet')
 
   # Main result config
   test_result, results = result_info.build_test_result(
@@ -33,8 +34,8 @@ def process_folder(folder_path, report_config=None):
       test_environment=report_config['test_environment'])
 
   test_info = result_info.build_test_info(
+      framework='mxnet',
       framework_version=report_config.get('framework_version'),
-      framework_describe=report_config.get('framework_describe'),
       batch_size=agg_result['config']['batch_size'],
       model=agg_result['config']['model'],
       accel_cnt=agg_result['gpu'])
@@ -47,7 +48,7 @@ def process_folder(folder_path, report_config=None):
       platform_type=report_config['platform_type'],
       accel_type=report_config['accel_type'])
 
-  print 'Uploading test results...'
+  print('Uploading test results...')
   result_upload.upload_result(
       test_result,
       results,
@@ -73,9 +74,12 @@ def _collect_results(folder_path):
 def parse_result_file(result_file_path):
   """Parses a result file.
 
-  Parse a results.txt file into an object.  Example of one line:
-  repeatResNet50WinoSendRecv/20170310_204841_tensorflow_resnet50_32/8.txt:
-  images/sec:391.0 +/- 1.6 (jitter = 8.0)
+  Note: MXNet prints samples/sec every so often to the console and then code
+  below averages a number of the rows together.  This is mathematically
+  incorrect as speed cannot be averaged this way and should be total time /
+  total_items_processes. Getting a more correct number would require changing
+  how the MXNet code works, which can be done but was not needed for the initial
+  number.
 
   Args:
     result_file_path: Path to file to parse
@@ -85,55 +89,47 @@ def parse_result_file(result_file_path):
   """
   result = {}
   result_file = open(result_file_path, 'r')
+  samples = 0
+  sum_speed = 0
+
+  # Get the config
+  result_dir = os.path.dirname(result_file_path)
+  config = get_config(result_dir)
+  result['config'] = config
+  result['result_dir'] = result_dir
+  result['test_id'] = config['test_id']
+
+  if 'data_dir' in config:
+    result['data_type'] = 'real'
+  else:
+    result['data_type'] = 'synth'
+
+  # Number of gpus = number of servers * number of gpus
+  if 'gpus' in config:
+    result['gpu'] = int(config['gpus'])
+
+  # Processes results file and aggregates the results of one run.
   for line in result_file:
-    # Summary line starts with images/sec
-    if line.find('total images/sec') == 0:
-      result = {}
-      parts = line.split(' ')
-      result['imgs_sec'] = float(parts[2].rstrip())
+    # Rows with 'Epoch[' and 'samples/sec' contain result data to aggregate.
+    if line.find('Epoch[') > 0 and line.find('samples/sec') > 0:
+      parts = line.split()
+      batch = int(parts[2].replace(']', '').replace('[', ''))
+      # Ignores first 10 batches as a warm up, tf_benchmarks does the same.
+      if batch > 10:
+        sum_speed += float(parts[4].rstrip())
+        samples += 1
 
-      # Get the config
-      result_dir = os.path.dirname(result_file_path)
-      config_file = os.path.join(result_dir, 'config.yaml')
-      f = open(config_file)
-      config = yaml.safe_load(f)
-      result['config'] = config
-      result['result_dir'] = result_file_path
-      result['test_id'] = config['test_id']
-
-      if 'data_dir' in config:
-        result['data_type'] = 'real'
-      else:
-        result['data_type'] = 'synth'
-
-      # Number of gpus = number of servers * number of gpus
-      if 'gpus' in config:
-        result['gpu'] = int(config['gpus'])
-      # Avoids files that might have multiple total lines in them.
-      # First line found wins.
-      break
+      # After 100 batches are found, calculate average and break.
+      if batch > 100:
+        result['imgs_sec'] = sum_speed / samples
+        result['batches_sampled'] = samples
+        break
 
   return result
 
 
-def check_oom(result_file_path):
-  result_file = open(result_file_path, 'r')
-  for line in result_file:
-    if line.find('OOM when allocating tensor') > -1:
-      return True
-  return False
-
-
-def oom_batch_size_search(low, high, current, current_oom):
-  next_val = None
-  if current_oom:
-    high = current
-    next_val = high - ((high - low) / 2)
-  else:
-    low = current
-    next_val = low + ((high - low) / 2)
-  # Indicates there is nothing left to test.
-  if next_val == current:
-    return low, high, -1
-  else:
-    return low, high, next_val
+def get_config(result_dir):
+  config_file = os.path.join(result_dir, 'config.yaml')
+  with open(config_file) as f:
+    config = yaml.safe_load(f)
+  return config

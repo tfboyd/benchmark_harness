@@ -18,12 +18,14 @@ class TestRunBenchmark(unittest.TestCase):
   @patch('harness.controller.BenchmarkRunner._make_logs_dir')
   @patch('harness.controller.BenchmarkRunner._tf_cnn_bench')
   @patch('harness.controller.BenchmarkRunner._store_repo_info')
-  @patch('harness.controller.BenchmarkRunner._clone_repos')
+  @patch('harness.controller.BenchmarkRunner._clone_tf_repos')
   def test_run_tests(self, clone_repos_mock, store_repo_info, tf_cnn_bench,
                      make_logs, gpu_info, get_tf_full_version):
     """Tests run_tests with most methods mocked."""
     benchmark_runner = controller.BenchmarkRunner(
-        '/workspace', 'test_configs/basic_test_config.yaml')
+        '/workspace',
+        'test_configs/basic_test_config.yaml',
+        framework='tensorflow')
     gpu_info.return_value = [387.11, 'GTX 970']
 
     expected_version = ['1.5RC0-dev20171001', 'v1.3.0-rc1-2884-g2d5b76169']
@@ -53,7 +55,8 @@ class TestRunBenchmark(unittest.TestCase):
     auto_config = yaml.safe_load(f)
 
     # Initializes class. test_config is not used in the test and set to None.
-    benchmark_runner = controller.BenchmarkRunner('/workspace', None)
+    benchmark_runner = controller.BenchmarkRunner(
+        '/workspace', None, framework='tensorflow')
 
     # Verifies calls made to initialize TestRunner
     benchmark_runner._tf_cnn_bench(auto_config)
@@ -77,7 +80,8 @@ class TestRunBenchmark(unittest.TestCase):
     config = {}
 
     # Initializes class. test_config is not used in the test and set to None.
-    benchmark_runner = controller.BenchmarkRunner('/workspace', None)
+    benchmark_runner = controller.BenchmarkRunner(
+        '/workspace', None, framework='tensorflow')
 
     # Verifies calls made to initialize TestRunner
     benchmark_runner._store_repo_info(config)

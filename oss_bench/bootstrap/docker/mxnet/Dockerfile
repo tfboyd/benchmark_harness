@@ -1,6 +1,6 @@
 
-# Start from tensorflow latest.  At some point nightly
-FROM tensorflow/tensorflow:latest-gpu
+# Start from tensorflow nightly GPU.
+FROM mxnet/python:gpu_1.0.0_cuda9
 
 # File Author / Maintainer
 MAINTAINER Toby Boyd
@@ -9,7 +9,6 @@ MAINTAINER Toby Boyd
 RUN apt-get update
 
 # Install everything needed via apt-get
-RUN apt-get install -y git
-
-# Install the python basics
+# MXNet Docker comes with git.
+# RUN apt-get install -y git
 RUN pip install --upgrade google-api-python-client pyyaml paramiko google-cloud

@@ -29,12 +29,13 @@ class BenchmarkRunner(object):
     test_config (str): path to yaml config file.
   """
 
-  def __init__(self, workspace, test_config):
+  def __init__(self, workspace, test_config, framework='tensorflow'):
     """Initalize the BenchmarkRunner with values."""
     self.workspace = workspace
     self.git_repo_base = os.path.join(self.workspace, 'git')
     self.logs_dir = os.path.join(self.workspace, 'logs')
     self.test_config = test_config
+    self.framework = framework
 
   def run_local_command(self, cmd, stdout=None):
     """Run a command in a subprocess and log result.
@@ -130,7 +131,7 @@ class BenchmarkRunner(object):
     f = open(config_path)
     return yaml.safe_load(f)
 
-  def _clone_repos(self):
+  def _clone_tf_repos(self):
     """Clone repos with modules containing tests or utility modules.
 
     After cloning and optionally moving to a specific branch or hash, repo
@@ -168,6 +169,41 @@ class BenchmarkRunner(object):
           full_path)
       test_config['git_repo_info'][repo_dir] = git_info_dict
 
+  def run_tensorflow_tests(self, test_config):
+    # then kick off some tests via auto_run.
+    self._clone_tf_repos()
+    self._store_repo_info(test_config)
+
+    # pylint: disable=C6204
+    import tools.tf_version as tf_version
+    # Sets system GPU info on test_config for child modules to consume.
+    version, git_version = tf_version.get_tf_full_version()
+    test_config['framework_version'] = version
+    test_config['framework_describe'] = git_version
+    self._tf_cnn_bench(test_config)
+
+  def run_mxnet_tests(self, test_config):
+
+    # Clone the mxnet repo so we know where it is.
+    self._git_clone('https://github.com/apache/incubator-mxnet.git',
+                    os.path.join(self.git_repo_base, 'mxnet_repo'))
+    bench_home = os.path.join(self.git_repo_base,
+                              'mxnet_repo/example/image-classification')
+
+    # pylint: disable=C6204
+    import mxnet as mx
+    # pylint: disable=C6204
+    from test_runners.mxnet import runner
+    # get mxnet version
+    test_config['framework_version'] = mx.__version__
+
+    # call mxnet runner with lists of tests from the test_config
+    run = runner.TestRunner(
+        os.path.join(self.logs_dir, 'mxnet'),
+        bench_home,
+        auto_test_config=test_config)
+    run.run_tests(test_config['mxnet_tests'])
+
   def run_tests(self):
     """Runs the benchmark suite."""
     self._make_logs_dir()
@@ -176,32 +212,28 @@ class BenchmarkRunner(object):
     auth_token_path = os.path.join('/auth_tokens/', test_config['report_auth'])
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = auth_token_path
 
-    # pick a directory, download tfboyd for auto_run and then tf_cnn_benchmarks
-    # then kick off some tests via auto_run.
-    self._clone_repos()
-
     # Modify the python path for the libraries for the tests to run and then
     # import them.
     git_python_lib_paths = ['benchmark_harness/oss_bench']
     for lib_path in git_python_lib_paths:
       sys.path.append(os.path.join(self.git_repo_base, lib_path))
 
-    self._store_repo_info(test_config)
     # Modules are loaded by this function.
     # pylint: disable=C6204
     import tools.nvidia as nvidia
-    # pylint: disable=C6204
-    import tools.tf_version as tf_version
-    # Sets system GPU info on test_config for child modules to consume.
     test_config['gpu_driver'], test_config['accel_type'] = nvidia.get_gpu_info()
-    version, git_version = tf_version.get_tf_full_version()
-    test_config['framework_version'] = version
-    test_config['framework_describe'] = git_version
-    self._tf_cnn_bench(test_config)
+
+    if self.framework == 'tensorflow':
+      self.run_tensorflow_tests(test_config)
+    elif self.framework == 'mxnet':
+      self.run_mxnet_tests(test_config)
+    else:
+      raise ValueError('framework needs to be set to tensorflow or mxnet')
 
 
 def main():
-  runner = BenchmarkRunner(FLAGS.workspace, FLAGS.test_config)
+  runner = BenchmarkRunner(
+      FLAGS.workspace, FLAGS.test_config, framework=FLAGS.framework)
   runner.run_tests()
 
 
@@ -217,6 +249,11 @@ if __name__ == '__main__':
       type=str,
       default='/workspace',
       help='Path to the workspace')
+  parser.add_argument(
+      '--framework',
+      type=str,
+      default='tensorflow',
+      help='Framework to be tested.')
 
   FLAGS, unparsed = parser.parse_known_args()
 
