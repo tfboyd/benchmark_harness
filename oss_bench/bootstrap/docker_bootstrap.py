@@ -224,8 +224,11 @@ if __name__ == '__main__':
   parser.add_argument(
       '--gpu-process-check',
       type=bool,
-      default=False,
+      default=True,
       help='Set to true to not run if there are active GPU processes.')
+  # Allows gpu-process-check to be turned off.
+  parser.add_argument(
+      '--no-gpu-process-check', dest='gpu_process_check', action='store_false')
   parser.add_argument(
       '--pure-docker',
       type=bool,
