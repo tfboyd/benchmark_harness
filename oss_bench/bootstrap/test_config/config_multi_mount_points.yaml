@@ -1,0 +1,8 @@
+# Test config that has multiple mount_points.
+
+mount_point:
+  - folder_path: '/home/user/data/imagenet'
+    docker_path: '/data/imagenet'
+  - folder_path: '/home/user/data/cifar-10'
+    docker_path: '/data/cifar-10'
+

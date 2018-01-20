@@ -1,0 +1,15 @@
+repeat: 3
+optimizer: 'sgd'
+config_path: 'test_runners/tf_cnn_bench/test_configs/basic_run_config.yaml'
+num_batches: 20
+data_format: 'NCHW'
+batch_size: 64
+all_reduce_spec: ''''''
+variable_update: 'parameter_server'
+gpus: 1
+data_dir: '/data/imagenet'
+model: 'resnet50'
+test_id: 'resnet50.1_gpu.64.ps_cpu.real'
+sub_configs: ['resnet50.1_gpu.64.ps_cpu.yaml']
+ps_server: 'cpu'
+copy: 0

@@ -2,7 +2,7 @@
 from __future__ import print_function
 
 
-def BuildDistributedCommandWorker(run_config):
+def build_run_command(run_config):
   """Build command to start distributed worker."""
 
   run_script = 'python tf_cnn_benchmarks.py'
@@ -65,21 +65,30 @@ def GpuDecode(raw_gpu_input):
     return raw_gpu_input.split(',')
 
 
-def LoadYamlRunConfig(full_config, debug_level):
+def build_test_config_suite(full_config, debug_level):
   """Processes config file into list of configs.
 
-  Reads the config made up of repeating 'run_configs'  The first first config as
-  is treated as the base. Each config entry after the first is merged with the
-  base (first) config.  The idea being the first config is the base and the
-  subsequent configs are variations that override the base config
+  Reads the config made up of repeating 'run_configs'  The first first
+  `run_config ` is treated as the base. Each config entry after the first is
+  merged with the base (first) config.  The idea being the first config is
+  the base and the subsequent configs are variations that override the base
+  config.  The configs at the root level of the `full_config` are copied
+  into each `run_config` overwriting and appending the values in `run_config`.
+  This makes it possible to set `data_dir` at the top level and make all tests
+  use real data without having to write all new test files.
 
-  Additionally, multiple configs are created based on the the following fields:
-  'model' (list of models to test), gpu (list of number of GPUs to test), and
-  repeat (number of times to run the test).
+  A copy of each config is created based on number of repeats indicated in the
+  `repeat` field.
 
   Args:
     full_config: full run_config normally loaded from yaml
     debug_level: controls level of output
+
+  Returns:
+    Array of arrays containing test_configs where each test config in the
+    array is the same test_id with each config (copy) representing an iteration
+    to run. For example: suite[0] could contain 3 config objects all for test_id
+    resnet50.gpu_1 indicting the test is to be run 3 times exactly the same way.
   """
 
   # base config that subsequent configs merge with
@@ -96,21 +105,24 @@ def LoadYamlRunConfig(full_config, debug_level):
       base.update(config)
       config = base
 
-    # Copy root settings into config.  Anything
-    # at the root with override anything in run_configs
+    # Copies fields, with the exception of `run_configs` from the root config
+    # into the run_config overwriting and supplementing fields in the
+    # run_config.
     for k, v in full_config.iteritems():
       if k != 'run_configs':
-        base_config[k] = v
+        config[k] = v
 
-    if config.get('repeat') is not None:
-      repeat = int(config['repeat'])
-      for i in range(repeat):
-        # Creates copy so each one can have an index, e.g. 'copy'
-        repeat_model_config = config.copy()
-        repeat_model_config['copy'] = i
-        test_configs.append(repeat_model_config)
-    else:
-      test_configs.append(config)
+    # Sloppy hack to avoid having real and synthetic test names
+    if 'data_dir' in config and 'test_id_hacks' in config:
+      config['test_id'] = '{}.real'.format(config['test_id'])
+
+    # Creates a copy for each time the test is to be run.
+    repeat = int(config['repeat'])
+    for i in range(repeat):
+      repeat_model_config = config.copy()
+      repeat_model_config['copy'] = i
+      test_configs.append(repeat_model_config)
+
     if debug_level > 0:
       print('Config:{} \n{}'.format(config['test_id'], config))
   return suite
