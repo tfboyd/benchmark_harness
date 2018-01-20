@@ -4,9 +4,11 @@ repeat: 3
 # Worker settings override
 num_batches: 100
 
+# Data directory mounted in the docker
+data_dir: '/data/imagenet'
+# Causes .real to be appended to all test_ids if data_dir is found.
+test_id_hacks: True
+
 sub_configs:
   - 'tests/resnet/resnet50.1_gpu.32.ps_gpu.yaml'
   - 'tests/vgg/vgg16.1_gpu.32.ps_gpu.yaml'
-
-# Debug Only
-#env_vars: 'LD_LIBRARY_PATH=/usr/local/google/home/tobyboyd/lib/cuda-9.0/lib64'

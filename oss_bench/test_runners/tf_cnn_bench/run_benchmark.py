@@ -97,7 +97,7 @@ class TestRunner(object):
     # TODO(tobyboyd@): No longer distributed remove threads.
     worker_threads = []
     i = 0
-    cmd = command_builder.BuildDistributedCommandWorker(run_config)
+    cmd = command_builder.build_run_command(run_config)
     cmd = 'cd {}; {}'.format(test_home, cmd)
     print('[{}] worker | Run benchmark({}):{}'.format(
         run_config.get('copy', '0'), run_config['test_id'], cmd))
@@ -129,8 +129,8 @@ class TestRunner(object):
         '%Y%m%dT%H%M%S')
 
     # Configs for the test suite
-    test_suite = command_builder.LoadYamlRunConfig(full_config,
-                                                   self.debug_level)
+    test_suite = command_builder.build_test_config_suite(
+        full_config, self.debug_level)
 
     for _, test_configs in enumerate(test_suite):
       last_config = None
@@ -197,9 +197,9 @@ class TestRunner(object):
       for _, run_config in enumerate(sub_configs):
         full_config = run_config.copy()
 
-        # Override config with global config, used to change projects
-        # or any other field, these values will also end up overriding
-        # settings in individual 'run_configs'
+        # Copy global configs into the sub_config to create the full_config
+        # values from the global config will overwrite those in the sub_config
+        # during via command_builder later in the process.
         if global_config:
           for k, v in global_config.iteritems():
             if k != 'run_configs':
