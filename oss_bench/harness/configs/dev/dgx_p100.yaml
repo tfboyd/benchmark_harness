@@ -1,4 +1,4 @@
-# Default config assumes usage of docker and local GPU at least GTX1080
+# Test config for DGX-1
 test_harness: 'tf_cnn_benchmark'
 test_environment: 'development-docker'
 # System basics
@@ -13,4 +13,5 @@ report_table: 'result'
 
 # tf-cnn-benchmarks
 tf_cnn_bench_configs:
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/dgx_p100_real.yaml
   - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/dgx_p100.yaml
