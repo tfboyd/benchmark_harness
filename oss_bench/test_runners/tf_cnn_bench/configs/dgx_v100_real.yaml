@@ -1,0 +1,25 @@
+# General settings
+repeat: 3
+
+# Worker settings override
+num_batches: 100
+
+# Data directory mounted in the docker
+data_dir: '/data/imagenet'
+# Causes .real to be appended to all test_ids if data_dir is found.
+test_id_hacks: True
+
+sub_configs:
+  - 'tests/resnet/resnet50.1_gpu.64.ps_gpu.yaml'
+  - 'tests/resnet/resnet50.8_gpu.64.replicated_nccl.yaml'
+  - 'tests/resnet/resnet50.8_gpu.64.ps_cpu.yaml'
+  - 'tests/resnet/resnet50.1_gpu.128.ps_gpu.yaml'
+  - 'tests/resnet/resnet50.8_gpu.128.replicated_nccl.yaml'
+  - 'tests/resnet/resnet50.8_gpu.128.ps_cpu.yaml'
+  - 'tests/vgg/vgg16.1_gpu.64.ps_gpu.yaml'
+  - 'tests/vgg/vgg16.8_gpu.64.replicated_nccl.yaml'
+  - 'tests/vgg/vgg16.1_gpu.128.ps_gpu.yaml'
+  - 'tests/vgg/vgg16.8_gpu.128.replicated_nccl.yaml'
+  - 'tests/resnet/resnet50.1_gpu.128.ps_gpu.fp16.yaml'
+  - 'tests/resnet/resnet50.8_gpu.128.replicated_nccl.fp16.yaml'
+  - 'tests/resnet/resnet50.8_gpu.128.ps_cpu.fp16.yaml'
