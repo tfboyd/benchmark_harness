@@ -2,6 +2,7 @@
 repeat: 3
 
 # Worker settings override
+nodistortions: FLAG_ONLY
 num_batches: 20
 
 sub_configs:

@@ -9,6 +9,7 @@ variable_update: 'parameter_server'
 gpus: 1
 data_dir: '/data/imagenet'
 model: 'resnet50'
+nodistortions: FLAG_ONLY
 test_id: 'resnet50.1_gpu.64.ps_cpu.real'
 sub_configs: ['resnet50.1_gpu.64.ps_cpu.yaml']
 ps_server: 'cpu'

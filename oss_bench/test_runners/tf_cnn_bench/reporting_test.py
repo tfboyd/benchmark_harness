@@ -55,6 +55,8 @@ class TestReporting(unittest.TestCase):
                      report_config['framework_version'])
     self.assertEqual(arg_test_info['framework_describe'],
                      report_config['framework_describe'])
+    self.assertEqual(arg_test_info['cmd'],
+                     'python some_script.py --arg0=foo --arg1=bar')
 
     self.assertEqual(arg_test_info['git_info']['benchmarks']['describe'],
                      'a2384503f')
@@ -110,4 +112,5 @@ class TestReporting(unittest.TestCase):
     config['batch_size'] = 128
     config['gpus'] = 2
     config['model'] = 'resnet50'
+    config['cmd'] = 'python some_script.py --arg0=foo --arg1=bar'
     return config
