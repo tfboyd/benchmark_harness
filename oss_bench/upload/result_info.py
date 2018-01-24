@@ -97,7 +97,8 @@ def build_test_info(framework='tensorflow',
                     framework_describe=None,
                     batch_size=None,
                     model=None,
-                    accel_cnt=None):
+                    accel_cnt=None,
+                    cmd=None):
   """Returns test info in a dict.
 
   Args:
@@ -108,6 +109,8 @@ def build_test_info(framework='tensorflow',
     batch_size (int, optional): Total batch size.
     model (str, optional): Model being tested.
     accel_cnt (int, optional): Number of accelerators being utilized.
+    cmd (str, optional): Command run for the test with args. Useful to record
+      for tests that are run as subprocesses.
 
   Returns:
     `dict` with test info.
@@ -125,4 +128,6 @@ def build_test_info(framework='tensorflow',
     test_info['framework_version'] = framework_version
   if framework_describe:
     test_info['framework_describe'] = framework_describe
+  if cmd:
+    test_info['cmd'] = cmd
   return test_info

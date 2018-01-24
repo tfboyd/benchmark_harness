@@ -3,6 +3,7 @@ repeat: 3
 
 # Worker settings override
 num_batches: 20
+nodistortions: FLAG_ONLY
 
 sub_configs:
   - 'resnet50.1_gpu.64.ps_cpu.yaml'

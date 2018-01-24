@@ -84,7 +84,8 @@ class TestRunner(object):
     # Timestamp and other values added for reporting
     run_config['timestamp'] = int(time.time())
     run_config['workspace'] = self.workspace
-
+    cmd = command_builder.build_run_command(run_config)
+    run_config['cmd'] = cmd
     test_home = self.bench_home
     result_dir = self.results_directory(run_config)
 
@@ -97,7 +98,6 @@ class TestRunner(object):
     # TODO(tobyboyd@): No longer distributed remove threads.
     worker_threads = []
     i = 0
-    cmd = command_builder.build_run_command(run_config)
     cmd = 'cd {}; {}'.format(test_home, cmd)
     print('[{}] worker | Run benchmark({}):{}'.format(
         run_config.get('copy', '0'), run_config['test_id'], cmd))

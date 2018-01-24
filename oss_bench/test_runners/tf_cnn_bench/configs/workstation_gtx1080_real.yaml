@@ -3,6 +3,7 @@ repeat: 3
 
 # Worker settings override
 num_batches: 100
+nodistortions: FLAG_ONLY
 
 # Data directory mounted in the docker
 data_dir: '/data/imagenet'

@@ -21,12 +21,16 @@ def build_run_command(run_config):
       'data_name', 'variable_update', 'num_intra_threads', 'num_inter_threads',
       'mkl', 'num_warmup_batches', 'forward_only', 'kmp_blocktime', 'device',
       'staged_vars', 'staged_grads', 'cross_replica_sync', 'all_reduce_spec',
-      'use_datasets', 'batch_group_size', 'use_nccl', 'use_fp16'
+      'use_datasets', 'batch_group_size', 'use_nccl', 'use_fp16',
+      'nodistortions'
   ]
 
   for arg in pass_through_args:
     if arg in run_config:
-      run_cmd_list.append('--{}={}'.format(arg, run_config[arg]))
+      if run_config[arg] == 'FLAG_ONLY':
+        run_cmd_list.append('--{}'.format(arg))
+      else:
+        run_cmd_list.append('--{}={}'.format(arg, run_config[arg]))
 
   if 'ps_server' in run_config:
     run_cmd_list.append('--local_parameter_device={}'.format(
@@ -35,8 +39,6 @@ def build_run_command(run_config):
   if 'gpus' in run_config:
     run_cmd_list.append('--num_gpus={}'.format(run_config['gpus']))
 
-  # Forces no distortions, which is the most common for benchmarks.
-  run_cmd_list.append('--nodistortions')
   if 'display_every' in run_config:
     run_cmd_list.append('--display_every={}'.format(
         run_config['display_every']))
