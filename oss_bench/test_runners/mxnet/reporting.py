@@ -38,7 +38,8 @@ def process_folder(folder_path, report_config=None):
       framework_version=report_config.get('framework_version'),
       batch_size=agg_result['config']['batch_size'],
       model=agg_result['config']['model'],
-      accel_cnt=agg_result['gpu'])
+      accel_cnt=agg_result['gpu'],
+      cmd=agg_result['config']['cmd'])
   # Stores info on each of the repos used in testing.
   if 'git_repo_info' in report_config:
     test_info['git_info'] = report_config['git_repo_info']

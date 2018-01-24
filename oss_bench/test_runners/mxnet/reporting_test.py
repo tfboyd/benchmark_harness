@@ -50,7 +50,8 @@ class TestReporting(unittest.TestCase):
     self.assertEqual(arg_test_info['framework_version'],
                      report_config['framework_version'])
     self.assertEqual(arg_test_info['accel_cnt'], 2)
-
+    self.assertEqual(arg_test_info['cmd'],
+                     'python some_script.py --arg0=foo --arg1=bar')
     # Spot checks system_info.
     arg_system_info = mock_upload.call_args[1]['system_info']
     self.assertEqual(arg_system_info['accel_type'], report_config['accel_type'])
@@ -78,6 +79,7 @@ class TestReporting(unittest.TestCase):
     config['batch_size'] = 128
     config['gpus'] = 2
     config['model'] = 'resnet50'
+    config['cmd'] = 'python some_script.py --arg0=foo --arg1=bar'
     return config
 
   def _mock_result(self, test_id, imgs_sec):
@@ -96,5 +98,4 @@ class TestReporting(unittest.TestCase):
     report_config['accel_type'] = 'GTX 940'
     report_config['platform'] = 'test_platform_name'
     report_config['framework_version'] = 'v1.5RC0-dev20171027'
-
     return report_config

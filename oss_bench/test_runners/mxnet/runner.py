@@ -74,6 +74,8 @@ class TestRunner(object):
     result_dir = self.results_directory(test_config)
     test_config['timestamp'] = int(time.time())
     test_config['workspace'] = self.workspace
+    cmd = self._cmd_builder(test_config)
+    test_config['cmd'] = cmd
 
     test_home = self.bench_home
 
@@ -86,7 +88,6 @@ class TestRunner(object):
     # TODO(tobyboyd@): No longer distributed remove threads.
     worker_threads = []
     i = 0
-    cmd = self._cmd_builder(test_config)
     cmd = 'cd {}; {}'.format(test_home, cmd)
     print('[{}] worker | Run benchmark({}):{}'.format(
         copy, test_config['test_id'], cmd))
