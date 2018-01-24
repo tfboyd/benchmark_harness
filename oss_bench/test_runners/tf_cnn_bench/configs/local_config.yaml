@@ -8,6 +8,7 @@ workers: 1
 # Worker settings override
 gpus: 1
 num_batches: 20
+nodistortions: FLAG_ONLY
 
 sub_configs:
   - 'aws/single_server/resnet50_32.yaml'
