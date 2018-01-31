@@ -23,4 +23,4 @@ mxnet_tests:
   - renset50v1_128_gpu_8_fp16_real
 
 # MXNet configs
-data_threads: 16
+data_threads: 40
