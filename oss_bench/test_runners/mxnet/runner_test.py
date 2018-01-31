@@ -77,14 +77,19 @@ class TestRunBenchmark(unittest.TestCase):
   @patch('test_runners.mxnet.runner.TestRunner._make_log_dir')
   def test_base_imagenet_args(self, _):
     """Tests base imagenet_args are generated as expected."""
+    test_config = {}
+    test_config['data_threads'] = 16
+
     run = runner.TestRunner(
         '/workspace',
         '/workspace/git/mxnet_git',
+        auto_test_config=test_config,
         imagenet_dir='/data/mxnet/imagenet/data')
 
     args = run._base_imagenet_args()
 
     self.assertEqual(args['data-train'], '/data/mxnet/imagenet/data')
+    self.assertEqual(args['data-nthreads'], 16)
 
   @patch('test_runners.mxnet.runner.TestRunner._make_log_dir')
   def test_base_imagenet_args_no_data(self, _):

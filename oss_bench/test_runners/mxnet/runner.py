@@ -161,11 +161,16 @@ class TestRunner(object):
     """Returns base set of args for imagenet real data tests."""
     assert self.imagenet_dir, 'self.imagenet_dir is None.'
 
+    data_threads = 4
+    if self.auto_test_config and 'data_threads' in self.auto_test_config:
+      data_threads = self.auto_test_config['data_threads']
+
     args = {}
     args['num-epochs'] = 1
     args['disp-batches'] = 5
     args['data-train'] = self.imagenet_dir
     args['data-train-idx'] = self.train_idx
+    args['data-nthreads'] = data_threads
     return args
 
   def _resnetv1_baseargs(self, args, real_data=False):
