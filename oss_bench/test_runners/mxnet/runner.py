@@ -171,6 +171,7 @@ class TestRunner(object):
     args['data-train'] = self.imagenet_dir
     args['data-train-idx'] = self.train_idx
     args['data-nthreads'] = data_threads
+
     return args
 
   def _resnetv1_baseargs(self, args, real_data=False):
@@ -189,6 +190,15 @@ class TestRunner(object):
     base_args = None
     if real_data:
       base_args = self._base_imagenet_args()
+      # NVIDIA recommends these args in their guide. Maybe only FP16 not sure.
+      # http://docs.nvidia.com/deeplearning/sdk/pdf/Training-Mixed-Precision-User-Guide.pdf
+      res_args['min-random-scale'] = '0.533'
+      res_args['max-random-shear-ratio'] = '0'
+      res_args['max-random-shear-ratio'] = '0'
+      res_args['max-random-rotate-angle'] = '0'
+      res_args['max-random-h'] = '0'
+      res_args['max-random-l'] = '0'
+      res_args['max-random-s'] = '0'
     else:
       base_args = self._base_synth_args()
     base_args.update(res_args)
