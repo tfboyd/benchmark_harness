@@ -15,3 +15,4 @@ report_table: 'result'
 mxnet_tests:
   - renset50v1_32_gpu_1
   - renset50v1_32_gpu_1_fp16
+  - renset50v1_32_gpu_1_real
