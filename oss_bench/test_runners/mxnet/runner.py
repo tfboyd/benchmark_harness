@@ -17,9 +17,16 @@ class TestRunner(object):
     bench_home (str): Path to mxnet image-classification examples.
     auto_test_config (dict): Supplemental config values from oss_test harness,
       e.g. tensorflow version and hashes for tf_cnn_benchmark repo.
+    imagenet_dir (str): path to imagenet data for mxnet.
+    imagenet_idx (str): path to idx file for imagenet.
   """
 
-  def __init__(self, workspace, bench_home, auto_test_config=None):
+  def __init__(self,
+               workspace,
+               bench_home,
+               auto_test_config=None,
+               imagenet_dir='/data/mxnet/imagenet/data',
+               imagenet_idx='/data/mxnet/imagenet/idx/train.idx'):
     """Initalize the TestRunner with values."""
     self.auto_test_config = auto_test_config
     self.workspace = workspace
@@ -27,6 +34,8 @@ class TestRunner(object):
     self.local_stdout_file = os.path.join(self.local_log_dir, 'stdout.log')
     self.local_stderr_file = os.path.join(self.local_log_dir, 'stderr.log')
     self.bench_home = bench_home
+    self.imagenet_dir = imagenet_dir
+    self.train_idx = imagenet_idx
 
     self._make_log_dir(self.local_log_dir)
 
@@ -76,6 +85,7 @@ class TestRunner(object):
     test_config['workspace'] = self.workspace
     cmd = self._cmd_builder(test_config)
     test_config['cmd'] = cmd
+    total_batches = test_config['total_batches']
 
     test_home = self.bench_home
 
@@ -97,8 +107,26 @@ class TestRunner(object):
         cmd, stdout_file, stderr_file, print_error=True)
     worker_threads.append(t)
 
+    # Wait for log file to appear
+    wait_time = 0
+    while t.is_alive() and not os.path.isfile(stdout_file):
+      print('Waiting for log file. Waited for {} seconds.'.format(wait_time))
+      time.sleep(2)
+      wait_time += 2
+
+    batch_killer = '[{}]'.format(total_batches)
+    while t.is_alive():
+      with open(stdout_file, 'r') as log:
+        for line in log:
+          if batch_killer in line:
+            print('{} batches complete. Kill Thread.'.format(batch_killer))
+            instance.kill_processes()
+            break
+        time.sleep(5)
+
     for t in worker_threads:
       t.join()
+
     return result_dir
 
   def run_test_suite(self, test_config):
@@ -129,26 +157,61 @@ class TestRunner(object):
     args['disp-batches'] = 5
     return args
 
-  def _resnetv1_baseargs(self, args):
+  def _base_imagenet_args(self):
+    """Returns base set of args for imagenet real data tests."""
+    assert self.imagenet_dir, 'self.imagenet_dir is None.'
+
+    data_threads = 4
+    if self.auto_test_config and 'data_threads' in self.auto_test_config:
+      data_threads = self.auto_test_config['data_threads']
+
+    args = {}
+    args['num-epochs'] = 1
+    args['disp-batches'] = 5
+    args['data-train'] = self.imagenet_dir
+    args['data-train-idx'] = self.train_idx
+    args['data-nthreads'] = data_threads
+
+    return args
+
+  def _resnetv1_baseargs(self, args, real_data=False):
     """Returns base args to run ResNet50-v1 tests with synthetic data.
 
     Args:
       args: dictionary of args that will overwrite the defaults and be added to
       the args dictionary that is returned.
+      real_data: true if real data is to be used, false for synthetic.
     """
     res_args = {}
     res_args['network'] = 'resnet-v1'
     res_args['image-shape'] = '3,224,224'
     res_args['num-layers'] = 50
     res_args['dtype'] = 'float32'
-
-    base_args = self._base_synth_args()
+    base_args = None
+    if real_data:
+      base_args = self._base_imagenet_args()
+      # NVIDIA recommends these args in their guide. Maybe only FP16 not sure.
+      # http://docs.nvidia.com/deeplearning/sdk/pdf/Training-Mixed-Precision-User-Guide.pdf
+      res_args['min-random-scale'] = '0.533'
+      res_args['max-random-shear-ratio'] = '0'
+      res_args['max-random-shear-ratio'] = '0'
+      res_args['max-random-rotate-angle'] = '0'
+      res_args['max-random-h'] = '0'
+      res_args['max-random-l'] = '0'
+      res_args['max-random-s'] = '0'
+    else:
+      base_args = self._base_synth_args()
     base_args.update(res_args)
     base_args.update(args)
 
     return base_args
 
-  def build_test_config(self, test_id, test_args, batch_size=32, gpus=1):
+  def build_test_config(self,
+                        test_id,
+                        test_args,
+                        batch_size=32,
+                        gpus=1,
+                        real_data=False):
     """Returns a base test config for ResNet50-v1 tests on synthetic data.
 
     Args:
@@ -158,9 +221,10 @@ class TestRunner(object):
         batch desired by the mxnet tests by multiplying it by the number of
         gpus.
       gpus: number of gpus to run against.
+      real_data: true if real data is to be used, false for synthetic.
     """
     config = {}
-
+    config['total_batches'] = 150
     config['pycmd'] = 'train_imagenet.py'
     config['test_id'] = test_id
     config['repeat'] = 3
@@ -169,7 +233,7 @@ class TestRunner(object):
     config['gpus'] = gpus
     config['batch_size'] = batch_size
     args = {}
-    args = self._resnetv1_baseargs(test_args)
+    args = self._resnetv1_baseargs(test_args, real_data=real_data)
     config['args'] = args
     args['batch-size'] = batch_size * gpus
     # Sets gpus in the format of 0,1,2,3 for 4 GPUs.
@@ -203,6 +267,14 @@ class TestRunner(object):
     config = self.build_test_config(test_id, args, batch_size=32, gpus=1)
     self.run_test_suite(config)
 
+  def renset50v1_32_gpu_1_real(self):
+    """Tests ResNet50 real data on 1 GPU with batch size 32."""
+    test_id = 'resnet50v1.gpu_1.32.real'
+    args = {}
+    config = self.build_test_config(
+        test_id, args, batch_size=32, gpus=1, real_data=True)
+    self.run_test_suite(config)
+
   def renset50v1_32_gpu_8(self):
     """Tests ResNet50 synthetic data on 8 GPUs with batch size 32*8."""
     test_id = 'resnet50v1.gpu_8.32'
@@ -217,11 +289,27 @@ class TestRunner(object):
     config = self.build_test_config(test_id, args, batch_size=64, gpus=1)
     self.run_test_suite(config)
 
+  def renset50v1_64_gpu_1_real(self):
+    """Tests ResNet50 synthetic data on 1 GPU with batch size 64."""
+    test_id = 'resnet50v1.gpu_1.64.real'
+    args = {}
+    config = self.build_test_config(
+        test_id, args, batch_size=64, gpus=1, real_data=True)
+    self.run_test_suite(config)
+
   def renset50v1_64_gpu_8(self):
     """Tests ResNet50 synthetic data on 8 GPUs with batch size 64*8."""
     test_id = 'resnet50v1.gpu_8.64'
     args = {}
     config = self.build_test_config(test_id, args, batch_size=64, gpus=8)
+    self.run_test_suite(config)
+
+  def renset50v1_64_gpu_8_real(self):
+    """Tests ResNet50 real data on 8 GPUs with batch size 64*8."""
+    test_id = 'resnet50v1.gpu_8.64.real'
+    args = {}
+    config = self.build_test_config(
+        test_id, args, batch_size=64, gpus=8, real_data=True)
     self.run_test_suite(config)
 
   def renset50v1_128_gpu_8(self):
@@ -239,12 +327,30 @@ class TestRunner(object):
     config = self.build_test_config(test_id, args, batch_size=32, gpus=1)
     self.run_test_suite(config)
 
+  def renset50v1_32_gpu_1_fp16_real(self):
+    """Tests ResNet50 (FP16) real data on 8 GPUs with batch size 32."""
+    test_id = 'resnet50v1.gpu_1.32.fp16.real'
+    args = {}
+    args['dtype'] = 'float16'
+    config = self.build_test_config(
+        test_id, args, batch_size=32, gpus=1, real_data=True)
+    self.run_test_suite(config)
+
   def renset50v1_128_gpu_1_fp16(self):
     """Tests ResNet50 (FP16) synthetic data on 8 GPUs with batch size 128."""
     test_id = 'resnet50v1.gpu_1.128.fp16'
     args = {}
     args['dtype'] = 'float16'
     config = self.build_test_config(test_id, args, batch_size=128, gpus=1)
+    self.run_test_suite(config)
+
+  def renset50v1_128_gpu_1_fp16_real(self):
+    """Tests ResNet50 (FP16) real data on 8 GPUs with batch size 128."""
+    test_id = 'resnet50v1.gpu_1.128.fp16.real'
+    args = {}
+    args['dtype'] = 'float16'
+    config = self.build_test_config(
+        test_id, args, batch_size=128, gpus=1, real_data=True)
     self.run_test_suite(config)
 
   def renset50v1_128_gpu_8_fp16(self):
@@ -255,15 +361,32 @@ class TestRunner(object):
     config = self.build_test_config(test_id, args, batch_size=128, gpus=8)
     self.run_test_suite(config)
 
+  def renset50v1_128_gpu_8_fp16_real(self):
+    """Tests ResNet50 (FP16) real data on 8 GPUs with batch size 128*8."""
+    test_id = 'resnet50v1.gpu_8.128.fp16.real'
+    args = {}
+    args['dtype'] = 'float16'
+    config = self.build_test_config(
+        test_id, args, batch_size=128, gpus=8, real_data=True)
+    self.run_test_suite(config)
+
   def run_tests(self, test_list):
     for t in test_list:
       getattr(self, t)()
 
 
 def main():
-  """Program main, called after args are parsed into FLAGS."""
-  test_runner = TestRunner(FLAGS.workspace, FLAGS.bench_home)
-  test_runner.run_test(FLAGS.test_list.split(','))
+  """Program main, called after args are parsed into FLAGS.
+
+  Example:
+    python runner.py --workspace=/workspace
+    --bench-home=/mxnet_repo/incubator-mxnet/example/image-classification
+    --train-data-dir=/mxnet_repo/train/data
+
+  """
+  test_runner = TestRunner(
+      FLAGS.workspace, FLAGS.bench_home, imagenet_dir=FLAGS.train_data_dir)
+  test_runner.run_tests(FLAGS.test_list.split(','))
 
 
 if __name__ == '__main__':
@@ -276,15 +399,20 @@ if __name__ == '__main__':
       default='/tmp/benchmark_workspace',
       help='Local workspace to hold logs and results')
   parser.add_argument(
-      '--bench_home',
+      '--bench-home',
       type=str,
-      default=os.path.join(os.environ['HOME'], 'tf_cnn_bench'),
-      help='Path to the benchmark scripts')
+      default='',
+      help='Path to mxnet image classification example repo.')
   parser.add_argument(
       '--test-list',
       type=str,
       default='renset50v1_32_gpu_1',
       help='Comma separated list of tests to run.')
+  parser.add_argument(
+      '--train-data-dir',
+      type=str,
+      default='/data/mxnet/imagenet/train',
+      help='Path to training data directory.')
 
   FLAGS, unparsed = parser.parse_known_args()
 

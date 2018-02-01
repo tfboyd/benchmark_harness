@@ -1,0 +1,7 @@
+args: {batch-size: 32, data-train: /mxnet_repo/train/data, data-train-idx: /mxnet_repo/train/idx/train.idx,
+  disp-batches: 5, dtype: float32, gpus: '0', image-shape: '3,224,224', kv-store: device,
+  network: resnet-v1, num-epochs: 1, num-layers: 50}
+
+test_id: resnet50.gpu_1.32.real
+batch_size: 32
+gpus: 2

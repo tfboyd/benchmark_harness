@@ -1,3 +1,0 @@
-test_id: resnet50.gpu_1.32.real
-batch_size: 32
-gpus: 2

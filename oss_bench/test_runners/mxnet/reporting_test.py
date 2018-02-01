@@ -65,12 +65,25 @@ class TestReporting(unittest.TestCase):
   def test_parse_result_file(self):
     """Tests parsing one results file."""
     result = reporting.parse_result_file(
-        'test_runners/mxnet/unittest_files/test_result.txt')
+        'test_runners/mxnet/unittest_files/basic_synth/test_result.txt')
 
     self.assertEqual(result['imgs_sec'], 178.55300000000003)
     self.assertEqual(result['batches_sampled'], 10)
     self.assertEqual(result['test_id'], 'resnet50.gpu_1.32.real')
     self.assertEqual(result['gpu'], 2)
+    self.assertEqual(result['data_type'], 'synth')
+    self.assertIn('config', result)
+
+  def test_parse_result_file_real(self):
+    """Tests parsing one results file for real data."""
+    result = reporting.parse_result_file(
+        'test_runners/mxnet/unittest_files/basic_real/test_result.txt')
+
+    self.assertEqual(result['imgs_sec'], 178.55300000000003)
+    self.assertEqual(result['batches_sampled'], 10)
+    self.assertEqual(result['test_id'], 'resnet50.gpu_1.32.real')
+    self.assertEqual(result['gpu'], 2)
+    self.assertEqual(result['data_type'], 'real')
     self.assertIn('config', result)
 
   def _mock_config(self, test_id):

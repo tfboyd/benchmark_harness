@@ -100,7 +100,7 @@ def parse_result_file(result_file_path):
   result['result_dir'] = result_dir
   result['test_id'] = config['test_id']
 
-  if 'data_dir' in config:
+  if 'data-train' in config['args']:
     result['data_type'] = 'real'
   else:
     result['data_type'] = 'synth'
@@ -122,10 +122,9 @@ def parse_result_file(result_file_path):
 
       # After 100 batches are found, calculate average and break.
       if batch > 100:
-        result['imgs_sec'] = sum_speed / samples
-        result['batches_sampled'] = samples
         break
-
+  result['imgs_sec'] = sum_speed / samples
+  result['batches_sampled'] = samples
   return result
 
 

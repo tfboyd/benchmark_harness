@@ -104,7 +104,7 @@ class Bootstrap(object):
         return True
       print('No GPU processes found watching for {} more seconds'.format(
           maxtime - totaltime))
-      time.sleep(20)  # Delay for 1 minute (60 seconds).
+      time.sleep(20)
       totaltime += 20
 
   def git_clone(self, git_repo, local_folder, branch=None, sha_hash=None):

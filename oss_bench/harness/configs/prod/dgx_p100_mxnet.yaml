@@ -15,5 +15,9 @@ report_table: 'result'
 mxnet_tests:
   - renset50v1_64_gpu_1
   - renset50v1_64_gpu_8
-  - renset50v1_128_gpu_1_fp16
-  - renset50v1_128_gpu_8_fp16
+  - renset50v1_64_gpu_1_real
+  - renset50v1_64_gpu_8_real
+
+# MXNet configs
+data_threads: 16
+
