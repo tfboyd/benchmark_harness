@@ -2,8 +2,6 @@
 import os
 
 from test_runners.common import util
-from upload import result_info
-from upload import result_upload
 import yaml
 
 
@@ -20,44 +18,11 @@ def process_folder(folder_path, report_config=None):
   results = _collect_results(folder_path)
   agg_result = util.report_aggregate_results(results)
 
-  # Sets defaults on report_config if any required values are missing.
-  report_config = util.report_config_defaults(
-      report_config, test_harness='tf_cnn_benchmark')
-
-  # Main result config
-  test_result, results = result_info.build_test_result(
-      agg_result['config']['test_id'],
-      agg_result['mean'],
-      result_type='exp_per_sec',
-      test_harness=report_config['test_harness'],
-      test_environment=report_config['test_environment'])
-
-  test_info = result_info.build_test_info(
-      framework_version=report_config.get('framework_version'),
-      framework_describe=report_config.get('framework_describe'),
-      batch_size=agg_result['config']['batch_size'],
-      model=agg_result['config']['model'],
-      accel_cnt=agg_result['gpu'],
-      cmd=agg_result['config']['cmd'])
-  # Stores info on each of the repos used in testing.
-  if 'git_repo_info' in report_config:
-    test_info['git_info'] = report_config['git_repo_info']
-
-  system_info = result_info.build_system_info(
-      platform=report_config['platform'],
-      platform_type=report_config['platform_type'],
-      accel_type=report_config['accel_type'])
-
-  print 'Uploading test results...'
-  result_upload.upload_result(
-      test_result,
-      results,
-      report_config['report_project'],
-      dataset=report_config['report_dataset'],
-      table=report_config['report_table'],
-      test_info=test_info,
-      system_info=system_info,
-      extras=agg_result)
+  util.upload_results(
+      report_config,
+      agg_result,
+      framework='tensorflow',
+      test_harness='tf_cnn_benchmark')
 
 
 def _collect_results(folder_path):

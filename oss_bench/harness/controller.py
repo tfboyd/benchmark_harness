@@ -1,4 +1,4 @@
-"""Sets up the environment and runs the test suites."""
+"""Sets up the environment and runs benchmarks."""
 from __future__ import print_function
 import argparse
 import os
@@ -8,7 +8,7 @@ import yaml
 
 
 class BenchmarkRunner(object):
-  """Setup environment an execute suite of tests.
+  """Setup environment an execute tests.
 
   Example:
     Run from command line with:
@@ -27,6 +27,7 @@ class BenchmarkRunner(object):
     workspace (str): workspace to download git code and store logs in. Path is
       either absolute to the host or mounted path on docker if using docker.
     test_config (str): path to yaml config file.
+    framework (str): framework to test.
   """
 
   def __init__(self, workspace, test_config, framework='tensorflow'):
@@ -93,12 +94,30 @@ class BenchmarkRunner(object):
           local_folder, sha_hash)
       self.run_local_command(sync_to_hash_cmd)
 
-  def _tf_cnn_bench(self, auto_config):
-    """Runs tests based on tf_cnn_benchmarks.
+  def _tf_model_bench(self, auto_config):
+    """Runs tf model benchmarks.
 
     Args:
-      auto_config: Parent test config with information useful to child test
-        framework.
+      auto_config: Configuration for running tf_model_bench tests.
+    """
+    # Module is loaded by this module.
+    # pylint: disable=C6204
+    import test_runners.tf_models.runner as runner
+
+    bench_home = os.path.join(self.git_repo_base, 'tf_models')
+
+    # call tf_garden runner with lists of tests from the test_config
+    run = runner.TestRunner(
+        os.path.join(self.logs_dir, 'tf_models'),
+        bench_home,
+        auto_test_config=auto_config)
+    run.run_tests(auto_config['tf_models_tests'])
+
+  def _tf_cnn_bench(self, auto_config):
+    """Runs tf cnn benchmarks.
+
+    Args:
+      auto_config: Configuration for running tf_model_bench tests.
     """
     # Module is loaded by this module.
     # pylint: disable=C6204
@@ -122,7 +141,7 @@ class BenchmarkRunner(object):
     test_runner.run_tests()
 
   def _load_config(self):
-    """Returns auto_run config for the environment."""
+    """Returns config representing tests to run."""
     config_path = None
     if self.test_config.startswith('/'):
       config_path = self.test_config
@@ -140,6 +159,11 @@ class BenchmarkRunner(object):
     """
     self._git_clone('https://github.com/tensorflow/benchmarks.git',
                     os.path.join(self.git_repo_base, 'benchmarks'))
+
+    self._git_clone(
+        'https://github.com/tfboyd/models.git',
+        os.path.join(self.git_repo_base, 'tf_models'),
+        branch='garden_resnet50')
 
   def _make_logs_dir(self):
     try:
@@ -159,7 +183,7 @@ class BenchmarkRunner(object):
     # Module cannot be loaded until after repo is cloned and added to sys.path.
     # pylint: disable=C6204
     import tools.git_info as git_info
-    git_dirs = ['benchmark_harness', 'benchmarks']
+    git_dirs = ['benchmark_harness', 'benchmarks', 'tf_models']
     test_config['git_repo_info'] = {}
     for repo_dir in git_dirs:
       full_path = os.path.join(self.git_repo_base, repo_dir)
@@ -170,6 +194,12 @@ class BenchmarkRunner(object):
       test_config['git_repo_info'][repo_dir] = git_info_dict
 
   def run_tensorflow_tests(self, test_config):
+    """Runs all TensorFlow based tests.
+
+    Args:
+      test_config: Config representing the tests to run.
+
+    """
     # then kick off some tests via auto_run.
     self._clone_tf_repos()
     self._store_repo_info(test_config)
@@ -180,9 +210,20 @@ class BenchmarkRunner(object):
     version, git_version = tf_version.get_tf_full_version()
     test_config['framework_version'] = version
     test_config['framework_describe'] = git_version
-    self._tf_cnn_bench(test_config)
+    # Run tf_cnn_bench tests if in config
+    if 'tf_cnn_bench_configs' in test_config:
+      self._tf_cnn_bench(test_config)
+
+    # Run tf_model_bench if list of tests is found
+    if 'tf_models_tests' in test_config:
+      self._tf_model_bench(test_config)
 
   def run_mxnet_tests(self, test_config):
+    """Runs all MXNet based tests.
+
+    Args:
+      test_config: Config representing the tests to run.
+    """
 
     # Clone the mxnet repo so we know where it is.
     self._git_clone('https://github.com/apache/incubator-mxnet.git',
@@ -194,10 +235,9 @@ class BenchmarkRunner(object):
     import mxnet as mx
     # pylint: disable=C6204
     from test_runners.mxnet import runner
-    # get mxnet version
     test_config['framework_version'] = mx.__version__
 
-    # call mxnet runner with lists of tests from the test_config
+    # Calls mxnet runner with lists of tests from the test_config
     run = runner.TestRunner(
         os.path.join(self.logs_dir, 'mxnet'),
         bench_home,
@@ -205,7 +245,7 @@ class BenchmarkRunner(object):
     run.run_tests(test_config['mxnet_tests'])
 
   def run_tests(self):
-    """Runs the benchmark suite."""
+    """Runs all tests based on the test_config."""
     self._make_logs_dir()
     test_config = self._load_config()
 
@@ -242,7 +282,7 @@ if __name__ == '__main__':
   parser.add_argument(
       '--test-config',
       type=str,
-      default='configs/default.yaml',
+      default='configs/dev/default.yaml',
       help='Path to the test_config or default to run default config')
   parser.add_argument(
       '--workspace',
