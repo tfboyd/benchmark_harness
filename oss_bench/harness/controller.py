@@ -163,7 +163,7 @@ class BenchmarkRunner(object):
     self._git_clone(
         'https://github.com/tfboyd/models.git',
         os.path.join(self.git_repo_base, 'tf_models'),
-        branch='garden_resnet50')
+        branch='karmel_multi_gpu')
 
   def _make_logs_dir(self):
     try:

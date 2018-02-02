@@ -27,13 +27,17 @@ class TestRunner(object):
                auto_test_config=None,
                imagenet_dir='/data/imagenet'):
     """Initalize the TestRunner with values."""
-    self.auto_test_config = auto_test_config
     self.workspace = workspace
     self.local_log_dir = os.path.join(self.workspace, 'logs')
     self.local_stdout_file = os.path.join(self.local_log_dir, 'stdout.log')
     self.local_stderr_file = os.path.join(self.local_log_dir, 'stderr.log')
     self.bench_home = bench_home
     self.imagenet_dir = imagenet_dir
+
+    if auto_test_config is None:
+      self.auto_test_config = {}
+    else:
+      self.auto_test_config = auto_test_config
 
     self._make_log_dir(self.local_log_dir)
 
@@ -174,7 +178,9 @@ class TestRunner(object):
     args['data_dir'] = self.imagenet_dir
     args['resnet_size'] = 50
     args['train_epochs'] = 1
-    args['batch_size'] = batch_size
+    args['batch_size'] = batch_size * gpus
+    args['num_gpus'] = gpus
+    args['input_threads'] = self.auto_test_config.get('input_threads', 5)
 
     # Override any args with the tests args
     args.update(test_args)
@@ -199,11 +205,32 @@ class TestRunner(object):
       arg_str += '--{} {} '.format(key, value)
     return 'python {} {}'.format(test_config['pycmd'], arg_str)
 
-  def renset50v2_32_gpu_1(self):
+  def renset50v2_32_gpu_1_real(self):
     """Tests ResNet50 real data data on 1 GPU with batch size 32."""
-    test_id = 'garden.resnet50v2.gpu_1.32'
+    test_id = 'garden.resnet50v2.gpu_1.32.real'
     args = {}
     config = self.build_resnet_test_config(test_id, args, batch_size=32, gpus=1)
+    self.run_test_suite(config)
+
+  def renset50v2_32_gpu_8_real(self):
+    """Tests ResNet50 real data data on 8 GPU with batch size 32."""
+    test_id = 'garden.resnet50v2.gpu_8.32.real'
+    args = {}
+    config = self.build_resnet_test_config(test_id, args, batch_size=32, gpus=8)
+    self.run_test_suite(config)
+
+  def renset50v2_64_gpu_1_real(self):
+    """Tests ResNet50 real data data on 8 GPU with batch size 64."""
+    test_id = 'garden.resnet50v2.gpu_1.64.real'
+    args = {}
+    config = self.build_resnet_test_config(test_id, args, batch_size=64, gpus=1)
+    self.run_test_suite(config)
+
+  def renset50v2_64_gpu_8_real(self):
+    """Tests ResNet50 real data data on 8 GPU with batch size 64."""
+    test_id = 'garden.resnet50v2.gpu_8.64.real'
+    args = {}
+    config = self.build_resnet_test_config(test_id, args, batch_size=64, gpus=8)
     self.run_test_suite(config)
 
   def run_tests(self, test_list):
