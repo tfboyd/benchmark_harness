@@ -1,4 +1,4 @@
-"""Tests mxnet reporting module."""
+"""Tests tf_models reporting module."""
 from __future__ import print_function
 
 import unittest
@@ -8,9 +8,9 @@ import reporting
 
 
 class TestReporting(unittest.TestCase):
-  """Tests for mxnet reporting module."""
+  """Tests for tf_models reporting module."""
 
-  @patch('test_runners.mxnet.reporting._collect_results')
+  @patch('test_runners.tf_models.reporting._collect_results')
   @patch('upload.result_upload.upload_result')
   def test_process_folder(self, mock_upload, mock_collect_results):
     """Tests process folder and verifies args passed to upload_result."""
@@ -30,7 +30,7 @@ class TestReporting(unittest.TestCase):
     test_result = mock_upload.call_args[0][0]
 
     # Spot checks test_result.
-    self.assertEqual(test_result['test_harness'], 'mxnet')
+    self.assertEqual(test_result['test_harness'], 'tf_models')
     self.assertEqual(test_result['test_environment'],
                      report_config['test_environment'])
     self.assertEqual(test_result['test_id'], test_id_0)
@@ -65,26 +65,16 @@ class TestReporting(unittest.TestCase):
   def test_parse_result_file(self):
     """Tests parsing one results file."""
     result = reporting.parse_result_file(
-        'test_runners/mxnet/unittest_files/basic_synth/test_result.txt')
+        'test_runners/tf_models/unittest_files/results/basic/'
+        'worker_0_stdout.log')
 
-    self.assertEqual(result['imgs_sec'], 178.55300000000003)
+    self.assertEqual(result['imgs_sec'], 122.9444)
     self.assertEqual(result['batches_sampled'], 10)
-    self.assertEqual(result['test_id'], 'resnet50.gpu_1.32.real')
-    self.assertEqual(result['gpu'], 2)
-    self.assertEqual(result['data_type'], 'synth')
-    self.assertIn('config', result)
-
-  def test_parse_result_file_real(self):
-    """Tests parsing one results file for real data."""
-    result = reporting.parse_result_file(
-        'test_runners/mxnet/unittest_files/basic_real/worker_0_stdout.log')
-
-    self.assertEqual(result['imgs_sec'], 178.55300000000003)
-    self.assertEqual(result['batches_sampled'], 10)
-    self.assertEqual(result['test_id'], 'resnet50.gpu_1.32.real')
-    self.assertEqual(result['gpu'], 2)
+    self.assertEqual(result['test_id'], 'resnet50v2.gpu_1.32')
+    self.assertEqual(result['gpu'], 1)
     self.assertEqual(result['data_type'], 'real')
     self.assertIn('config', result)
+    self.assertEqual(result['config']['pycmd'], 'imagenet_main.py')
 
   def _mock_config(self, test_id):
     config = {}

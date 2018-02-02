@@ -1,6 +1,7 @@
 """Generates and uploads test results for mxnet based tests."""
 from __future__ import print_function
 import os
+
 from test_runners.common import util
 import yaml
 
@@ -19,7 +20,10 @@ def process_folder(folder_path, report_config=None):
   agg_result = util.report_aggregate_results(results)
 
   util.upload_results(
-      report_config, agg_result, framework='mxnet', test_harness='mxnet')
+      report_config,
+      agg_result,
+      framework='tensorflow',
+      test_harness='tf_models')
 
 
 def _collect_results(folder_path):
@@ -60,11 +64,7 @@ def parse_result_file(result_file_path):
   result['config'] = config
   result['result_dir'] = result_dir
   result['test_id'] = config['test_id']
-
-  if 'data-train' in config['args']:
-    result['data_type'] = 'real'
-  else:
-    result['data_type'] = 'synth'
+  result['data_type'] = 'real'
 
   # Number of gpus = number of servers * number of gpus
   if 'gpus' in config:
@@ -72,13 +72,13 @@ def parse_result_file(result_file_path):
 
   # Processes results file and aggregates the results of one run.
   for line in result_file:
-    # Rows with 'Epoch[' and 'samples/sec' contain result data to aggregate.
-    if line.find('Epoch[') > 0 and line.find('samples/sec') > 0:
+    # Rows with 'tensorflow:Batch [' and 'exp/sec' contain speed data.
+    if line.find('tensorflow:Batch [') > 0 and line.find('exp/sec') > 0:
       parts = line.split()
-      batch = int(parts[2].replace(']', '').replace('[', ''))
+      batch = int(parts[1].replace(']', '').replace('[', ''))
       # Ignores first 10 batches as a warm up, tf_benchmarks does the same.
       if batch > 10:
-        sum_speed += float(parts[4].rstrip())
+        sum_speed += float(parts[2].rstrip())
         samples += 1
 
       # After 100 batches are found, calculate average and break.
