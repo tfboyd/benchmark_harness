@@ -10,12 +10,6 @@ report_project: 'google.com:tensorflow-performance'
 report_dataset: 'benchmark_results'
 report_table: 'result'
 
-# reporting
-report_auth: 'nightly_benchmark_dev.json'
-report_project: 'google.com:tensorflow-performance'
-report_dataset: 'benchmark_results_dev'
-report_table: 'result'
-
 # pytorch tests to run.
 pytorch_tests:
   - renset50_64_gpu_1_real
