@@ -226,6 +226,17 @@ class TestRunner(object):
     config = self.build_resnet_test_config(test_id, args, batch_size=64, gpus=1)
     self.run_test_suite(config)
 
+  def renset50v2_64_gpu_4_real(self):
+    """Tests ResNet50 real data data on 4 GPU with batch size 64."""
+    test_id = 'garden.resnet50v2.gpu_8.64.real'
+    args = {}
+    config = self.build_resnet_test_config(test_id, args, batch_size=64, gpus=4)
+    self.run_test_suite(config)
+
+  def run_tests(self, test_list):
+    for t in test_list:
+      getattr(self, t)()
+
   def renset50v2_64_gpu_8_real(self):
     """Tests ResNet50 real data data on 8 GPU with batch size 64."""
     test_id = 'garden.resnet50v2.gpu_8.64.real'
