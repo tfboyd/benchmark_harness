@@ -1,0 +1,26 @@
+# Config for a DGX-1 V100 reporting to production schema [PyTorch Tests]
+test_environment: 'brain-lab'
+# System basics
+platform: 'NVIDIA'
+platform_type: 'DGX-1 (P100)'
+
+# reporting
+report_auth: 'brain_lab_benchmarks.json'
+report_project: 'google.com:tensorflow-performance'
+report_dataset: 'benchmark_results'
+report_table: 'result'
+
+# reporting
+report_auth: 'nightly_benchmark_dev.json'
+report_project: 'google.com:tensorflow-performance'
+report_dataset: 'benchmark_results_dev'
+report_table: 'result'
+
+# pytorch tests to run.
+pytorch_tests:
+  - renset50_64_gpu_1_real
+  - renset50_64_gpu_2_real
+  - renset50_64_gpu_4_real
+  - renset50_64_gpu_8_real
+
+input_threads: 36

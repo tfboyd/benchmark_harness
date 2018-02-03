@@ -27,7 +27,7 @@ class TestDockerBootstrap(unittest.TestCase):
     # Assumes last call was to kick off the docker image.
     arg0 = run_command_mock.call_args[0][0]
     self.assertEqual(
-        arg0, 'nvidia-docker run --rm  '
+        arg0, 'nvidia-docker run  --rm  '
         '-v /test/auth_token:/auth_tokens -v /workspace:/workspace '
         'tf_test/framework python '
         '/workspace/git/benchmark_harness/oss_bench/harness/controller.py'
@@ -52,7 +52,7 @@ class TestDockerBootstrap(unittest.TestCase):
     # Assumes last call was to kick off the docker image.
     arg0 = run_command_mock.call_args[0][0]
     self.assertEqual(
-        arg0, 'docker run --rm  '
+        arg0, 'docker run  --rm  '
         '-v /test/auth_token:/auth_tokens -v /workspace:/workspace '
         'tf_test/framework python '
         '/workspace/git/benchmark_harness/oss_bench/harness/controller.py'
@@ -79,7 +79,7 @@ class TestDockerBootstrap(unittest.TestCase):
     arg0 = run_command_mock.call_args[0][0]
 
     expected_docker_cmd = (
-        'nvidia-docker run --rm  '
+        'nvidia-docker run  --rm  '
         '-v /home/user/data/imagenet:/data/imagenet '
         '-v /home/user/data/cifar-10:/data/cifar-10 '
         '-v /test/auth_token:/auth_tokens '
@@ -109,10 +109,36 @@ class TestDockerBootstrap(unittest.TestCase):
     # Assumes last call was to kick off the docker image.
     arg0 = run_command_mock.call_args[0][0]
     self.assertEqual(
-        arg0, 'nvidia-docker run --rm  '
+        arg0, 'nvidia-docker run  --rm  '
         '-v /test/auth_token:/auth_tokens -v /workspace:/workspace '
         'tf_test/framework python '
         '/workspace/git/benchmark_harness/oss_bench/harness/controller.py'
         ' --workspace=/workspace --test-config=test_config.yaml'
         ' --framework=mxnet')
+    process_check_mock.assert_called()
+
+  @patch('bootstrap.docker_bootstrap.Bootstrap.git_clone')
+  @patch('bootstrap.docker_bootstrap.Bootstrap.existing_process_check')
+  @patch('bootstrap.docker_bootstrap.Bootstrap._run_local_command')
+  def test_build_docker_cmd_pytorch(self, run_command_mock, process_check_mock,
+                                    _):
+    """Tests run_test with pytorch as the framework."""
+    bootstrap = docker_bootstrap.Bootstrap(
+        '/docker_folder',
+        '/workspace',
+        'test_config.yaml',
+        framework='pytorch',
+        docker_tag='tf_test/framework',
+        auth_token_dir='/test/auth_token')
+
+    bootstrap.run_tests()
+    # Assumes last call was to kick off the docker image.
+    arg0 = run_command_mock.call_args[0][0]
+    self.assertEqual(
+        arg0, 'nvidia-docker run --ipc=host --rm  '
+        '-v /test/auth_token:/auth_tokens -v /workspace:/workspace '
+        'tf_test/framework python '
+        '/workspace/git/benchmark_harness/oss_bench/harness/controller.py'
+        ' --workspace=/workspace --test-config=test_config.yaml'
+        ' --framework=pytorch')
     process_check_mock.assert_called()
