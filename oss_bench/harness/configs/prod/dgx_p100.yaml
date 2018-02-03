@@ -18,6 +18,7 @@ tf_cnn_bench_configs:
 
 tf_models_tests:
   - 'renset50v2_64_gpu_1_real'
+  - 'renset50v2_64_gpu_4_real'
   - 'renset50v2_64_gpu_8_real'
 
 # Args for tf_models_tests.  Seen by all test harnesses as well.
