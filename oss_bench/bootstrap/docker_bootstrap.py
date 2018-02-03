@@ -158,12 +158,17 @@ class Bootstrap(object):
     if self.pure_docker:
       docker = 'docker'
 
+    extra_args = ''
+    # PyTorch needs this to function due to shared memory.
+    if self.framework == 'pytorch':
+      extra_args = '--ipc=host'
+
     run_cmd = (
-        '{} run --rm {} {} python '
+        '{} run {} --rm {} {} python '
         '/workspace/git/benchmark_harness/oss_bench/harness/controller.py '
         '--workspace=/workspace --test-config={} --framework={}')
-    run_cmd = run_cmd.format(docker, mounts, docker_image, self.test_config,
-                             self.framework)
+    run_cmd = run_cmd.format(docker, extra_args, mounts, docker_image,
+                             self.test_config, self.framework)
     return run_cmd
 
   def run_tests(self):

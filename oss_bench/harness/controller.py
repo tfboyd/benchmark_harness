@@ -244,6 +244,29 @@ class BenchmarkRunner(object):
         auto_test_config=test_config)
     run.run_tests(test_config['mxnet_tests'])
 
+  def run_pytorch_tests(self, test_config):
+    """Runs all pytorch based tests.
+
+    Args:
+      test_config: Config representing the tests to run.
+    """
+    # Clone the pytorch examples repo.
+    self._git_clone('https://github.com/pytorch/examples.git',
+                    os.path.join(self.git_repo_base, 'pytorch_examples'))
+    bench_home = os.path.join(self.git_repo_base, 'pytorch_examples')
+
+    # pylint: disable=C6204
+    import torch
+    test_config['framework_version'] = torch.__version__
+    # pylint: disable=C6204
+    from test_runners.pytorch import runner
+    # Calls pytorch runner with lists of tests from the test_config
+    run = runner.TestRunner(
+        os.path.join(self.logs_dir, 'pytorch'),
+        bench_home,
+        auto_test_config=test_config)
+    run.run_tests(test_config['pytorch_tests'])
+
   def run_tests(self):
     """Runs all tests based on the test_config."""
     self._make_logs_dir()
@@ -267,6 +290,8 @@ class BenchmarkRunner(object):
       self.run_tensorflow_tests(test_config)
     elif self.framework == 'mxnet':
       self.run_mxnet_tests(test_config)
+    elif self.framework == 'pytorch':
+      self.run_pytorch_tests(test_config)
     else:
       raise ValueError('framework needs to be set to tensorflow or mxnet')
 
