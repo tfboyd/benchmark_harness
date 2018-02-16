@@ -1,0 +1,27 @@
+2018-02-14 11:20:06.718634: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1021] Creating TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:6 with 557 MB memory) -> physical GPU (device: 6, name: Tesla V100-SXM2-16GB, pci bus id: 0000:89:00.0, compute capability: 7.0)
+2018-02-14 11:20:06.718738: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1021] Creating TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:7 with 557 MB memory) -> physical GPU (device: 7, name: Tesla V100-SXM2-16GB, pci bus id: 0000:8a:00.0, compute capability: 7.0)
+INFO:tensorflow:Restoring parameters from /tmp/resnet_model/model.ckpt-11
+INFO:tensorflow:Running local_init_op.
+INFO:tensorflow:Done running local_init_op.
+INFO:tensorflow:Saving checkpoints for 12 into /tmp/resnet_model/model.ckpt.
+INFO:tensorflow:learning_rate = 0.2, cross_entropy = 7.23416, train_accuracy = 0.0
+INFO:tensorflow:loss = 8.4093, step = 12
+INFO:tensorflow:Batch [10] 66.1867 exp/sec (66.1867)
+INFO:tensorflow:Batch [20] 746.387 exp/sec (121.591)
+INFO:tensorflow:Batch [30] 728.378 exp/sec (168.336)
+INFO:tensorflow:Batch [40] 747.234 exp/sec (208.771)
+INFO:tensorflow:Batch [50] 730.07 exp/sec (243.552)
+INFO:tensorflow:Batch [60] 744.82 exp/sec (274.322)
+INFO:tensorflow:Batch [70] 739.655 exp/sec (301.411)
+INFO:tensorflow:Batch [80] 736.493 exp/sec (325.443)
+INFO:tensorflow:Batch [90] 752.407 exp/sec (347.344)
+INFO:tensorflow:global_step/sec: 0.715638
+INFO:tensorflow:learning_rate = 0.2, cross_entropy = 6.8356013, train_accuracy = 0.0 (139.740 sec)
+INFO:tensorflow:Batch [100] 740.946 exp/sec (366.83)
+INFO:tensorflow:loss = 8.012927, step = 112 (139.574 sec)
+INFO:tensorflow:Batch [110] 758.417 exp/sec (384.897)
+INFO:tensorflow:Batch [120] 751.113 exp/sec (401.198)
+INFO:tensorflow:Batch [130] 761.108 exp/sec (416.342)
+INFO:tensorflow:Batch [140] 749.724 exp/sec (430)
+INFO:tensorflow:Batch [150] 749.189 exp/sec (442.57)
+INFO:tensorflow:Batch [160] 768.897 exp/sec (454.63)

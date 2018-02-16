@@ -22,8 +22,8 @@ class TestRCommandBuilder(unittest.TestCase):
         'python tf_cnn_benchmarks.py --data_format=NCHW --batch_size=64 '
         '--num_batches=20 --model=resnet50 --data_dir=/data/imagenet '
         '--optimizer=sgd --variable_update=parameter_server '
-        '--all_reduce_spec=\'\' --nodistortions --local_parameter_device=cpu '
-        '--num_gpus=1 --display_every=10')
+        '--all_reduce_spec=\'\' --nodistortions --use_tf_layers=0 '
+        '--local_parameter_device=cpu --num_gpus=1 --display_every=10')
 
     print('cmd:{}'.format(cmd))
     self.assertEqual(cmd, expected_cmd)

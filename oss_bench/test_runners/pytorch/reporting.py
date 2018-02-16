@@ -28,7 +28,7 @@ def _collect_results(folder_path):
   results = []
   for r, _, files in os.walk(folder_path):
     for f in files:
-      if f == 'worker_0_stdout.log':
+      if f in ('worker_0_stdout.log', 'worker_0_stdout.txt'):
         result_file = os.path.join(r, f)
         results.append(parse_result_file(result_file))
   return results

@@ -28,7 +28,7 @@ class TestReporting(unittest.TestCase):
 
     # Spot checks results and GCE project info used for reporting.
     results = mock_upload.call_args[0][1]
-    self.assertEqual(results[0]['result'], 71.3568959750251)
+    self.assertEqual(results[0]['result'], 280.91838703453595)
 
     # Spot checks test_info.
     arg_test_info = mock_upload.call_args[1]['test_info']
@@ -45,15 +45,14 @@ class TestReporting(unittest.TestCase):
     """Tests parsing one results file."""
     result = reporting.parse_result_file(
         'test_runners/pytorch/unittest_files/results/basic/'
-        'worker_0_stdout.log')
+        'worker_0_stdout.txt')
 
-    self.assertEqual(result['imgs_sec'], 71.3568959750251)
-    self.assertEqual(result['batches_sampled'], 10)
+    self.assertEqual(result['imgs_sec'], 280.91838703453595)
+    self.assertEqual(result['batches_sampled'], 91)
     self.assertEqual(result['test_id'], 'resnet50.gpu_1.32.real')
     self.assertEqual(result['gpu'], 2)
     self.assertEqual(result['data_type'], 'real')
     self.assertIn('config', result)
-    #self.assertEqual(result['config']['pycmd'], 'imagenet_main.py')
 
   def _mock_config(self, test_id):
     config = {}

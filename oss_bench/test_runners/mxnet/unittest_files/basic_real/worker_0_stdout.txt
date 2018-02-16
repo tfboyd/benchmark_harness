@@ -1,0 +1,47 @@
+cd /workspace/git/mxnet_repo/example/image-classification; python train_imagenet.py --batch-size 1024 --data-nthreads 40 --data-train /data/mxnet/imagenet/data --data-train-idx /data/mxnet/imagenet/idx/train.idx --disp-batches 5 --dtype float16 --gpus 0,1,2,3,4,5,6,7 --image-shape 3,224,224 --kv-store device --max-random-h 0 --max-random-l 0 --max-random-rotate-angle 0 --max-random-s 0 --max-random-shear-ratio 0 --min-random-scale 0.533 --network resnet-v1 --num-epochs 1 --num-layers 50
+INFO:root:start with arguments Namespace(batch_size=1024, benchmark=0, data_nthreads=40, data_train='/data/mxnet/imagenet/data', data_train_idx='/data/mxnet/imagenet/idx/train.idx', data_val=None, data_val_idx='', disp_batches=5, dtype='float16', gc_threshold=0.5, gc_type='none', gpus='0,1,2,3,4,5,6,7', image_shape='3,224,224', initializer='default', kv_store='device', load_epoch=None, lr=0.1, lr_factor=0.1, lr_step_epochs='30,60', macrobatch_size=0, max_random_aspect_ratio=0.25, max_random_h=0, max_random_l=0, max_random_rotate_angle=0, max_random_s=0, max_random_scale=1, max_random_shear_ratio=0.0, min_random_scale=0.533, model_prefix=None, mom=0.9, monitor=0, network='resnet-v1', num_classes=1000, num_epochs=1, num_examples=1281167, num_layers=50, optimizer='sgd', pad_size=0, random_crop=1, random_mirror=1, rgb_mean='123.68,116.779,103.939', test_io=0, top_k=0, warmup_epochs=5, warmup_strategy='linear', wd=0.0001)
+[06:29:03] src/io/iter_image_recordio_2.cc:170: ImageRecordIOParser2: /data/mxnet/imagenet/data, use 39 threads for decoding..
+[06:29:11] src/operator/././cudnn_algoreg-inl.h:107: Running performance tests to find the best convolution algorithm, this can take a while... (setting env variable MXNET_CUDNN_AUTOTUNE_DEFAULT to 0 to disable)
+[06:29:30] src/kvstore/././comm.h:653: only 32 out of 56 GPU pairs are enabled direct access. It may affect the performance. You can set MXNET_ENABLE_GPU_P2P=0 to turn it off
+[06:29:30] src/kvstore/././comm.h:662: .vvvv...
+[06:29:30] src/kvstore/././comm.h:662: v.vv.v..
+[06:29:30] src/kvstore/././comm.h:662: vv.v..v.
+[06:29:30] src/kvstore/././comm.h:662: vvv....v
+[06:29:30] src/kvstore/././comm.h:662: v....vvv
+[06:29:30] src/kvstore/././comm.h:662: .v..v.vv
+[06:29:30] src/kvstore/././comm.h:662: ..v.vv.v
+[06:29:30] src/kvstore/././comm.h:662: ...vvvv.
+INFO:root:Epoch[0] Batch [5]    Speed: 2937.43 samples/sec      accuracy=0.000977
+INFO:root:Epoch[0] Batch [10]   Speed: 4504.65 samples/sec      accuracy=0.000977
+INFO:root:Epoch[0] Batch [15]   Speed: 4690.23 samples/sec      accuracy=0.001172
+INFO:root:Epoch[0] Batch [20]   Speed: 4693.09 samples/sec      accuracy=0.001172
+INFO:root:Epoch[0] Batch [25]   Speed: 4329.79 samples/sec      accuracy=0.000391
+INFO:root:Epoch[0] Batch [30]   Speed: 4327.41 samples/sec      accuracy=0.001563
+INFO:root:Epoch[0] Batch [35]   Speed: 4670.68 samples/sec      accuracy=0.001172
+INFO:root:Epoch[0] Batch [40]   Speed: 4750.17 samples/sec      accuracy=0.000977
+INFO:root:Epoch[0] Batch [45]   Speed: 4603.48 samples/sec      accuracy=0.001367
+INFO:root:Epoch[0] Batch [50]   Speed: 4654.62 samples/sec      accuracy=0.001367
+INFO:root:Epoch[0] Batch [55]   Speed: 4499.93 samples/sec      accuracy=0.000977
+INFO:root:Epoch[0] Batch [60]   Speed: 4647.53 samples/sec      accuracy=0.001563
+INFO:root:Epoch[0] Batch [65]   Speed: 4691.39 samples/sec      accuracy=0.000391
+INFO:root:Epoch[0] Batch [70]   Speed: 4718.63 samples/sec      accuracy=0.000977
+INFO:root:Epoch[0] Batch [75]   Speed: 4678.40 samples/sec      accuracy=0.000586
+INFO:root:Epoch[0] Batch [80]   Speed: 4599.27 samples/sec      accuracy=0.000781
+INFO:root:Epoch[0] Batch [85]   Speed: 4512.23 samples/sec      accuracy=0.000977
+INFO:root:Epoch[0] Batch [90]   Speed: 4698.92 samples/sec      accuracy=0.001172
+INFO:root:Epoch[0] Batch [95]   Speed: 4684.37 samples/sec      accuracy=0.001758
+INFO:root:Epoch[0] Batch [100]  Speed: 4588.28 samples/sec      accuracy=0.001758
+INFO:root:Epoch[0] Batch [105]  Speed: 4714.44 samples/sec      accuracy=0.001172
+INFO:root:Epoch[0] Batch [110]  Speed: 4640.01 samples/sec      accuracy=0.002344
+INFO:root:Epoch[0] Batch [115]  Speed: 4758.79 samples/sec      accuracy=0.001367
+INFO:root:Epoch[0] Batch [120]  Speed: 4393.72 samples/sec      accuracy=0.001563
+INFO:root:Epoch[0] Batch [125]  Speed: 4765.60 samples/sec      accuracy=0.001367
+INFO:root:Epoch[0] Batch [130]  Speed: 4569.20 samples/sec      accuracy=0.001172
+INFO:root:Epoch[0] Batch [135]  Speed: 4703.05 samples/sec      accuracy=0.000195
+INFO:root:Epoch[0] Batch [140]  Speed: 4812.90 samples/sec      accuracy=0.001953
+INFO:root:Epoch[0] Batch [145]  Speed: 4729.36 samples/sec      accuracy=0.002344
+INFO:root:Epoch[0] Batch [150]  Speed: 4428.01 samples/sec      accuracy=0.001953
+INFO:root:Epoch[0] Batch [155]  Speed: 4578.44 samples/sec      accuracy=0.001563
+INFO:root:Epoch[0] Batch [160]  Speed: 4552.56 samples/sec      accuracy=0.002344
+INFO:root:Epoch[0] Batch [165]  Speed: 4697.85 samples/sec      accuracy=0.002148
+INFO:root:Epoch[0] Batch [170]  Speed: 4552.53 samples/sec      accuracy=0.001563

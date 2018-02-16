@@ -22,7 +22,7 @@ def build_run_command(run_config):
       'mkl', 'num_warmup_batches', 'forward_only', 'kmp_blocktime', 'device',
       'staged_vars', 'staged_grads', 'cross_replica_sync', 'all_reduce_spec',
       'use_datasets', 'batch_group_size', 'use_nccl', 'use_fp16',
-      'nodistortions'
+      'nodistortions', 'gpu_thread_mode', 'hierarchical_copy', 'use_tf_layers'
   ]
 
   for arg in pass_through_args:
@@ -57,14 +57,6 @@ def build_run_command(run_config):
   run_cmd = '{} {}'.format(run_script, ' '.join(run_cmd_list))
 
   return run_cmd
-
-
-def GpuDecode(raw_gpu_input):
-  """Handles different entries options for workers and ps_servers."""
-  if type(raw_gpu_input) is int:
-    return str(raw_gpu_input)
-  else:
-    return raw_gpu_input.split(',')
 
 
 def build_test_config_suite(full_config, debug_level):
