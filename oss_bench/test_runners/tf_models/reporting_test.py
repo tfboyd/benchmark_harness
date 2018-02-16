@@ -66,9 +66,9 @@ class TestReporting(unittest.TestCase):
     """Tests parsing one results file."""
     result = reporting.parse_result_file(
         'test_runners/tf_models/unittest_files/results/basic/'
-        'worker_0_stdout.log')
+        'worker_0_stdout.txt')
 
-    self.assertEqual(result['imgs_sec'], 122.9444)
+    self.assertEqual(result['imgs_sec'], 742.4807000000001)
     self.assertEqual(result['batches_sampled'], 10)
     self.assertEqual(result['test_id'], 'resnet50v2.gpu_1.32')
     self.assertEqual(result['gpu'], 1)

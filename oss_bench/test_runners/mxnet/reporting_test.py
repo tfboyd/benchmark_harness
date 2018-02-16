@@ -77,10 +77,10 @@ class TestReporting(unittest.TestCase):
   def test_parse_result_file_real(self):
     """Tests parsing one results file for real data."""
     result = reporting.parse_result_file(
-        'test_runners/mxnet/unittest_files/basic_real/worker_0_stdout.log')
+        'test_runners/mxnet/unittest_files/basic_real/worker_0_stdout.txt')
 
-    self.assertEqual(result['imgs_sec'], 178.55300000000003)
-    self.assertEqual(result['batches_sampled'], 10)
+    self.assertEqual(result['imgs_sec'], 4618.571578947368)
+    self.assertEqual(result['batches_sampled'], 19)
     self.assertEqual(result['test_id'], 'resnet50.gpu_1.32.real')
     self.assertEqual(result['gpu'], 2)
     self.assertEqual(result['data_type'], 'real')

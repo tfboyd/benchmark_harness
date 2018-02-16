@@ -73,9 +73,9 @@ class TestReporting(unittest.TestCase):
     """Tests parsing one results file."""
     result = reporting.parse_result_file(
         'test_runners/tf_cnn_bench/test_configs/results/resnet50/'
-        'worker_0_stdout.log')
+        'worker_0_stdout.txt')
 
-    self.assertEqual(result['imgs_sec'], 80.01)
+    self.assertEqual(result['imgs_sec'], 351.23)
     self.assertEqual(result['test_id'], 'resnet50.1_gpu.32.replicated_nccl')
     self.assertEqual(result['gpu'], 1)
     self.assertIn('config', result)

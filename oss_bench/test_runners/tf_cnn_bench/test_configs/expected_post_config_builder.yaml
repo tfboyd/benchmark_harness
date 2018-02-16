@@ -5,6 +5,7 @@ num_batches: 20
 data_format: 'NCHW'
 batch_size: 64
 all_reduce_spec: ''''''
+use_tf_layers: 0
 variable_update: 'parameter_server'
 gpus: 1
 data_dir: '/data/imagenet'

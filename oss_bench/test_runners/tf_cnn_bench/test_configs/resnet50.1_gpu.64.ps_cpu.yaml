@@ -11,3 +11,4 @@ run_configs:
     batch_size: 64
     optimizer: 'sgd'
     all_reduce_spec: ''''''
+    use_tf_layers: 0
