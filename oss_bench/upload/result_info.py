@@ -95,6 +95,8 @@ def build_system_info(platform=None,
 def build_test_info(framework='tensorflow',
                     framework_version=None,
                     framework_describe=None,
+                    channel=None,
+                    build_type=None,
                     batch_size=None,
                     model=None,
                     accel_cnt=None,
@@ -106,6 +108,8 @@ def build_test_info(framework='tensorflow',
       mxnet, or caffe2.  Defaults to tensorflow.
     framework_version: Version of the framework tested.
     framework_describe: More info on the framework version, often git describe.
+    channel: Release channel, e.g. HEAD, PR_CHECK, NIGHTLY, RC, or FINAL.
+    build_type: Type of build, e.g. OTB-GPU, AVX, AVX-512, or MKL.
     batch_size (int, optional): Total batch size.
     model (str, optional): Model being tested.
     accel_cnt (int, optional): Number of accelerators being utilized.
@@ -118,6 +122,10 @@ def build_test_info(framework='tensorflow',
   test_info = {}
   if framework:
     test_info['framework'] = framework
+  if channel:
+    test_info['channel'] = channel
+  if build_type:
+    test_info['build_type'] = build_type
   if batch_size:
     test_info['batch_size'] = batch_size
   if model:

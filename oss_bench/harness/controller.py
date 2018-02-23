@@ -1,6 +1,7 @@
 """Sets up the environment and runs benchmarks."""
 from __future__ import print_function
 import argparse
+from functools import partial
 import os
 import subprocess
 import sys
@@ -206,17 +207,41 @@ class BenchmarkRunner(object):
 
     # pylint: disable=C6204
     import tools.tf_version as tf_version
+
     # Sets system GPU info on test_config for child modules to consume.
     version, git_version = tf_version.get_tf_full_version()
     test_config['framework_version'] = version
     test_config['framework_describe'] = git_version
+
     # Run tf_cnn_bench tests if in config
     if 'tf_cnn_bench_configs' in test_config:
-      self._tf_cnn_bench(test_config)
+      tested = self.check_if_run(test_config, 'tf_cnn_bench')
+      if not tested:
+        self._tf_cnn_bench(test_config)
+        self.update_state(test_config, 'tf_cnn_bench')
 
     # Run tf_model_bench if list of tests is found
     if 'tf_models_tests' in test_config:
-      self._tf_model_bench(test_config)
+      tested = self.check_if_run(test_config, 'tf_models')
+      if not tested:
+        self._tf_model_bench(test_config)
+        self.update_state(test_config, 'tf_models')
+
+
+  def check_if_run(self, test_config, test):
+    if test_config.get('track'):
+      return tracker.check_state(self.workspace, self.framework,test_config['channel'],
+                      test_config['build_type'],
+                      test_config['framework_version'], test)
+    else:
+      return False
+
+  def update_state(self, test_config, test):
+    if test_config.get('track'):
+      tracker.update_state(self.workspace, self.framework,test_config['channel'],
+                      test_config['build_type'],
+                      test_config['framework_version'],test)
+
 
   def run_mxnet_tests(self, test_config):
     """Runs all MXNet based tests.
@@ -237,12 +262,15 @@ class BenchmarkRunner(object):
     from test_runners.mxnet import runner
     test_config['framework_version'] = mx.__version__
 
-    # Calls mxnet runner with lists of tests from the test_config
-    run = runner.TestRunner(
-        os.path.join(self.logs_dir, 'mxnet'),
-        bench_home,
-        auto_test_config=test_config)
-    run.run_tests(test_config['mxnet_tests'])
+    tested = self.check_if_run(test_config, 'mxnet')
+    if not tested:
+      # Calls mxnet runner with lists of tests from the test_config
+      run = runner.TestRunner(
+          os.path.join(self.logs_dir, 'mxnet'),
+          bench_home,
+          auto_test_config=test_config)
+      run.run_tests(test_config['mxnet_tests'])
+      self.update_state(test_config, 'mxnet')
 
   def run_pytorch_tests(self, test_config):
     """Runs all pytorch based tests.
@@ -260,12 +288,16 @@ class BenchmarkRunner(object):
     test_config['framework_version'] = torch.__version__
     # pylint: disable=C6204
     from test_runners.pytorch import runner
-    # Calls pytorch runner with lists of tests from the test_config
-    run = runner.TestRunner(
+
+    tested = self.check_if_run(test_config, 'pytorch')
+    if not tested:
+      # Calls pytorch runner with lists of tests from the test_config
+      run = runner.TestRunner(
         os.path.join(self.logs_dir, 'pytorch'),
         bench_home,
         auto_test_config=test_config)
-    run.run_tests(test_config['pytorch_tests'])
+      run.run_tests(test_config['pytorch_tests'])
+      self.update_state(test_config, 'pytorch')
 
   def run_tests(self):
     """Runs all tests based on the test_config."""
@@ -285,6 +317,9 @@ class BenchmarkRunner(object):
     # pylint: disable=C6204
     import tools.nvidia as nvidia
     test_config['gpu_driver'], test_config['accel_type'] = nvidia.get_gpu_info()
+    # pylint: disable=C6204
+    global tracker
+    import tools.tracker as tracker
 
     if self.framework == 'tensorflow':
       self.run_tensorflow_tests(test_config)
