@@ -312,6 +312,14 @@ class TestRunner(object):
     config = self.build_test_config(test_id, args, batch_size=64, gpus=8)
     self.run_test_suite(config)
 
+  def renset50v1_64_gpu_8_local_allreduce_device(self):
+    """Tests ResNet50 synthetic, 8 GPUs, batch size 64*8, and allreduce."""
+    test_id = 'resnet50v1.gpu_8.local_allreduce_device.64'
+    args = {}
+    args['kv-store'] = 'local_allreduce_device'
+    config = self.build_test_config(test_id, args, batch_size=64, gpus=8)
+    self.run_test_suite(config)
+
   def renset50v1_64_gpu_8_nccl_real(self):
     """Tests ResNet50 real data on 8 GPUs with batch size 64*8 and nccl."""
     test_id = 'resnet50v1.gpu_8.nccl.64.real'
