@@ -21,10 +21,9 @@ class TestBenchmarkRunner(unittest.TestCase):
   @patch('harness.controller.BenchmarkRunner._store_repo_info')
   @patch('harness.controller.BenchmarkRunner._clone_tf_repos')
   def test_run_tests(self, clone_repos_mock, store_repo_info, tf_cnn_bench,
-                     get_tf_full_version, check_state,
-                               save_state):
+                     get_tf_full_version, check_state, save_state):
     """Tests run_tests where TensorFlow based tests are run."""
-    mock_git_clone, mock_make_dirs, mock_gpu_info = self._patch_logs_git_gpu()
+    _, mock_make_dirs, mock_gpu_info = self._patch_logs_git_gpu()
 
     benchmark_runner = controller.BenchmarkRunner(
         '/workspace',
@@ -40,6 +39,7 @@ class TestBenchmarkRunner(unittest.TestCase):
     clone_repos_mock.assert_called()
     mock_make_dirs.assert_called()
     store_repo_info.assert_called()
+    mock_gpu_info.assert_called()
     self.assertEqual(os.environ['GOOGLE_APPLICATION_CREDENTIALS'],
                      '/auth_tokens/tensorflow_performance_upload_tb.json')
     self.assertIn('/workspace/git/benchmark_harness/oss_bench', sys.path)
@@ -51,9 +51,10 @@ class TestBenchmarkRunner(unittest.TestCase):
     self.assertEqual(arg0['framework_describe'], expected_version[1])
 
     saved_object = save_state.call_args[0][1]
-    key = tracker._hash_key('tensorflow','NIGHTLY','OTB-GPU',expected_version[0])
+    key = tracker._hash_key('tensorflow', 'NIGHTLY', 'OTB-GPU',
+                            expected_version[0])
     entry = saved_object[key]
-    self.assertIn('tf_cnn_bench',entry['tests'])
+    self.assertIn('tf_cnn_bench', entry['tests'])
 
   @patch('tools.tracker.check_state')
   @patch('tools.tf_version.get_tf_full_version')
@@ -63,9 +64,9 @@ class TestBenchmarkRunner(unittest.TestCase):
   @patch('harness.controller.BenchmarkRunner._clone_tf_repos')
   def test_run_tests_tf_models(self, clone_repos_mock, store_repo_info,
                                tf_cnn_bench, tf_model_bench,
-                                get_tf_full_version, check_state):
+                               get_tf_full_version, check_state):
     """Tests run_tests where tf_models and tf_cnn_bench tests are run."""
-    mock_git_clone, mock_make_dirs, mock_gpu_info = self._patch_logs_git_gpu()
+    _, mock_make_dirs, mock_gpu_info = self._patch_logs_git_gpu()
 
     benchmark_runner = controller.BenchmarkRunner(
         '/workspace',
@@ -82,6 +83,7 @@ class TestBenchmarkRunner(unittest.TestCase):
     # Track is not set to true so check_state should not be called.
     check_state.assert_not_called()
     store_repo_info.assert_called()
+    mock_gpu_info.assert_called()
 
     # Verifies both test methods are called
     tf_cnn_bench.assert_called()
@@ -143,14 +145,8 @@ class TestBenchmarkRunner(unittest.TestCase):
     """Tests run_tests for mxnet with run tracker True."""
     mock_git_clone, mock_make_dirs, mock_gpu_info = self._patch_logs_git_gpu()
     self._patch_mxnet()
-    config_file = ('harness/test_configs/mxnet_config.yaml')
-    f = open(config_file)
-    auto_config = yaml.safe_load(f)
-
     benchmark_runner = controller.BenchmarkRunner(
-        '/workspace',
-        'test_configs/mxnet_config.yaml',
-        framework='mxnet')
+        '/workspace', 'test_configs/mxnet_config.yaml', framework='mxnet')
 
     check_state.return_value = False
 
@@ -158,19 +154,19 @@ class TestBenchmarkRunner(unittest.TestCase):
     check_state.assert_called()
     mock_git_clone.assert_called()
     mock_make_dirs.assert_called()
+    mock_gpu_info.assert_called()
 
     call_args = mxnet_runner.call_args
     arg0 = call_args[0]
-    self.assertEqual(arg0[0],'/workspace/logs/mxnet')
+    self.assertEqual(arg0[0], '/workspace/logs/mxnet')
     self.assertEqual(arg0[1],
                      '/workspace/git/mxnet_repo/example/image-classification')
-    self.assertEqual(len(call_args[1]['auto_test_config']['mxnet_tests']),
-      4)
+    self.assertEqual(len(call_args[1]['auto_test_config']['mxnet_tests']), 4)
 
     saved_object = save_state.call_args[0][1]
-    key = tracker._hash_key('mxnet','FINAL','OTB-GPU','1_0_0')
+    key = tracker._hash_key('mxnet', 'FINAL', 'OTB-GPU', '1_0_0')
     entry = saved_object[key]
-    self.assertIn('mxnet',entry['tests'])
+    self.assertIn('mxnet', entry['tests'])
 
   @patch('test_runners.pytorch.runner.TestRunner')
   @patch('tools.tracker._save_state_object')
@@ -179,14 +175,9 @@ class TestBenchmarkRunner(unittest.TestCase):
     """Tests run_tests for pytorch with run tracker True."""
     mock_git_clone, mock_make_dirs, mock_gpu_info = self._patch_logs_git_gpu()
     self._patch_pytorch(version='0.9')
-    config_file = ('harness/test_configs/pytorch_config.yaml')
-    f = open(config_file)
-    auto_config = yaml.safe_load(f)
 
     benchmark_runner = controller.BenchmarkRunner(
-        '/workspace',
-        'test_configs/pytorch_config.yaml',
-        framework='pytorch')
+        '/workspace', 'test_configs/pytorch_config.yaml', framework='pytorch')
 
     check_state.return_value = False
 
@@ -194,19 +185,18 @@ class TestBenchmarkRunner(unittest.TestCase):
     check_state.assert_called()
     mock_git_clone.assert_called()
     mock_make_dirs.assert_called()
+    mock_gpu_info.assert_called()
 
     call_args = pytorch_runner.call_args
     arg0 = call_args[0]
-    self.assertEqual(arg0[0],'/workspace/logs/pytorch')
-    self.assertEqual(arg0[1],
-                     '/workspace/git/pytorch_examples')
-    self.assertEqual(len(call_args[1]['auto_test_config']['pytorch_tests']),
-      4)
+    self.assertEqual(arg0[0], '/workspace/logs/pytorch')
+    self.assertEqual(arg0[1], '/workspace/git/pytorch_examples')
+    self.assertEqual(len(call_args[1]['auto_test_config']['pytorch_tests']), 4)
 
     saved_object = save_state.call_args[0][1]
-    key = tracker._hash_key('pytorch','FINAL','OTB-GPU','0.9')
+    key = tracker._hash_key('pytorch', 'FINAL', 'OTB-GPU', '0.9')
     entry = saved_object[key]
-    self.assertIn('pytorch',entry['tests'])
+    self.assertIn('pytorch', entry['tests'])
 
   @patch('tools.git_info.git_repo_last_commit_id')
   @patch('tools.git_info.git_repo_describe')
@@ -230,8 +220,8 @@ class TestBenchmarkRunner(unittest.TestCase):
     self.assertEqual(benchmarks_repo['last_commit_id'],
                      'bfd2f676fe5d21c66f30732648e58c4ca3f3d5b5')
 
-  def _patch_logs_git_gpu(self, gpu_info=[387.11, 'GTX 970']):
-
+  def _patch_logs_git_gpu(self, gpu_info=None):
+    gpu_info = gpu_info or [387.11, 'GTX 970']
     patch_gpu_info = patch('tools.nvidia.get_gpu_info')
     patch_make_dirs = patch('harness.controller.BenchmarkRunner._make_logs_dir')
     patch_git_clone = patch('harness.controller.BenchmarkRunner._git_clone')
@@ -249,21 +239,15 @@ class TestBenchmarkRunner(unittest.TestCase):
 
   def _patch_mxnet(self, version='1_0_0'):
     mxnet_mock = Mock(__version__=version)
-    modules = {
-      'mxnet' : mxnet_mock
-
-    }
-    mock_modules = patch.dict('sys.modules',modules)
+    modules = {'mxnet': mxnet_mock}
+    mock_modules = patch.dict('sys.modules', modules)
     mock_modules.start()
     self.addCleanup(mock_modules.stop)
 
   def _patch_pytorch(self, version='1_0_0'):
     pytorch_mock = Mock(__version__=version)
-    modules = {
-      'torch' : pytorch_mock
-
-    }
-    mock_modules = patch.dict('sys.modules',modules)
+    modules = {'torch': pytorch_mock}
+    mock_modules = patch.dict('sys.modules', modules)
     mock_modules.start()
     self.addCleanup(mock_modules.stop)
 
@@ -275,7 +259,6 @@ class TestBenchmarkRunner(unittest.TestCase):
     entry_1['channel'] = channel
     entry_1['build_type'] = build_type
     entry_1['tests'] = tests
-    entry_key_1 = tracker._hash_key('tensorflow','RC','OTB.GPU')
+    entry_key_1 = tracker._hash_key('tensorflow', 'RC', 'OTB.GPU')
     state_object[entry_key_1] = entry_1
     return state_object
-

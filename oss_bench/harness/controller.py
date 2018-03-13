@@ -1,11 +1,13 @@
 """Sets up the environment and runs benchmarks."""
 from __future__ import print_function
 import argparse
-from functools import partial
 import os
 import subprocess
 import sys
 import yaml
+
+# Set after module is dynamically loaded.
+tracker = None
 
 
 class BenchmarkRunner(object):
@@ -227,21 +229,19 @@ class BenchmarkRunner(object):
         self._tf_model_bench(test_config)
         self.update_state(test_config, 'tf_models')
 
-
   def check_if_run(self, test_config, test):
     if test_config.get('track'):
-      return tracker.check_state(self.workspace, self.framework,test_config['channel'],
-                      test_config['build_type'],
-                      test_config['framework_version'], test)
+      return tracker.check_state(
+          self.workspace, self.framework, test_config['channel'],
+          test_config['build_type'], test_config['framework_version'], test)
     else:
       return False
 
   def update_state(self, test_config, test):
     if test_config.get('track'):
-      tracker.update_state(self.workspace, self.framework,test_config['channel'],
-                      test_config['build_type'],
-                      test_config['framework_version'],test)
-
+      tracker.update_state(self.workspace, self.framework,
+                           test_config['channel'], test_config['build_type'],
+                           test_config['framework_version'], test)
 
   def run_mxnet_tests(self, test_config):
     """Runs all MXNet based tests.
@@ -293,9 +293,9 @@ class BenchmarkRunner(object):
     if not tested:
       # Calls pytorch runner with lists of tests from the test_config
       run = runner.TestRunner(
-        os.path.join(self.logs_dir, 'pytorch'),
-        bench_home,
-        auto_test_config=test_config)
+          os.path.join(self.logs_dir, 'pytorch'),
+          bench_home,
+          auto_test_config=test_config)
       run.run_tests(test_config['pytorch_tests'])
       self.update_state(test_config, 'pytorch')
 
@@ -317,8 +317,10 @@ class BenchmarkRunner(object):
     # pylint: disable=C6204
     import tools.nvidia as nvidia
     test_config['gpu_driver'], test_config['accel_type'] = nvidia.get_gpu_info()
-    # pylint: disable=C6204
+
     global tracker
+    # pylint: disable=C6204
+    # pylint: disable=W0621
     import tools.tracker as tracker
 
     if self.framework == 'tensorflow':

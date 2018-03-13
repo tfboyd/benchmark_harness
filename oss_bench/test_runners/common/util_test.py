@@ -1,4 +1,4 @@
-"""Tests util.py"""
+"""Tests util.py."""
 from __future__ import print_function
 
 import unittest
@@ -44,9 +44,12 @@ class TestReporting(unittest.TestCase):
     agg_result['config']['model'] = 'resnet50'
     agg_result['config']['cmd'] = 'python tf_cnn_benchmark foo=0'
 
-    util.report_config_defaults(report_config);
-    util.upload_results(report_config, agg_result=agg_result,
-                        framework='tensorflow', test_harness='tf_model')
+    util.report_config_defaults(report_config)
+    util.upload_results(
+        report_config,
+        agg_result=agg_result,
+        framework='tensorflow',
+        test_harness='tf_model')
 
     # Spot checks test_info.
     arg_test_info = mock_upload_results.call_args[1]['test_info']

@@ -7,6 +7,7 @@ import yaml
 
 STATE_FILE = 'test_tracker.yaml'
 
+
 def check_state(workspace, framework, channel, build_type, version, test):
   """Returns true if existing info is found, false otherwise."""
   state_object = _get_state_object(workspace)
@@ -18,7 +19,7 @@ def check_state(workspace, framework, channel, build_type, version, test):
 
 
 def update_state(workspace, framework, channel, build_type, version, test):
-  """Update state object"""
+  """Update state object."""
   state_object = _get_state_object(workspace)
   key = _hash_key(framework, channel, build_type, version)
   entry = None
