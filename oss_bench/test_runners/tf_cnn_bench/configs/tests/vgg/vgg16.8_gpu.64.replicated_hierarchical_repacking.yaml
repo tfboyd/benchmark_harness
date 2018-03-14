@@ -1,0 +1,12 @@
+run_configs:
+  - test_id: vgg16.8_gpu.64.replicated_hierarchical_repacking
+    gpus: 8
+    model: 'vgg16'
+    data_format: NCHW
+    variable_update: replicated
+    num_batches: 100
+    batch_size: 64
+    optimizer: 'sgd'
+    hierarchical_copy: True
+    gpu_thread_mode: gpu_shared
+    gradient_repacking: 8
