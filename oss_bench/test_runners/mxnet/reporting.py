@@ -19,7 +19,10 @@ def process_folder(folder_path, report_config=None):
   agg_result = util.report_aggregate_results(results)
 
   util.upload_results(
-      report_config, agg_result, framework='mxnet', test_harness='mxnet')
+      report_config,
+      agg_result,
+      framework='mxnet',
+      test_harness='mxnet_benchmark')
 
 
 def _collect_results(folder_path):

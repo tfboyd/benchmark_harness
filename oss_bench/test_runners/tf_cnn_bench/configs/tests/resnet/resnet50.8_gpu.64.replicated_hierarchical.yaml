@@ -1,0 +1,12 @@
+run_configs:
+  - test_id: resnet50.8_gpu.64.replicated_hierarchical
+    gpus: 8
+    model: 'resnet50'
+    ps_server: gpu
+    data_format: NCHW
+    variable_update: replicated
+    num_batches: 100
+    batch_size: 64
+    optimizer: 'sgd'
+    hierarchical_copy: True
+    gpu_thread_mode: gpu_shared

@@ -30,7 +30,7 @@ class TestReporting(unittest.TestCase):
     test_result = mock_upload.call_args[0][0]
 
     # Spot checks test_result.
-    self.assertEqual(test_result['test_harness'], 'mxnet')
+    self.assertEqual(test_result['test_harness'], 'mxnet_benchmark')
     self.assertEqual(test_result['test_environment'],
                      report_config['test_environment'])
     self.assertEqual(test_result['test_id'], test_id_0)

@@ -3,7 +3,7 @@ test_harness: 'mxnet_benchmark'
 test_environment: 'brain-lab'
 # System basics
 platform: 'NVIDIA'
-platform_type: 'DGX-1 (P100)'
+platform_type: 'DGX-1 (V100)'
 
 # reporting
 report_auth: 'brain_lab_benchmarks.json'
@@ -13,13 +13,10 @@ report_table: 'result'
 
 # mxnet tests to run.
 mxnet_tests:
-  - renset50v1_64_gpu_1
-  - renset50v1_64_gpu_8
-  - renset50v1_64_gpu_1_real
-  - renset50v1_64_gpu_8_real
-  - renset50v1_64_gpu_8_local_allreduce_device_real
-  - renset50v1_64_gpu_8_local_allreduce_device
+  - renset50v1_128_gpu_8_nccl_fp16_real
+  - renset50v1_128_gpu_8_nccl_fp16
+  - renset50v1_64_gpu_8_nccl_real
+  - renset50v1_64_gpu_8_nccl
 
 # MXNet configs
-data_threads: 20
-
+data_threads: 40
