@@ -22,7 +22,8 @@ def build_run_command(run_config):
       'mkl', 'num_warmup_batches', 'forward_only', 'kmp_blocktime', 'device',
       'staged_vars', 'staged_grads', 'cross_replica_sync', 'all_reduce_spec',
       'use_datasets', 'batch_group_size', 'use_nccl', 'use_fp16',
-      'nodistortions', 'gpu_thread_mode', 'hierarchical_copy', 'use_tf_layers'
+      'nodistortions', 'gpu_thread_mode', 'hierarchical_copy', 'use_tf_layers',
+      'gradient_repacking'
   ]
 
   for arg in pass_through_args:

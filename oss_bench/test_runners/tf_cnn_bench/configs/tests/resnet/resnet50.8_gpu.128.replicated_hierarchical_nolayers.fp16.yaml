@@ -3,7 +3,6 @@ run_configs:
     gpus: 8
     model: 'resnet50'
     use_fp16: True
-    ps_server: gpu
     data_format: NCHW
     variable_update: replicated
     num_batches: 100
