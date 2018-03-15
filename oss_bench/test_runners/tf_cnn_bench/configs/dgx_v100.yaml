@@ -4,7 +4,7 @@ repeat: 3
 # Worker settings override
 num_batches: 100
 nodistortions: FLAG_ONLY
-/tests/resnet/resnet50.8_gpu.128.replicated_hierarchical.fp16.yaml
+
 sub_configs:
   - 'tests/resnet/resnet50.1_gpu.128.ps_gpu.cuda_visible_0.fp16.yaml'
   - 'tests/resnet/resnet50.1_gpu.64.ps_gpu.yaml'
