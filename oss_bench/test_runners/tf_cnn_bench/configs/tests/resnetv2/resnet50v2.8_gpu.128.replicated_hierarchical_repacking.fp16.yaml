@@ -1,10 +1,11 @@
 run_configs:
-  - test_id: alexnet.8_gpu.128.replicated_hierarchical_repacking
+  - test_id: resnet50v2.8_gpu.128.replicated_hierarchical_repacking.fp16
     gpus: 8
-    model: 'alexnet'
+    model: 'resnet50_v2'
+    use_fp16: True
     data_format: NCHW
     variable_update: replicated
-    num_batches: 500
+    num_batches: 100
     batch_size: 128
     optimizer: 'sgd'
     hierarchical_copy: True

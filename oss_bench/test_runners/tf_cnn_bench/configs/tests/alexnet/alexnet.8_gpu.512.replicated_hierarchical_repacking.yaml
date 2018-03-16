@@ -1,0 +1,12 @@
+run_configs:
+  - test_id: alexnet.8_gpu.512.replicated_hierarchical_repacking
+    gpus: 8
+    model: 'alexnet'
+    data_format: NCHW
+    variable_update: replicated
+    num_batches: 500
+    batch_size: 512
+    optimizer: 'sgd'
+    hierarchical_copy: True
+    gpu_thread_mode: gpu_shared
+    gradient_repacking: 8

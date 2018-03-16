@@ -5,6 +5,6 @@ repeat: 3
 nodistortions: FLAG_ONLY
 
 sub_configs:
-  - 'tests/alexnet/alexnet.8_gpu.128.replicated_hierarchical_repacking.yaml'
+  - 'tests/alexnet/alexnet.8_gpu.512.replicated_hierarchical_repacking.yaml'
   - 'tests/trivial/trivial.8_gpu.128.independent.yaml'
   - 'tests/trivial/trivial.8_gpu.64.independent.yaml'
