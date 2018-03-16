@@ -1,6 +1,9 @@
 # Default config assumes usage of docker and local GPU at least GTX1080
 test_harness: 'mxnet_benchmark'
 test_environment: 'brain-lab'
+channel: FINAL
+build_type: OTB-GPU
+track: True
 # System basics
 platform: 'NVIDIA'
 platform_type: 'DGX-1 (P100)'
@@ -17,9 +20,6 @@ mxnet_tests:
   - renset50v1_64_gpu_8
   - renset50v1_64_gpu_1_real
   - renset50v1_64_gpu_8_real
-  - renset50v1_64_gpu_8_local_allreduce_device_real
-  - renset50v1_64_gpu_8_local_allreduce_device
 
 # MXNet configs
-data_threads: 20
-
+data_threads: 16

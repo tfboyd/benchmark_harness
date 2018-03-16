@@ -1,5 +1,5 @@
 run_configs:
-  - test_id: resnet50.8_gpu.128.replicated_hierarchical_nolayers.fp16
+  - test_id: resnet50.8_gpu.128.replicated_hierarchical.fp16
     gpus: 8
     model: 'resnet50'
     use_fp16: True
@@ -10,4 +10,3 @@ run_configs:
     optimizer: 'sgd'
     hierarchical_copy: True
     gpu_thread_mode: gpu_shared
-    use_tf_layers: 0

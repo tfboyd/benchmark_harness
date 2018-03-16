@@ -187,6 +187,7 @@ class TestRunner(object):
     res_args['image-shape'] = '3,224,224'
     res_args['num-layers'] = 50
     res_args['dtype'] = 'float32'
+    res_args['kv-store'] = 'device'
     base_args = None
     if real_data:
       base_args = self._base_imagenet_args()
@@ -212,7 +213,7 @@ class TestRunner(object):
                         batch_size=32,
                         gpus=1,
                         real_data=False):
-    """Returns a base test config for ResNet50-v1 tests on synthetic data.
+    """Returns a base test config for ResNet50-v1 tests.
 
     Args:
       test_id: unique id for the test.
@@ -238,7 +239,6 @@ class TestRunner(object):
     args['batch-size'] = batch_size * gpus
     # Sets gpus in the format of 0,1,2,3 for 4 GPUs.
     args['gpus'] = ','.join(str(x) for x in xrange(gpus))
-    args['kv-store'] = 'device'
 
     return config
 
@@ -312,6 +312,40 @@ class TestRunner(object):
         test_id, args, batch_size=64, gpus=8, real_data=True)
     self.run_test_suite(config)
 
+  def renset50v1_64_gpu_8_nccl(self):
+    """Tests ResNet50 synthetic data on 8 GPUs with batch size 64*8 and nccl."""
+    test_id = 'resnet50v1.gpu_8.nccl.64'
+    args = {}
+    args['kv-store'] = 'nccl'
+    config = self.build_test_config(test_id, args, batch_size=64, gpus=8)
+    self.run_test_suite(config)
+
+  def renset50v1_64_gpu_8_nccl_real(self):
+    """Tests ResNet50 real data on 8 GPUs with batch size 64*8 and nccl."""
+    test_id = 'resnet50v1.gpu_8.nccl.64.real'
+    args = {}
+    args['kv-store'] = 'nccl'
+    config = self.build_test_config(
+        test_id, args, batch_size=64, gpus=8, real_data=True)
+    self.run_test_suite(config)
+
+  def renset50v1_64_gpu_8_local_allreduce_device(self):
+    """Tests ResNet50 synthetic, 8 GPUs, batch size 64*8, and allreduce."""
+    test_id = 'resnet50v1.gpu_8.local_allreduce_device.64'
+    args = {}
+    args['kv-store'] = 'local_allreduce_device'
+    config = self.build_test_config(test_id, args, batch_size=64, gpus=8)
+    self.run_test_suite(config)
+
+  def renset50v1_64_gpu_8_local_allreduce_device_real(self):
+    """Tests ResNet50 real, 8 GPUs, batch size 64*8, and allreduce."""
+    test_id = 'resnet50v1.gpu_8.local_allreduce_device.64.real'
+    args = {}
+    args['kv-store'] = 'local_allreduce_device'
+    config = self.build_test_config(
+        test_id, args, batch_size=64, gpus=8, real_data=True)
+    self.run_test_suite(config)
+
   def renset50v1_128_gpu_8(self):
     """Tests ResNet50 synthetic data on 8 GPUs with batch size 128*8."""
     test_id = 'resnet50v1.gpu_8.128'
@@ -366,6 +400,50 @@ class TestRunner(object):
     test_id = 'resnet50v1.gpu_8.128.fp16.real'
     args = {}
     args['dtype'] = 'float16'
+    config = self.build_test_config(
+        test_id, args, batch_size=128, gpus=8, real_data=True)
+    self.run_test_suite(config)
+
+  def renset50v1_128_gpu_8_nccl_fp16(self):
+    """Tests ResNet50 (FP16) synthetic on 8 GPUs. batch size 128*8, and nccl."""
+    test_id = 'resnet50v1.gpu_8.nccl.128.fp16'
+    args = {}
+    args['dtype'] = 'float16'
+    args['kv-store'] = 'nccl'
+    config = self.build_test_config(test_id, args, batch_size=128, gpus=8)
+    self.run_test_suite(config)
+
+  def renset50v1_128_gpu_8_nccl_fp16_real(self):
+    """Tests ResNet50 (FP16) real data, 8 GPUs, batch size 128*8, and nccl."""
+    test_id = 'resnet50v1.gpu_8.nccl.128.fp16.real'
+    args = {}
+    args['dtype'] = 'float16'
+    args['kv-store'] = 'nccl'
+    config = self.build_test_config(
+        test_id, args, batch_size=128, gpus=8, real_data=True)
+    self.run_test_suite(config)
+
+  def renset50v1_128_gpu_8_local_allreduce_device_fp16(self):
+    """Tests ResNet50 (FP16) synthetic on 8 GPUs. batch size 128*8.
+
+       And local_allreduce_device.
+    """
+    test_id = 'resnet50v1.gpu_8.local_allreduce_device.128.fp16'
+    args = {}
+    args['dtype'] = 'float16'
+    args['kv-store'] = 'local_allreduce_device'
+    config = self.build_test_config(test_id, args, batch_size=128, gpus=8)
+    self.run_test_suite(config)
+
+  def renset50v1_128_gpu_8_local_allreduce_device_fp16_real(self):
+    """Tests ResNet50 (FP16) real data, 8 GPUs, batch size 128*8.
+
+       And local_allreduce_device.
+    """
+    test_id = 'resnet50v1.gpu_8.local_allreduce_device.128.fp16.real'
+    args = {}
+    args['dtype'] = 'float16'
+    args['kv-store'] = 'local_allreduce_device'
     config = self.build_test_config(
         test_id, args, batch_size=128, gpus=8, real_data=True)
     self.run_test_suite(config)

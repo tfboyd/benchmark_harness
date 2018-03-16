@@ -1,6 +1,6 @@
 
 # Start from mxnet official base.
-FROM mxnet/python:gpu_1.0.0_cuda9
+FROM mxnet/python:gpu_1.1.0
 
 # File Author / Maintainer
 MAINTAINER Toby Boyd

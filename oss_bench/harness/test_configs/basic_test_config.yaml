@@ -1,6 +1,9 @@
 # Default config assumes usage of docker and local GPU at least GTX1080
 test_harness: 'tf_cnn_bench'
 test_environment: 'development-docker'
+channel: NIGHTLY
+build_type: OTB-GPU
+track: True
 # System basics
 accel_type: 'GTX1080'
 platform: 'workstation'
