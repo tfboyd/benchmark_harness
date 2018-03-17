@@ -6,6 +6,6 @@ run_configs:
     data_format: NHWC
     num_intra_threads: 0
     num_inter_threads: 0
-    num_batches: 100
-    batch_size: 8
+    num_batches: 50
+    batch_size: 128
     optimizer: 'sgd'
