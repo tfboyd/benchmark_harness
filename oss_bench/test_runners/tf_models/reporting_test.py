@@ -101,4 +101,9 @@ class TestReporting(unittest.TestCase):
     report_config['accel_type'] = 'GTX 940'
     report_config['platform'] = 'test_platform_name'
     report_config['framework_version'] = 'v1.5RC0-dev20171027'
+    cpu_info = {}
+    cpu_info['model_name'] = 'Intel XEON 2600E 2.8Ghz'
+    cpu_info['core_count'] = 36
+    cpu_info['socket_count'] = 1
+    report_config['cpu_info'] = cpu_info
     return report_config

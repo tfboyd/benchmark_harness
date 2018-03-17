@@ -3,10 +3,9 @@ run_configs:
     device: 'cpu'
     forward_only: True
     model: 'resnet50'
-    use_fp16: True
     data_format: NHWC
     num_intra_threads: 0
     num_inter_threads: 0
     num_batches: 100
-    batch_size: 128
+    batch_size: 8
     optimizer: 'sgd'

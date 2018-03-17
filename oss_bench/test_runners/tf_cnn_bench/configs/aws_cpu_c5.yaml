@@ -4,6 +4,9 @@ repeat: 3
 # Worker settings override
 nodistortions: FLAG_ONLY
 
+display_every: 1
+num_warmup_batches: 5
+
 sub_configs:
   - 'tests/resnet/resnet50.cpu.forward_only.36_core.128.yaml'
 

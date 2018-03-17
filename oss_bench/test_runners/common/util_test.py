@@ -31,6 +31,11 @@ class TestReporting(unittest.TestCase):
     """Tests upload results with spot checking."""
 
     report_config = {}
+    cpu_info = {}
+    cpu_info['model_name'] = 'Intel XEON 2600E 2.8Ghz'
+    cpu_info['core_count'] = 36
+    cpu_info['socket_count'] = 1
+    report_config['cpu_info'] = cpu_info
     report_config['channel'] = 'RC'
     report_config['build_type'] = 'OTB-GPU'
     report_config['framework_version'] = '1.4.0_20170124'

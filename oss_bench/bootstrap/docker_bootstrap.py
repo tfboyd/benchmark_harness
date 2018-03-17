@@ -185,7 +185,9 @@ class Bootstrap(object):
         branch=self.harness_branch)
 
     # Build latest docker image.
-    docker_build = 'docker build --pull -t {} {}'.format(
+    # Build with --no-cache as some Dockerfile have pip installs and the rest of
+    # the docker may not be changing.
+    docker_build = 'docker build --no-cache --pull -t {} {}'.format(
         self.docker_tag, self.docker_folder)
     self.run_local_command(docker_build)
 
