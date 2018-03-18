@@ -13,7 +13,7 @@ build_type: AVX2
 # reporting
 report_auth: 'benchmarks_upload_aws.json'
 report_project: 'google.com:tensorflow-performance'
-report_dataset: 'benchmark_results_dev'
+report_dataset: 'benchmark_results'
 report_table: 'result'
 
 # tf-cnn-benchmarks
