@@ -230,7 +230,8 @@ def main():
       auth_token_dir=FLAGS.auth_token_dir,
       harness_branch=FLAGS.harness_branch,
       gpu_process_check=FLAGS.gpu_process_check,
-      pure_docker=FLAGS.pure_docker)
+      pure_docker=FLAGS.pure_docker,
+      docker_no_cache=FLAGS.docker_no_cache)
   bootstrap.run_tests()
 
 
@@ -299,7 +300,7 @@ if __name__ == '__main__':
       help='Set to true to not use docker cache. Rebuild from scratch.')
   # Allows docker-no-cache to be turned off.
   parser.add_argument(
-      '--docker-no-cache', dest='docker_no_cache', action='store_false')
+      '--no-docker-no-cache', dest='docker_no_cache', action='store_false')
 
   FLAGS, unparsed = parser.parse_known_args()
   main()
