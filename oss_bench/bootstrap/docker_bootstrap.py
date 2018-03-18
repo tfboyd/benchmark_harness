@@ -37,7 +37,8 @@ class Bootstrap(object):
                harness_branch=None,
                framework='tensorflow',
                gpu_process_check=True,
-               pure_docker=False):
+               pure_docker=False,
+               docker_no_cache=True):
     self.docker_folder = docker_folder
     self.workspace = workspace
     self.test_config = test_config
@@ -50,6 +51,7 @@ class Bootstrap(object):
     self.git_workspace = os.path.join(workspace, 'git')
     self.pure_docker = pure_docker
     self.docker_tag = docker_tag
+    self.docker_no_cache = docker_no_cache
 
   def run_local_command(self, cmd, stdout=None):
     """Run a command in a subprocess and log result.
@@ -187,8 +189,14 @@ class Bootstrap(object):
     # Build latest docker image.
     # Build with --no-cache as some Dockerfile have pip installs and the rest of
     # the docker may not be changing.
-    docker_build = 'docker build --no-cache --pull -t {} {}'.format(
-        self.docker_tag, self.docker_folder)
+    docker_build = ''
+    if self.docker_no_cache:
+      docker_build = 'docker build --no-cache --pull -t {} {}'.format(
+          self.docker_tag, self.docker_folder)
+    else:
+      docker_build = 'docker build --pull -t {} {}'.format(
+          self.docker_tag, self.docker_folder)
+
     self.run_local_command(docker_build)
 
     # Builds docker command, starts docker, and executes the command.
@@ -284,5 +292,14 @@ if __name__ == '__main__':
       type=str,
       default='tensorflow',
       help='Framework to be tested.')
+  parser.add_argument(
+      '--docker-no-cache',
+      type=bool,
+      default=True,
+      help='Set to true to not use docker cache. Rebuild from scratch.')
+  # Allows docker-no-cache to be turned off.
+  parser.add_argument(
+      '--docker-no-cache', dest='docker_no_cache', action='store_false')
+
   FLAGS, unparsed = parser.parse_known_args()
   main()
