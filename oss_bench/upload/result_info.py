@@ -64,15 +64,17 @@ def build_system_info(platform=None,
                       platform_type=None,
                       accel_type=None,
                       cpu_cores=None,
-                      cpu_type=None):
+                      cpu_type=None,
+                      cpu_sockets=None):
   """Information about the system the test was executed on.
 
   Args:
     platform (str): Higher level platform, e.g. aws, gce, or workstation.
     platform_type (str): Type of platform, DGX-1, p3.8xlarge, or z420.
     accel_type (str, optional): Type of accelerator, e.g. K80 or P100.
-    cpu_cores (str, optional): Number of physical cpu cores.
+    cpu_cores (int, optional): Number of physical cpu cores.
     cpu_type (str, optional): Type of cpu.
+    cpu_sockets (int, optional): Number of sockets
 
   Returns:
     `dict` with system info.
@@ -89,6 +91,8 @@ def build_system_info(platform=None,
     system_info['cpu_cores'] = cpu_cores
   if cpu_type:
     system_info['cpu_type'] = unicode(cpu_type)
+  if cpu_type:
+    system_info['cpu_sockets'] = cpu_sockets
   return system_info
 
 

@@ -1,16 +1,17 @@
-# Config for a DGX-1 V100 reporting to production schema.
+# Config for a AWS reporting to production schema.
 test_harness: 'tf_cnn_benchmark'
-test_environment: 'brain-lab'
+test_environment: 'gce'
 # System basics
-platform: 'NVIDIA'
-platform_type: 'DGX-1 (V100)'
+# platform is not part of the key in the dashboard.
+platform: 'gce'
+platform_type: 'v100-Alpha'
 
 # Build type info
 channel: NIGHTLY
 build_type: OTB
 
 # reporting
-report_auth: 'brain_lab_benchmarks.json'
+report_auth: 'benchmark_upload_gce.json'
 report_project: 'google.com:tensorflow-performance'
 report_dataset: 'benchmark_results'
 report_table: 'result'
@@ -21,12 +22,3 @@ tf_cnn_bench_configs:
   - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/dgx_v100.yaml
   - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/dgx_io_test.yaml
   - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/dgx_io_test_real.yaml
-
-#tf_models_tests:
-#  - 'renset50v2_64_gpu_1_real'
-#  - 'renset50v2_64_gpu_2_real'
-#  - 'renset50v2_64_gpu_4_real'
-#  - 'renset50v2_64_gpu_8_real'
-
-# Args for tf_models_tests.  Seen by all test harnesses as well.
-input_threads: 30

@@ -1,0 +1,21 @@
+# Config for a AWS reporting to production schema.
+test_harness: 'tf_cnn_benchmark'
+test_environment: 'aws'
+# System basics
+# platform is not part of the key in the dashboard.
+platform: 'aws'
+platform_type: 'c5.18xlarge'
+
+# TensorFlow build type information
+channel: TF_SUMMIT_2018
+build_type: AVX
+
+# reporting
+report_auth: 'benchmarks_upload_aws.json'
+report_project: 'google.com:tensorflow-performance'
+report_dataset: 'benchmark_results'
+report_table: 'result'
+
+# tf-cnn-benchmarks
+tf_cnn_bench_configs:
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/aws_cpu_c5.yaml

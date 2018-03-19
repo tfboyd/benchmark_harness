@@ -1,0 +1,13 @@
+run_configs:
+  - test_id: resnet50.cpu.forward_only.16_core.128.mkl.yaml
+    device: 'cpu'
+    model: 'resnet50'
+    forward_only: True
+    data_format: NCHW
+    mkl: True
+    kmp_blocktime: 1
+    num_inter_threads: 1
+    num_intra_threads: 0
+    num_batches: 50
+    batch_size: 128
+    optimizer: 'sgd'

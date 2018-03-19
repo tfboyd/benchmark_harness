@@ -1,0 +1,11 @@
+run_configs:
+  - test_id: resnet50.cpu.forward_only.36_core.128.yaml
+    device: 'cpu'
+    forward_only: True
+    model: 'resnet50'
+    data_format: NHWC
+    num_inter_threads: 0
+    num_intra_threads: 0
+    num_batches: 50
+    batch_size: 128
+    optimizer: 'sgd'

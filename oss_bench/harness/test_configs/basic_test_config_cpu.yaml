@@ -1,0 +1,20 @@
+# Default config where the system only has CPUs
+test_harness: 'tf_cnn_bench'
+test_environment: 'development-docker'
+# indicates system has only cpus
+device: cpu
+channel: NIGHTLY
+build_type: OTB-GPU
+# System basics
+platform: 'workstation'
+platform_type: 'z420'
+
+# reporting
+report_auth: 'tensorflow_performance_upload_tb.json'
+report_project: 'google.com:tensorflow-performance'
+report_dataset: 'benchmark_results_dev'
+report_table: 'result'
+
+# tf-cnn-benchmarks
+tf_cnn_bench_configs:
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/workstation_gtx1080.yaml

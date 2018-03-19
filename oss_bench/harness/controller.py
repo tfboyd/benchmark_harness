@@ -313,11 +313,20 @@ class BenchmarkRunner(object):
     for lib_path in git_python_lib_paths:
       sys.path.append(os.path.join(self.git_repo_base, lib_path))
 
+    if 'device' not in test_config or test_config['device'] != 'cpu':
+      # Modules are loaded by this function.
+      # pylint: disable=C6204
+      import tools.nvidia as nvidia
+      test_config['gpu_driver'], test_config[
+          'accel_type'] = nvidia.get_gpu_info()
+
     # Modules are loaded by this function.
     # pylint: disable=C6204
-    import tools.nvidia as nvidia
-    test_config['gpu_driver'], test_config['accel_type'] = nvidia.get_gpu_info()
-
+    import tools.cpu as cpu_info
+    cpu_data = {}
+    cpu_data['model_name'], cpu_data['socket_count'], cpu_data[
+        'core_count'], cpu_data['cpu_info'] = cpu_info.get_cpu_info()
+    test_config['cpu_info'] = cpu_data
     global tracker
     # pylint: disable=C6204
     # pylint: disable=W0621
@@ -356,7 +365,6 @@ if __name__ == '__main__':
       type=str,
       default='tensorflow',
       help='Framework to be tested.')
-
   FLAGS, unparsed = parser.parse_known_args()
 
   main()

@@ -1,0 +1,12 @@
+# General settings
+repeat: 3
+
+# Worker settings override
+nodistortions: FLAG_ONLY
+
+display_every: 1
+num_warmup_batches: 5
+num_batches: 50
+
+sub_configs:
+  - 'tests/resnet/resnet50.cpu.forward_only.16_core.128.yaml'

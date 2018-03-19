@@ -37,7 +37,8 @@ class Bootstrap(object):
                harness_branch=None,
                framework='tensorflow',
                gpu_process_check=True,
-               pure_docker=False):
+               pure_docker=False,
+               docker_no_cache=True):
     self.docker_folder = docker_folder
     self.workspace = workspace
     self.test_config = test_config
@@ -50,6 +51,7 @@ class Bootstrap(object):
     self.git_workspace = os.path.join(workspace, 'git')
     self.pure_docker = pure_docker
     self.docker_tag = docker_tag
+    self.docker_no_cache = docker_no_cache
 
   def run_local_command(self, cmd, stdout=None):
     """Run a command in a subprocess and log result.
@@ -185,8 +187,16 @@ class Bootstrap(object):
         branch=self.harness_branch)
 
     # Build latest docker image.
-    docker_build = 'docker build --pull -t {} {}'.format(
-        self.docker_tag, self.docker_folder)
+    # Build with --no-cache as some Dockerfile have pip installs and the rest of
+    # the docker may not be changing.
+    docker_build = ''
+    if self.docker_no_cache:
+      docker_build = 'docker build --no-cache --pull -t {} {}'.format(
+          self.docker_tag, self.docker_folder)
+    else:
+      docker_build = 'docker build --pull -t {} {}'.format(
+          self.docker_tag, self.docker_folder)
+
     self.run_local_command(docker_build)
 
     # Builds docker command, starts docker, and executes the command.
@@ -220,7 +230,8 @@ def main():
       auth_token_dir=FLAGS.auth_token_dir,
       harness_branch=FLAGS.harness_branch,
       gpu_process_check=FLAGS.gpu_process_check,
-      pure_docker=FLAGS.pure_docker)
+      pure_docker=FLAGS.pure_docker,
+      docker_no_cache=FLAGS.docker_no_cache)
   bootstrap.run_tests()
 
 
@@ -282,5 +293,14 @@ if __name__ == '__main__':
       type=str,
       default='tensorflow',
       help='Framework to be tested.')
+  parser.add_argument(
+      '--docker-no-cache',
+      type=bool,
+      default=True,
+      help='Set to true to not use docker cache. Rebuild from scratch.')
+  # Allows docker-no-cache to be turned off.
+  parser.add_argument(
+      '--no-docker-no-cache', dest='docker_no_cache', action='store_false')
+
   FLAGS, unparsed = parser.parse_known_args()
   main()

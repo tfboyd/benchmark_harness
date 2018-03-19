@@ -23,9 +23,9 @@ def report_config_defaults(report_config, test_harness=None):
   config['platform'] = report_config.get('platform', 'unknown')
   config['platform_type'] = report_config.get('platform_type', 'unknown')
   config['accel_type'] = report_config.get('accel_type', 'unknown')
-  config['accel_type'] = report_config.get('accel_type', 'unknown')
   config['framework_describe'] = report_config.get('framework_describe',
                                                    'unknown')
+
   return config
 
 
@@ -62,16 +62,21 @@ def upload_results(report_config, agg_result, framework=None,
       build_type=report_config.get('build_type'),
       batch_size=agg_result['config']['batch_size'],
       model=agg_result['config']['model'],
-      accel_cnt=agg_result['gpu'],
+      accel_cnt=agg_result.get('gpu', 0),
       cmd=agg_result['config']['cmd'])
   # Stores info on each of the repos used in testing.
   if 'git_repo_info' in report_config:
     test_info['git_info'] = report_config['git_repo_info']
 
+  cpu_info = report_config['cpu_info']
+
   system_info = result_info.build_system_info(
       platform=report_config['platform'],
       platform_type=report_config['platform_type'],
-      accel_type=report_config['accel_type'])
+      accel_type=report_config['accel_type'],
+      cpu_type=cpu_info['model_name'],
+      cpu_cores=cpu_info['core_count'],
+      cpu_sockets=cpu_info['socket_count'])
 
   print('Uploading test results...')
   result_upload.upload_result(

@@ -1,0 +1,9 @@
+run_configs:
+  - test_id: trivial.8_gpu.128.independent
+    gpus: 8
+    model: 'trivial'
+    data_format: NCHW
+    variable_update: independent
+    num_batches: 500
+    batch_size: 128
+    optimizer: 'sgd'
