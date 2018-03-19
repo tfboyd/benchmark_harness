@@ -5,6 +5,10 @@ test_environment: 'brain-lab'
 platform: 'NVIDIA'
 platform_type: 'DGX-1 (V100)'
 
+# Build type info
+channel: NIGHTLY
+build_type: OTB
+
 # reporting
 report_auth: 'brain_lab_benchmarks.json'
 report_project: 'google.com:tensorflow-performance'

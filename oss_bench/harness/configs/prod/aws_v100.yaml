@@ -6,6 +6,10 @@ test_environment: 'aws'
 platform: 'aws'
 platform_type: 'p3.16xlarge'
 
+# Build type info
+channel: NIGHTLY
+build_type: OTB
+
 # reporting
 report_auth: 'benchmarks_upload_aws.json'
 report_project: 'google.com:tensorflow-performance'
