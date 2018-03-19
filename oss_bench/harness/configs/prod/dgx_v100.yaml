@@ -19,12 +19,14 @@ report_table: 'result'
 tf_cnn_bench_configs:
   - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/dgx_v100_real.yaml
   - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/dgx_v100.yaml
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/dgx_io_test.yaml
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/dgx_io_test_real.yaml
 
-tf_models_tests:
-  - 'renset50v2_64_gpu_1_real'
-  - 'renset50v2_64_gpu_2_real'
-  - 'renset50v2_64_gpu_4_real'
-  - 'renset50v2_64_gpu_8_real'
+#tf_models_tests:
+#  - 'renset50v2_64_gpu_1_real'
+#  - 'renset50v2_64_gpu_2_real'
+#  - 'renset50v2_64_gpu_4_real'
+#  - 'renset50v2_64_gpu_8_real'
 
 # Args for tf_models_tests.  Seen by all test harnesses as well.
 input_threads: 30
