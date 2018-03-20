@@ -1,0 +1,29 @@
+# Config for a GCE reporting to production schema.
+test_harness: 'mxnet_benchmark'
+test_environment: 'gce'
+# System basics
+# platform is not part of the key in the dashboard.
+platform: 'gce'
+platform_type: 'v100-Alpha'
+
+# Build type info
+channel: FINAL
+build_type: OTB
+
+# reporting
+report_auth: 'gce_upload.json'
+report_project: 'google.com:tensorflow-performance'
+report_dataset: 'benchmark_results'
+report_table: 'result'
+
+# mxnet tests to run.
+mxnet_tests:
+  - renset50v1_128_gpu_8_nccl_fp16_real
+  - renset50v1_128_gpu_8_nccl_fp16
+  - renset50v1_64_gpu_8_nccl_real
+  - renset50v1_64_gpu_8_nccl
+  - renset50v1_224_gpu_8_nccl_fp16_real
+  - renset50v1_224_gpu_8_nccl_fp16
+
+# MXNet configs
+data_threads: 48
