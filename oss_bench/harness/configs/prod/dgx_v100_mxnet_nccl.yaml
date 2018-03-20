@@ -5,6 +5,10 @@ test_environment: 'brain-lab'
 platform: 'NVIDIA'
 platform_type: 'DGX-1 (V100)'
 
+# Build type info
+channel: FINAL
+build_type: OTB
+
 # reporting
 report_auth: 'brain_lab_benchmarks.json'
 report_project: 'google.com:tensorflow-performance'
@@ -17,6 +21,9 @@ mxnet_tests:
   - renset50v1_128_gpu_8_nccl_fp16
   - renset50v1_64_gpu_8_nccl_real
   - renset50v1_64_gpu_8_nccl
+  - renset50v1_224_gpu_8_nccl_fp16_real
+  - renset50v1_224_gpu_8_nccl_fp16
+
 
 # MXNet configs
 data_threads: 40

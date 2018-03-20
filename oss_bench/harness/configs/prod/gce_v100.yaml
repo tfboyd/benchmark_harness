@@ -1,4 +1,4 @@
-# Config for a AWS reporting to production schema.
+# Config for a GCE reporting to production schema.
 test_harness: 'tf_cnn_benchmark'
 test_environment: 'gce'
 # System basics
@@ -11,7 +11,7 @@ channel: NIGHTLY
 build_type: OTB
 
 # reporting
-report_auth: 'benchmark_upload_gce.json'
+report_auth: 'gce_upload.json'
 report_project: 'google.com:tensorflow-performance'
 report_dataset: 'benchmark_results'
 report_table: 'result'

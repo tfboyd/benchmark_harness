@@ -1,38 +1,33 @@
-# Default config assumes usage of docker and local GPU at least GTX1080
+# Config for a GCE reporting to production schema.
 test_harness: 'mxnet_benchmark'
-test_environment: 'brain-lab'
+test_environment: 'aws'
 # System basics
-platform: 'NVIDIA'
-platform_type: 'DGX-1 (V100)'
+# platform is not part of the key in the dashboard.
+platform: 'aws'
+platform_type: 'p3.16xlarge'
 
 # Build type info
 channel: FINAL
 build_type: OTB
 
 # reporting
-report_auth: 'brain_lab_benchmarks.json'
+report_auth: 'benchmarks_upload_aws.json'
 report_project: 'google.com:tensorflow-performance'
 report_dataset: 'benchmark_results'
 report_table: 'result'
 
 # mxnet tests to run.
 mxnet_tests:
-  - renset50v1_64_gpu_1
-  - renset50v1_64_gpu_8
   - renset50v1_128_gpu_1_fp16
   - renset50v1_128_gpu_8_fp16
-  - renset50v1_64_gpu_1_real
-  - renset50v1_64_gpu_8_real
   - renset50v1_128_gpu_1_fp16_real
   - renset50v1_128_gpu_8_fp16_real
   - renset50v1_128_gpu_8_local_allreduce_device_fp16
   - renset50v1_128_gpu_8_local_allreduce_device_fp16_real
-  - renset50v1_64_gpu_8_local_allreduce_device_real
-  - renset50v1_64_gpu_8_local_allreduce_device
   - renset50v1_224_gpu_8_fp16_real
   - renset50v1_224_gpu_8_fp16
   - renset50v1_224_gpu_1_fp16_real
   - renset50v1_224_gpu_1_fp16
 
 # MXNet configs
-data_threads: 40
+data_threads: 32
