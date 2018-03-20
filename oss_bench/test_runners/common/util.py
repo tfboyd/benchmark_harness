@@ -120,6 +120,7 @@ def report_aggregate_results(results_list):
     agg_result['max'] = results[-1]
     agg_result['min'] = results[0]
   else:
+    print('WARNING: No results to aggregate.')
     agg_result['mean'] = 0
     agg_result['std'] = 0
     agg_result['max'] = 0
