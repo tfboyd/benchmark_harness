@@ -448,6 +448,59 @@ class TestRunner(object):
         test_id, args, batch_size=128, gpus=8, real_data=True)
     self.run_test_suite(config)
 
+  def renset50v1_224_gpu_1_fp16(self):
+    """Tests ResNet50 (FP16) synthetic data on 8 GPUs with batch size 224."""
+    test_id = 'resnet50v1.gpu_1.224.fp16'
+    args = {}
+    args['dtype'] = 'float16'
+    config = self.build_test_config(test_id, args, batch_size=224, gpus=1)
+    self.run_test_suite(config)
+
+  def renset50v1_224_gpu_1_fp16_real(self):
+    """Tests ResNet50 (FP16) real data on 8 GPUs with batch size 224."""
+    test_id = 'resnet50v1.gpu_1.224.fp16.real'
+    args = {}
+    args['dtype'] = 'float16'
+    config = self.build_test_config(
+        test_id, args, batch_size=224, gpus=1, real_data=True)
+    self.run_test_suite(config)
+
+  def renset50v1_224_gpu_8_fp16(self):
+    """Tests ResNet50 (FP16) synthetic data on 8 GPUs with batch size 224*8."""
+    test_id = 'resnet50v1.gpu_8.224.fp16'
+    args = {}
+    args['dtype'] = 'float16'
+    config = self.build_test_config(test_id, args, batch_size=224, gpus=8)
+    self.run_test_suite(config)
+
+  def renset50v1_224_gpu_8_fp16_real(self):
+    """Tests ResNet50 (FP16) real data on 8 GPUs with batch size 224*8."""
+    test_id = 'resnet50v1.gpu_8.224.fp16.real'
+    args = {}
+    args['dtype'] = 'float16'
+    config = self.build_test_config(
+        test_id, args, batch_size=224, gpus=8, real_data=True)
+    self.run_test_suite(config)
+
+  def renset50v1_224_gpu_8_nccl_fp16(self):
+    """Tests ResNet50(FP16) synthetic data on 8 GPUs, batch size 224*8, nccl."""
+    test_id = 'resnet50v1.gpu_8.nccl.224.fp16'
+    args = {}
+    args['dtype'] = 'float16'
+    args['kv-store'] = 'nccl'
+    config = self.build_test_config(test_id, args, batch_size=224, gpus=8)
+    self.run_test_suite(config)
+
+  def renset50v1_224_gpu_8_nccl_fp16_real(self):
+    """Tests ResNet50(FP16) real data on 8 GPUs, batch-size 224*8, nccl."""
+    test_id = 'resnet50v1.gpu_8.nccl.224.fp16.real'
+    args = {}
+    args['dtype'] = 'float16'
+    args['kv-store'] = 'nccl'
+    config = self.build_test_config(
+        test_id, args, batch_size=224, gpus=8, real_data=True)
+    self.run_test_suite(config)
+
   def run_tests(self, test_list):
     for t in test_list:
       getattr(self, t)()
