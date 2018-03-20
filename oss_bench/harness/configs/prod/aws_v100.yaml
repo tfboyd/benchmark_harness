@@ -11,7 +11,7 @@ channel: NIGHTLY
 build_type: OTB
 
 # reporting
-report_auth: 'benchmarks_upload_aws.json'
+report_auth: 'benchmark_upload_aws.json'
 report_project: 'google.com:tensorflow-performance'
 report_dataset: 'benchmark_results'
 report_table: 'result'
