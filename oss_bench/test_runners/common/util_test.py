@@ -26,6 +26,38 @@ class TestReporting(unittest.TestCase):
     self.assertEqual(agg_result['samples'], 3)
     self.assertIn('config', agg_result)
 
+  def test_aggregate_results_only_1(self):
+    """Tests aggregating 1 result."""
+    test_id_0 = 'made.up.test_id'
+    results_list = []
+    results_list.append(self._mock_result(test_id_0, 10.5))
+
+    agg_result = util.report_aggregate_results(results_list)
+    self.assertEqual(agg_result['test_id'], test_id_0)
+    self.assertEqual(agg_result['mean'], 10.5)
+    self.assertEqual(agg_result['max'], 10.5)
+    self.assertEqual(agg_result['min'], 10.5)
+    self.assertEqual(agg_result['std'], 0)
+    self.assertEqual(agg_result['samples'], 1)
+    self.assertIn('config', agg_result)
+
+  def test_aggregate_results_no_imgs_sec(self):
+    """Tests aggregating results that are empty."""
+    test_id_0 = 'made.up.test_id'
+    results_list = []
+    results_list.append(self._mock_result(test_id_0, None))
+    results_list.append(self._mock_result(test_id_0, None))
+    results_list.append(self._mock_result(test_id_0, None))
+
+    agg_result = util.report_aggregate_results(results_list)
+    self.assertEqual(agg_result['test_id'], test_id_0)
+    self.assertEqual(agg_result['mean'], 0)
+    self.assertEqual(agg_result['max'], 0)
+    self.assertEqual(agg_result['min'], 0)
+    self.assertEqual(agg_result['std'], 0)
+    self.assertEqual(agg_result['samples'], 0)
+    self.assertIn('config', agg_result)
+
   @patch('upload.result_upload.upload_result')
   def test_upload_results(self, mock_upload_results):
     """Tests upload results with spot checking."""
@@ -77,7 +109,8 @@ class TestReporting(unittest.TestCase):
   def _mock_result(self, test_id, imgs_sec):
     result = {}
     result['config'] = self._mock_config(test_id)
-    result['imgs_sec'] = imgs_sec
+    if imgs_sec:
+      result['imgs_sec'] = imgs_sec
     result['test_id'] = test_id
     result['gpu'] = 2
     result['batches_sampled'] = 100

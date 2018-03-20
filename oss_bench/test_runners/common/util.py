@@ -109,13 +109,20 @@ def report_aggregate_results(results_list):
   results = []
   for result in results_list:
     # Adds the total to list to aggregate later
-    results.append(result['imgs_sec'])
+    if 'imgs_sec' in result:
+      results.append(result['imgs_sec'])
 
   results.sort()
   agg_result['samples'] = len(results)
-  agg_result['mean'] = numpy.mean(results)
-  agg_result['std'] = numpy.std(results)
-  agg_result['max'] = results[-1]
-  agg_result['min'] = results[0]
+  if results:
+    agg_result['mean'] = numpy.mean(results)
+    agg_result['std'] = numpy.std(results)
+    agg_result['max'] = results[-1]
+    agg_result['min'] = results[0]
+  else:
+    agg_result['mean'] = 0
+    agg_result['std'] = 0
+    agg_result['max'] = 0
+    agg_result['min'] = 0
 
   return agg_result
