@@ -172,6 +172,9 @@ class TestRunner(object):
 
     Returns:
       List of config dicts.
+
+    Raises:
+      Exception: if config is empty or not found
     """
     configs = []
     for _, config_path in enumerate(config_paths):
@@ -179,9 +182,13 @@ class TestRunner(object):
         config_path = os.path.join(base_dir, config_path)
       f = open(config_path)
       config = yaml.safe_load(f)
-      config['config_path'] = config_path
-      configs.append(config)
       f.close()
+      if config:
+        config['config_path'] = config_path
+        configs.append(config)
+      else:
+        print('Config was empty:{}'.format(config_path))
+        raise Exception('Config was empty:{}'.format(config_path))
     return configs
 
   def run_tests(self):
