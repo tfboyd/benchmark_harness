@@ -1,0 +1,13 @@
+run_configs:
+  - test_id: resnet50.1_gpu.forward_only.128.ps_gpu.cuda_visible_0
+    gpus: 1
+    model: 'resnet50'
+    use_fp16: True
+    ps_server: gpu
+    data_format: NCHW
+    variable_update: parameter_server
+    num_batches: 100
+    batch_size: 128
+    optimizer: 'sgd'
+    all_reduce_spec: ''''''
+    env_vars: 'CUDA_VISIBLE_DEVICES=0'
