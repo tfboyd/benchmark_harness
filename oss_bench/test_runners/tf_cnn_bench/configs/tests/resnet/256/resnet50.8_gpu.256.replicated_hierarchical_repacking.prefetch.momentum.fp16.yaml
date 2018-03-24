@@ -1,13 +1,14 @@
 run_configs:
-  - test_id: resnet50.8_gpu.128.replicated_hierarchical_repacking.fp16
+  - test_id: resnet50.8_gpu.256.replicated_hierarchical_repacking.prefech.momentum.fp16
     gpus: 8
     model: 'resnet50'
     use_fp16: True
     data_format: NCHW
     variable_update: replicated
     num_batches: 100
-    batch_size: 128
-    optimizer: 'sgd'
+    batch_size: 256
+    optimizer: 'momentum'
     hierarchical_copy: True
     gpu_thread_mode: gpu_shared
+    datasets_use_prefetch: True
     gradient_repacking: 8

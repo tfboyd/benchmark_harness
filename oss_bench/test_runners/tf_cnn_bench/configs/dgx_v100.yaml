@@ -4,6 +4,7 @@ repeat: 3
 # Worker settings override
 num_batches: 100
 nodistortions: FLAG_ONLY
+datasets_use_prefetch: False
 
 sub_configs:
   - 'tests/resnet/128/resnet50.1_gpu.forward_only.128.ps_gpu.cuda_visible_0.yaml'
@@ -12,11 +13,12 @@ sub_configs:
   - 'tests/resnet/128/resnet50.1_gpu.128.ps_gpu.fp16.yaml'
   - 'tests/resnet/128/resnet50.8_gpu.128.replicated_nccl.fp16.yaml'
   - 'tests/resnet/128/resnet50.8_gpu.128.ps_cpu.fp16.yaml'
-  - 'tests/resnet/128/resnet50.8_gpu.128.replicated_hierarchical.fp16.yaml'
-  - 'tests/resnet/128/resnet50.8_gpu.128.replicated_hierarchical_repacking.fp16.yaml'
-  - 'tests/resnet/128/resnet50.8_gpu.128.replicated_hierarchical_repacking_nolayers.fp16.yaml'
+  - 'tests/resnet/128/resnet50.8_gpu.128.replicated_hierarchical_repacking.prefetch.fp16.yaml'
   - 'tests/resnet/256/resnet50.1_gpu.256.ps_gpu.cuda_visible_0.fp16.yaml'
-  - 'tests/resnet/256/resnet50.8_gpu.256.replicated_hierachical_repacking.fp16.yaml'
+  - 'tests/resnet/256/resnet50.8_gpu.256.replicated_hierarchical_repacking.prefetch.fp16.yaml'
+  - 'tests/resnet/256/resnet50.8_gpu.256.nccl_relaxed.prefetch.fp16.yaml'
+  - 'tests/resnet/256/resnet50.8_gpu.256.replicated_hierarchical_repacking.prefetch.momentum.fp16.yaml'
+  - 'tests/resnet/256/resnet50.2to4_gpu.256.replicated_hierarchical_repacking.prefetch.fp16.yaml'
   - 'tests/resnet/resnet50.8_gpu.224.replicated_hierarchical_repacking.fp16.yaml'
   - 'tests/resnetv2/resnet50v2.1_gpu.128.ps_gpu.cuda_visible_0.fp16.yaml'
   - 'tests/resnetv2/resnet50v2.8_gpu.128.replicated_hierarchical_repacking.fp16.yaml'
