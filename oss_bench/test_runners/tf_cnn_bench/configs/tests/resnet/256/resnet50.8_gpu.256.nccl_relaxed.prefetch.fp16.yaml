@@ -1,0 +1,15 @@
+run_configs:
+  - test_id: resnet50.8_gpu.256.nccl_relaxed.prefech.fp16
+    gpus: 8
+    model: 'resnet50'
+    use_fp16: True
+    data_format: NCHW
+    variable_update: replicated
+    num_batches: 100
+    batch_size: 256
+    optimizer: 'sgd'
+    hierarchical_copy: True
+    gpu_thread_mode: gpu_shared
+    datasets_use_prefetch: True
+    variable_consistency: relaxed
+    all_reduce_spec: nccl

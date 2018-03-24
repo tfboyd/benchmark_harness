@@ -1,0 +1,10 @@
+run_configs:
+  - test_id: trivial.8_gpu.256.independent.prefetch
+    gpus: 8
+    model: 'trivial'
+    data_format: NCHW
+    variable_update: independent
+    num_batches: 500
+    batch_size: 256
+    optimizer: 'sgd'
+    datasets_use_prefetch: True

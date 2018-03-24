@@ -1,7 +1,8 @@
 run_configs:
-  - test_id: resnet50.1_gpu.forward_only.128.ps_gpu.cuda_visible_0
+  - test_id: resnet50.1_gpu.forward_only.128.ps_gpu.cuda_visible_0.fp16
     gpus: 1
     model: 'resnet50'
+    use_fp16: True
     forward_only: True
     ps_server: gpu
     data_format: NCHW

@@ -6,6 +6,10 @@ num_batches: 100
 nodistortions: FLAG_ONLY
 
 sub_configs:
+  - 'tests/resnet/resnet50.1_gpu.128.ps_gpu.cuda_visible_0.yaml'
+  - 'tests/resnet/resnet50.8_gpu.128.replicated_nccl.yaml'
+  - 'tests/resnet/resnet50.8_gpu.128.replicated_nccl.prefetch.yaml'
+  - 'tests/resnet/resnet50.8_gpu.64.ps_gpu.nhwc.yaml'
   - 'tests/resnet/resnet50.1_gpu.64.ps_gpu.yaml'
   - 'tests/resnet/resnet50.1_gpu.64.ps_cpu.yaml'
   - 'tests/resnet/resnet50.4_gpu.64.ps_gpu.yaml'
