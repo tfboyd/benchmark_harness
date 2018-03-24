@@ -29,4 +29,4 @@ sub_configs:
   - 'tests/resnetv2/resnet50v2.8_gpu.128.replicated_hierarchical_repacking.fp16.yaml'
   - 'tests/vgg/vgg16.1_gpu.128.ps_gpu.yaml'
   - 'tests/vgg/vgg16.8_gpu.128.replicated_nccl.yaml'
-  - 'tests/vgg/vgg16.8_gpu.64.replicated_hierarchical_repacking.yaml
+  - 'tests/vgg/vgg16.8_gpu.64.replicated_hierarchical_repacking.yaml'
