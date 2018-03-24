@@ -3,6 +3,7 @@ repeat: 3
 
 # Worker settings override
 num_batches: 100
+num_warmup_batches: 100
 nodistortions: FLAG_ONLY
 # Data directory mounted in the docker
 data_dir: '/data/imagenet'
@@ -10,13 +11,14 @@ data_dir: '/data/imagenet'
 test_id_hacks: True
 
 sub_configs:
+  - 'tests/resnet/128/resnet50.1_gpu.128.ps_gpu.cuda_visible_0.yaml'
+  - 'tests/resnet/128/resnet50.8_gpu.128.replicated_nccl.yaml'
+  - 'tests/resnet/128/resnet50.8_gpu.128.replicated_nccl.prefetch.yaml'
+  - 'tests/resnet/128/resnet50.8_gpu.128.replicated_hierarchical_repacking.prefetch.yaml'
+  - 'tests/resnet/resnet50.8_gpu.64.ps_gpu.nhwc.yaml'
   - 'tests/resnet/resnet50.1_gpu.64.ps_gpu.yaml'
-  - 'tests/resnet/resnet50.1_gpu.64.ps_cpu.yaml'
-  - 'tests/resnet/resnet50.4_gpu.64.ps_gpu.yaml'
-  - 'tests/resnet/resnet50.8_gpu.64.replicated_nccl.yaml'
   - 'tests/resnet/resnet50.8_gpu.64.ps_cpu.yaml'
   - 'tests/resnet/resnet50.8_gpu.64.replicated_hierarchical_repacking.yaml'
-  - 'tests/resnet/resnet50.8_gpu.64.replicated_hierarchical.yaml'
   - 'tests/vgg/vgg16.1_gpu.64.ps_gpu.yaml'
   - 'tests/vgg/vgg16.8_gpu.64.replicated_nccl.yaml'
   - 'tests/vgg/vgg16.8_gpu.64.replicated_hierarchical_repacking.yaml'

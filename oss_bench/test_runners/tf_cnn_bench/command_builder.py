@@ -23,7 +23,9 @@ def build_run_command(run_config):
       'staged_vars', 'staged_grads', 'cross_replica_sync', 'all_reduce_spec',
       'use_datasets', 'batch_group_size', 'use_nccl', 'use_fp16',
       'nodistortions', 'gpu_thread_mode', 'hierarchical_copy', 'use_tf_layers',
-      'gradient_repacking'
+      'gradient_repacking', 'datasets_use_prefetch',
+      'datasets_prefetch_buffer_size', 'datasets_prefetch_threadpool_size',
+      'datasets_num_private_threads', 'variable_consistency'
   ]
 
   for arg in pass_through_args:
