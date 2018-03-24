@@ -7,6 +7,7 @@ nodistortions: FLAG_ONLY
 datasets_use_prefetch: False
 
 sub_configs:
+  - 'tests/resnet/256/resnet50.1_gpu.256.ps_gpu.cuda_visible_0.nhwc.fp16.yaml'
   - 'tests/resnet/256/resnet50.1_gpu.256.ps_gpu.cuda_visible_0.fp16.yaml'
   - 'tests/resnet/256/resnet50.8_gpu.256.replicated_hierarchical_repacking.prefetch.fp16.yaml'
   - 'tests/resnet/256/resnet50.8_gpu.256.nccl_relaxed.prefetch.fp16.yaml'
