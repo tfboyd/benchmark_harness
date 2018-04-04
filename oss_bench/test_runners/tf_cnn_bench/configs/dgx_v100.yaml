@@ -4,6 +4,8 @@ repeat: 3
 # Worker settings override
 num_batches: 100
 nodistortions: FLAG_ONLY
+
+# Synthetic tests do not support prefetch and it does not matter.
 datasets_use_prefetch: False
 
 sub_configs:
