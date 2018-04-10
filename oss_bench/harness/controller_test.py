@@ -55,7 +55,7 @@ class TestBenchmarkRunner(unittest.TestCase):
 
     saved_object = save_state.call_args[0][1]
     key = tracker._hash_key('tensorflow', 'NIGHTLY', 'OTB-GPU',
-                            expected_version[0])
+                            expected_version[1])
     entry = saved_object[key]
     self.assertIn('tf_cnn_bench', entry['tests'])
 
@@ -143,8 +143,9 @@ class TestBenchmarkRunner(unittest.TestCase):
     benchmark_runner._tf_cnn_bench(auto_config)
     call_args = test_runner_mock.call_args
     arg0 = call_args[0]
-    self.assertEqual(arg0[0], '{}{}'.format(
-        '/workspace/git/', auto_config['tf_cnn_bench_configs'][0]))
+    self.assertEqual(
+        arg0[0], '{}{}'.format('/workspace/git/',
+                               auto_config['tf_cnn_bench_configs'][0]))
     self.assertEqual(arg0[1], '/workspace/logs/tf_cnn_workspace')
     self.assertEqual(arg0[2],
                      '/workspace/git/benchmarks/scripts/tf_cnn_benchmarks')
