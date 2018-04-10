@@ -233,7 +233,7 @@ class BenchmarkRunner(object):
     if test_config.get('track'):
       return tracker.check_state(
           self.workspace, self.framework, test_config['channel'],
-          test_config['build_type'], test_config['framework_version'], test)
+          test_config['build_type'], test_config['framework_describe'], test)
     else:
       return False
 
@@ -241,7 +241,7 @@ class BenchmarkRunner(object):
     if test_config.get('track'):
       tracker.update_state(self.workspace, self.framework,
                            test_config['channel'], test_config['build_type'],
-                           test_config['framework_version'], test)
+                           test_config['framework_describe'], test)
 
   def run_mxnet_tests(self, test_config):
     """Runs all MXNet based tests.
@@ -261,6 +261,7 @@ class BenchmarkRunner(object):
     # pylint: disable=C6204
     from test_runners.mxnet import runner
     test_config['framework_version'] = mx.__version__
+    test_config['framework_describe'] = mx.__version__
 
     tested = self.check_if_run(test_config, 'mxnet')
     if not tested:
@@ -286,6 +287,7 @@ class BenchmarkRunner(object):
     # pylint: disable=C6204
     import torch
     test_config['framework_version'] = torch.__version__
+    test_config['framework_describe'] = torch.__version__
     # pylint: disable=C6204
     from test_runners.pytorch import runner
 

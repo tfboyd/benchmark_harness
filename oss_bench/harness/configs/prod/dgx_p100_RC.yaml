@@ -1,13 +1,13 @@
 # Config for a DGX-1 P100 reporting to production schema.
-test_harness: 'tf_cnn_benchmark'
 test_environment: 'brain-lab'
 # System basics
 platform: 'NVIDIA'
 platform_type: 'DGX-1 (P100)'
 
 # Build type info
-channel: NIGHTLY
+channel: RC
 build_type: OTB
+track: True
 
 # reporting
 report_auth: 'brain_lab_benchmarks.json'
