@@ -14,5 +14,3 @@ RUN apt-get install -y git
 # Install the python basics
 RUN pip install --upgrade google-api-python-client pyyaml paramiko google-cloud
 
-# Down version cuDNN until problem is fixed.
-RUN apt-get -y install --allow-downgrades libcudnn7=7.0.5.15-1+cuda9.0
