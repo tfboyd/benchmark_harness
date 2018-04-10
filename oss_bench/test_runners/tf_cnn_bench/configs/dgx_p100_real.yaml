@@ -12,7 +12,6 @@ test_id_hacks: True
 
 sub_configs:
   - 'tests/resnet/128/resnet50.1_gpu.128.ps_gpu.cuda_visible_0.yaml'
-  - 'tests/resnet/128/resnet50.8_gpu.128.replicated_nccl.yaml'
   - 'tests/resnet/128/resnet50.8_gpu.128.replicated_nccl.prefetch.yaml'
   - 'tests/resnet/128/resnet50.8_gpu.128.replicated_hierarchical_repacking.prefetch.yaml'
   - 'tests/resnet/64/resnet50.1_gpu.64.ps_gpu.nhwc.yaml'
