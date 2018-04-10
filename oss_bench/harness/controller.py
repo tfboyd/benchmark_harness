@@ -221,6 +221,9 @@ class BenchmarkRunner(object):
       if not tested:
         self._tf_cnn_bench(test_config)
         self.update_state(test_config, 'tf_cnn_bench')
+      else:
+        print('Setup already tested for {} on {}'.format(
+            'tf_cnn_bench', test_config))
 
     # Run tf_model_bench if list of tests is found
     if 'tf_models_tests' in test_config:
@@ -228,6 +231,9 @@ class BenchmarkRunner(object):
       if not tested:
         self._tf_model_bench(test_config)
         self.update_state(test_config, 'tf_models')
+      else:
+        print('Setup already tested for {} on {}'.format(
+            'tf_models', test_config))
 
   def check_if_run(self, test_config, test):
     if test_config.get('track'):
@@ -272,6 +278,8 @@ class BenchmarkRunner(object):
           auto_test_config=test_config)
       run.run_tests(test_config['mxnet_tests'])
       self.update_state(test_config, 'mxnet')
+    else:
+      print('Setup already tested for {} on {}'.format('mxnet', test_config))
 
   def run_pytorch_tests(self, test_config):
     """Runs all pytorch based tests.
@@ -300,6 +308,8 @@ class BenchmarkRunner(object):
           auto_test_config=test_config)
       run.run_tests(test_config['pytorch_tests'])
       self.update_state(test_config, 'pytorch')
+    else:
+      print('Setup already tested for {} on {}'.format('pytorch', test_config))
 
   def run_tests(self):
     """Runs all tests based on the test_config."""
