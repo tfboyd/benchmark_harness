@@ -1,12 +1,15 @@
 
 # Start from tensorflow latest.  At some point nightly
-FROM tensorflow/tensorflow:1.8.0-rc0-gpu
+FROM tensorflow/tensorflow:1.8.0-rc1-gpu
 
 # File Author / Maintainer
 MAINTAINER Toby Boyd
 
 # Update apt-get so latest apps can get installed
 RUN apt-get update
+
+# Fix cuDNN version
+RUN apt-get -y install --allow-downgrades libcudnn7
 
 # Install everything needed via apt-get
 RUN apt-get install -y git
