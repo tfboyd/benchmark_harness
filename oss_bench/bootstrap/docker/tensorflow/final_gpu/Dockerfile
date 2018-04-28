@@ -1,5 +1,5 @@
 # Start from tensorflow latest.  At some point nightly
-FROM tensorflow/tensorflow:1.7.0-gpu
+FROM tensorflow/tensorflow:1.8.0-gpu
 
 # File Author / Maintainer
 MAINTAINER Toby Boyd
