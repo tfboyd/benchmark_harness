@@ -75,15 +75,12 @@ def parse_result_file(result_file_path):
     # Rows with 'tensorflow:Batch [' and 'exp/sec' contain speed data.
     if line.find('tensorflow:Batch [') > 0 and line.find('exp/sec') > 0:
       parts = line.split()
-      batch = int(parts[1].replace(']', '').replace('[', ''))
-      # Ignores first 10 batches as a warm up, tf_benchmarks does the same.
-      if batch > 10:
-        sum_speed += float(parts[2].rstrip())
+      batch = int(parts[1].replace(']', '').replace('[', '').replace(':', ''))
+      # Ignores first 100 batches as a warm up
+      if batch > 100:
+        sum_speed += float(parts[5].rstrip().replace(',', ''))
         samples += 1
 
-      # After 100 batches are found, calculate average and break.
-      if batch > 100:
-        break
   result['imgs_sec'] = sum_speed / samples
   result['batches_sampled'] = samples
   return result
