@@ -8,6 +8,7 @@ platform_type: 'DGX-1 (P100)'
 # Build type info
 channel: FINAL
 build_type: OTB
+track: True
 
 # reporting
 report_auth: 'brain_lab_benchmarks.json'
