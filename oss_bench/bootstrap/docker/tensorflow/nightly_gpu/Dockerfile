@@ -15,4 +15,5 @@ RUN pip install --upgrade pip
 RUN apt-get install -y git
 RUN pip install --upgrade google-api-python-client pyyaml paramiko google-cloud
 # Needed by tf_models code (may already be meet by other needs above)
-RUN pip install --upgrade psutil py-cpuinfo google-cloud-bigquery
+# tf_models also wants google-cloud-bigquery but resulted in needless warnings.
+RUN pip install --upgrade psutil py-cpuinfo
