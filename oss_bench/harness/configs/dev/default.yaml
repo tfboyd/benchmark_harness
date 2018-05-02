@@ -18,5 +18,4 @@ report_table: 'result'
 
 tf_models_tests:
   - 'resnet50v2_64_gpu_1'
-
-input_threads: 4
+  - 'resnet50v2_64_gpu_1_real'
