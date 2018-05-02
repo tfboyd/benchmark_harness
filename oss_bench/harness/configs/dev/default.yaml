@@ -12,11 +12,11 @@ report_dataset: 'benchmark_results_dev'
 report_table: 'result'
 
 # tf-cnn-benchmarks
-tf_cnn_bench_configs:
-  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/workstation_gtx1080.yaml
+#tf_cnn_bench_configs:
+#  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/workstation_gtx1080.yaml
 
 
 tf_models_tests:
-  - 'renset50v2_32_gpu_1_real'
+  - 'resnet50v2_64_gpu_1'
 
 input_threads: 4
