@@ -20,5 +20,12 @@ tf_cnn_bench_configs:
   - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/dgx_p100.yaml
   - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/dgx_p100_real.yaml
 
-# Args for tf_models_tests.  Seen by all test harnesses as well.
-input_threads: 30
+tf_models_tests:
+  - 'resnet50_64_gpu_1'
+  - 'resnet50_64_gpu_8'
+  - 'resnet50_128_gpu_1'
+  - 'resnet50_128_gpu_8'
+  - 'resnet50_64_gpu_1_real'
+  - 'resnet50_64_gpu_8_real'
+  - 'resnet50_128_gpu_1_real'
+  - 'resnet50_128_gpu_8_real'
