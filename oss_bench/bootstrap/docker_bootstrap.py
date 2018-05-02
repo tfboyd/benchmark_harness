@@ -1,6 +1,7 @@
 """Bootstrap that starts up docker and starts off desired test harness."""
 from __future__ import print_function
 import argparse
+import datetime
 import os
 import subprocess
 import sys
@@ -38,12 +39,12 @@ class Bootstrap(object):
                framework='tensorflow',
                gpu_process_check=True,
                pure_docker=False,
-               docker_no_cache=True):
+               docker_no_cache=True,
+               bootstrap_log='./log.txt'):
     self.docker_folder = docker_folder
     self.workspace = workspace
     self.test_config = test_config
     self.bootstrap_config = bootstrap_config
-    self.bootstrap_log = './log.txt'
     self.auth_token_dir = auth_token_dir
     self.harness_branch = harness_branch
     self.framework = framework
@@ -52,6 +53,7 @@ class Bootstrap(object):
     self.pure_docker = pure_docker
     self.docker_tag = docker_tag
     self.docker_no_cache = docker_no_cache
+    self.bootstrap_log = bootstrap_log
 
   def run_local_command(self, cmd, stdout=None):
     """Run a command in a subprocess and log result.
@@ -215,10 +217,19 @@ class Bootstrap(object):
 
 
 def main():
-
   # Adding 'package' to the system path to make modules available and simplify
   # usage by not having to 'use python -m'.
   sys.path.append('../')
+
+  # Creates workspace and default log folder
+  log_dir = './logs'
+  if not os.path.exists(log_dir):
+    print('Making log directory:{}'.format(log_dir))
+    os.makedirs(log_dir)
+
+  # Dated log file
+  datetime_str = datetime.datetime.now().strftime('%Y%m%dT%H%M%S')
+  bootstrap_log = './{}/log_{}.txt'.format(log_dir, datetime_str)
 
   bootstrap = Bootstrap(
       FLAGS.docker_folder,
@@ -231,7 +242,8 @@ def main():
       harness_branch=FLAGS.harness_branch,
       gpu_process_check=FLAGS.gpu_process_check,
       pure_docker=FLAGS.pure_docker,
-      docker_no_cache=FLAGS.docker_no_cache)
+      docker_no_cache=FLAGS.docker_no_cache,
+      bootstrap_log=bootstrap_log)
   bootstrap.run_tests()
 
 
