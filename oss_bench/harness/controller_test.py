@@ -45,6 +45,8 @@ class TestBenchmarkRunner(unittest.TestCase):
     self.assertEqual(os.environ['GOOGLE_APPLICATION_CREDENTIALS'],
                      '/auth_tokens/tensorflow_performance_upload_tb.json')
     self.assertIn('/workspace/git/benchmark_harness/oss_bench', sys.path)
+    # needed for tf_models tests.
+    self.assertEqual(os.environ['PYTHONPATH'], '/workspace/git/tf_models')
 
     arg0 = tf_cnn_bench.call_args[0][0]
     self.assertEqual(arg0['accel_type'], 'GTX 970')

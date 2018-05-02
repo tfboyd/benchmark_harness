@@ -166,7 +166,7 @@ class BenchmarkRunner(object):
     self._git_clone(
         'https://github.com/tfboyd/models.git',
         os.path.join(self.git_repo_base, 'tf_models'),
-        branch='karmel_multi_gpu')
+        branch='perf')
 
   def _make_logs_dir(self):
     try:
@@ -205,6 +205,12 @@ class BenchmarkRunner(object):
     """
     # then kick off some tests via auto_run.
     self._clone_tf_repos()
+
+    # Set python path by overwrite, which is not ideal.
+    relative_tf_models_path = 'tf_models'
+    os.environ['PYTHONPATH'] = os.path.join(self.git_repo_base,
+                                            relative_tf_models_path)
+
     self._store_repo_info(test_config)
 
     # pylint: disable=C6204
