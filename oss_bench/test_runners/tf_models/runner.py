@@ -189,6 +189,13 @@ class TestRunner(object):
       config['model'] = 'resnet50'
     else:
       config['model'] = 'resnet50v2'
+
+    # Reporting looks for this value
+    if dtype == 'fp16':
+      config['use_fp16'] = True
+    else:
+      config['use_fp16'] = False
+
     config['gpus'] = gpus
     config['batch_size'] = batch_size
     args = {}
@@ -370,7 +377,7 @@ class TestRunner(object):
         use_synth=True)
     self.run_test_suite(config)
 
-  def resnet50_256_gpu_1_real_fp16(self):
+  def resnet50_256_gpu_1_fp16_real(self):
     """Tests ResNet50 FP16 real data data on 1 GPU with batch size 256."""
     test_id = 'garden.resnet50.gpu_1.256.fp16.real'
     args = {}
@@ -378,7 +385,7 @@ class TestRunner(object):
         test_id, args, batch_size=256, gpus=1, version=1, dtype='fp16')
     self.run_test_suite(config)
 
-  def resnet50_256_gpu_8_real_fp16(self):
+  def resnet50_256_gpu_8_fp16_real(self):
     """Tests ResNet50 FP16 real data data on 8 GPU with batch size 256."""
     test_id = 'garden.resnet50.gpu_8.256.fp16.real'
     args = {}
