@@ -6,10 +6,14 @@ FROM tensorflow/tensorflow:nightly-gpu
 MAINTAINER Toby Boyd
 
 # Update apt-get so latest apps can get installed
+# Need to update enough to get apt-get updated to install apt-transport-https
+RUN apt-get update; exit 0
+RUN apt-get install apt-transport-https
 RUN apt-get update
 
 RUN pip install --upgrade pip
 #RUN apt-get -y install --allow-downgrades libcudnn7=7.0.5.15-1+cuda9.0
+RUN pip install --upgrade --force-reinstall tf-nightly-gpu
 
 # Install everything needed via apt-get
 RUN apt-get install -y git
