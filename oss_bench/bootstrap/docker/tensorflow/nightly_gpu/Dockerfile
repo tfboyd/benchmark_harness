@@ -7,7 +7,7 @@ MAINTAINER Toby Boyd
 
 # Update apt-get so latest apps can get installed
 # Need to update enough to get apt-get updated to install apt-transport-https
-RUN apt-get update; exit 0
+RUN rm /etc/apt/sources.list.d/nvidia-ml.list && apt update; exit 0
 RUN apt-get install apt-transport-https
 RUN apt-get update
 
