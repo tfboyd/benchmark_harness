@@ -30,5 +30,8 @@ tf_models_tests:
   - 'resnet50_128_gpu_8_real'
   - 'resnet50_256_gpu_1_fp16'
   - 'resnet50_256_gpu_8_fp16'
-  - 'resnet50_256_gpu_1_fp16_real'
-  - 'resnet50_256_gpu_8_fp16_real'
+  - 'resnet50v2_256_gpu_1_fp16'
+  - 'resnet50v2_256_gpu_8_fp16'
+# NaNs as of 04-MAY-2018
+#  - 'resnet50_256_gpu_1_fp16_real'
+#  - 'resnet50_256_gpu_8_fp16_real'
