@@ -64,7 +64,10 @@ def parse_result_file(result_file_path):
   result['config'] = config
   result['result_dir'] = result_dir
   result['test_id'] = config['test_id']
-  result['data_type'] = 'real'
+  if 'use_synthetic_data' in config['args']:
+    result['data_type'] = 'synth'
+  else:
+    result['data_type'] = 'real'
 
   # Number of gpus = number of servers * number of gpus
   if 'gpus' in config:
