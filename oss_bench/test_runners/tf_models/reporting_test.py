@@ -68,7 +68,7 @@ class TestReporting(unittest.TestCase):
         'test_runners/tf_models/unittest_files/results/basic/'
         'worker_0_stdout.txt')
 
-    self.assertEqual(result['imgs_sec'], 128.4152)
+    self.assertEqual(result['imgs_sec'], 622.9143333333333)
     self.assertEqual(result['batches_sampled'], 5)
     self.assertEqual(result['test_id'], 'resnet50v2.gpu_1.32')
     self.assertEqual(result['gpu'], 1)

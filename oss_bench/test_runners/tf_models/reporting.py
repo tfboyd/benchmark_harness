@@ -76,12 +76,12 @@ def parse_result_file(result_file_path):
   # Processes results file and aggregates the results of one run.
   for line in result_file:
     # Rows with 'tensorflow:Batch [' and 'exp/sec' contain speed data.
-    if line.find('tensorflow:Batch [') > 0 and line.find('exp/sec') > 0:
+    if line.find(' Batch [') > 0 and line.find('exp/sec') > 0:
       parts = line.split()
-      batch = int(parts[1].replace(']', '').replace('[', '').replace(':', ''))
+      batch = int(parts[5].replace(']', '').replace('[', '').replace(':', ''))
       # Ignores first 100 batches as a warm up
       if batch > 100:
-        sum_speed += float(parts[5].rstrip().replace(',', ''))
+        sum_speed += float(parts[9].rstrip().replace(',', ''))
         samples += 1
 
   result['imgs_sec'] = sum_speed / samples

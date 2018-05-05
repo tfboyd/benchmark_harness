@@ -1,44 +1,27 @@
-2018-05-01 19:40:00.442775: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1406] Ignoring visible gpu device (device: 1, name: Quadro K600, pci bus id: 0000:04:00.0, compute capability: 3.0) with Cuda compute capability 3.0. The minimum required Cuda capability is 3.5.
-2018-05-01 19:40:00.442813: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1435] Adding visible gpu devices: 0
-2018-05-01 19:40:00.442845: I tensorflow/core/common_runtime/gpu/gpu_device.cc:923] Device interconnect StreamExecutor with strength 1 edge matrix:
-2018-05-01 19:40:00.442859: I tensorflow/core/common_runtime/gpu/gpu_device.cc:929]      0 1
-2018-05-01 19:40:00.442870: I tensorflow/core/common_runtime/gpu/gpu_device.cc:942] 0:   N N
-2018-05-01 19:40:00.442881: I tensorflow/core/common_runtime/gpu/gpu_device.cc:942] 1:   N N
-2018-05-01 19:40:00.443022: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1053] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 7536 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1080, pci bus id: 0000:05:00.0, compute capability: 6.1)
-INFO:tensorflow:Restoring parameters from ./model_save/model.ckpt-0
-INFO:tensorflow:Running local_init_op.
-INFO:tensorflow:Done running local_init_op.
-INFO:tensorflow:Saving checkpoints for 0 into ./model_save/model.ckpt.
-2018-05-01 19:40:08.679828: W tensorflow/core/common_runtime/bfc_allocator.cc:219] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.32GiB. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
-2018-05-01 19:40:08.685992: W tensorflow/core/common_runtime/bfc_allocator.cc:219] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.54GiB. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
-2018-05-01 19:40:08.719054: W tensorflow/core/common_runtime/bfc_allocator.cc:219] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.54GiB. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
-2018-05-01 19:40:08.735566: W tensorflow/core/common_runtime/bfc_allocator.cc:219] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.27GiB. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
-2018-05-01 19:40:08.797930: W tensorflow/core/common_runtime/bfc_allocator.cc:219] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.32GiB. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
-2018-05-01 19:40:08.814637: W tensorflow/core/common_runtime/bfc_allocator.cc:219] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.26GiB. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
-INFO:tensorflow:learning_rate = 0.025, cross_entropy = 0.0, train_accuracy = 0
-INFO:tensorflow:loss = 1.0943027, step = 0
-INFO:tensorflow:global_step/sec: 1.99975
-INFO:tensorflow:learning_rate = 0.025, cross_entropy = 0.0, train_accuracy = 0 (50.006 sec)
-INFO:tensorflow:loss = 1.0893599, step = 100 (50.006 sec)
-INFO:tensorflow:Batch [100]:  current exp/sec = 130.89, average exp/sec = 130.89
-INFO:tensorflow:global_step/sec: 2.02896
-INFO:tensorflow:learning_rate = 0.025, cross_entropy = 0.0, train_accuracy = 0 (49.286 sec)
-INFO:tensorflow:loss = 1.0840131, step = 200 (49.287 sec)
-INFO:tensorflow:Batch [200]:  current exp/sec = 129.69, average exp/sec = 130.287
-INFO:tensorflow:global_step/sec: 2.00534
-INFO:tensorflow:learning_rate = 0.025, cross_entropy = 0.0, train_accuracy = 0 (49.867 sec)
-INFO:tensorflow:loss = 1.0787549, step = 300 (49.867 sec)
-INFO:tensorflow:Batch [300]:  current exp/sec = 128.391, average exp/sec = 129.649
-INFO:tensorflow:global_step/sec: 2.00506
-INFO:tensorflow:learning_rate = 0.025, cross_entropy = 0.0, train_accuracy = 0 (49.874 sec)
-INFO:tensorflow:loss = 1.0735849, step = 400 (49.874 sec)
-INFO:tensorflow:Batch [400]:  current exp/sec = 128.258, average exp/sec = 129.298
-INFO:tensorflow:global_step/sec: 1.99898
-INFO:tensorflow:learning_rate = 0.025, cross_entropy = 0.0, train_accuracy = 0 (50.026 sec)
-INFO:tensorflow:loss = 1.0685025, step = 500 (50.026 sec)
-INFO:tensorflow:Batch [500]:  current exp/sec = 127.929, average exp/sec = 129.022
-INFO:tensorflow:global_step/sec: 1.99647
-INFO:tensorflow:learning_rate = 0.025, cross_entropy = 0.0, train_accuracy = 0 (50.088 sec)
-INFO:tensorflow:loss = 1.063507, step = 600 (50.088 sec)
-INFO:tensorflow:Batch [600]:  current exp/sec = 127.808, average exp/sec = 128.818
-
+2018-05-04 23:52:06.841017: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1046] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 14867 MB memory) -> physical GPU (device: 0, name: Tesla V100-SXM2-16GB, pci bus id: 0000:00:17.0, compute capability: 7.0)
+2018-05-04 23:52:06.841282: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1046] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:1 with 14867 MB memory) -> physical GPU (device: 1, name: Tesla V100-SXM2-16GB, pci bus id: 0000:00:18.0, compute capability: 7.0)
+2018-05-04 23:52:06.841748: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1046] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:2 with 14867 MB memory) -> physical GPU (device: 2, name: Tesla V100-SXM2-16GB, pci bus id: 0000:00:19.0, compute capability: 7.0)
+2018-05-04 23:52:06.842030: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1046] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:3 with 14867 MB memory) -> physical GPU (device: 3, name: Tesla V100-SXM2-16GB, pci bus id: 0000:00:1a.0, compute capability: 7.0)
+2018-05-04 23:52:06.842286: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1046] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:4 with 14867 MB memory) -> physical GPU (device: 4, name: Tesla V100-SXM2-16GB, pci bus id: 0000:00:1b.0, compute capability: 7.0)
+2018-05-04 23:52:06.842544: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1046] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:5 with 14867 MB memory) -> physical GPU (device: 5, name: Tesla V100-SXM2-16GB, pci bus id: 0000:00:1c.0, compute capability: 7.0)
+2018-05-04 23:52:06.842808: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1046] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:6 with 14867 MB memory) -> physical GPU (device: 6, name: Tesla V100-SXM2-16GB, pci bus id: 0000:00:1d.0, compute capability: 7.0)
+2018-05-04 23:52:06.843068: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1046] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:7 with 14867 MB memory) -> physical GPU (device: 7, name: Tesla V100-SXM2-16GB, pci bus id: 0000:00:1e.0, compute capability: 7.0)
+I0504 23:52:08.480299 139677978408704 tf_logging.py:115] Running local_init_op.
+I0504 23:52:08.565634 139677978408704 tf_logging.py:115] Done running local_init_op.
+I0504 23:52:12.372431 139677978408704 tf_logging.py:115] Saving checkpoints for 0 into /workspace/logs/tf_models/results/20180504T234304_garden.resnet50v2.gpu_1.256.fp16.real/20180504T235140/checkpoint/model.ckpt.
+I0504 23:52:21.243436 139677978408704 tf_logging.py:115] loss = 8.100132, step = 0
+I0504 23:53:05.106400 139677978408704 tf_logging.py:115] global_step/sec: 2.27978
+I0504 23:53:05.109778 139677978408704 tf_logging.py:115] loss = 7.949765, step = 100 (43.866 sec)
+I0504 23:53:07.596677 139677978408704 tf_logging.py:115] Batch [100]:  current exp/sec = 611.291, average exp/sec = 611.291
+I0504 23:53:46.310352 139677978408704 tf_logging.py:115] global_step/sec: 2.42694
+I0504 23:53:46.312743 139677978408704 tf_logging.py:115] loss = 7.735603, step = 200 (41.203 sec)
+I0504 23:53:48.772484 139677978408704 tf_logging.py:115] Batch [200]:  current exp/sec = 621.724, average exp/sec = 616.463
+I0504 23:54:27.209856 139677978408704 tf_logging.py:115] global_step/sec: 2.44512
+I0504 23:54:27.225336 139677978408704 tf_logging.py:115] loss = 7.6090198, step = 300 (40.912 sec)
+I0504 23:54:29.729950 139677978408704 tf_logging.py:115] Batch [300]:  current exp/sec = 625.041, average exp/sec = 619.296
+I0504 23:55:08.439111 139677978408704 tf_logging.py:115] global_step/sec: 2.42536
+I0504 23:55:08.442868 139677978408704 tf_logging.py:115] loss = 7.305235, step = 400 (41.218 sec)
+I0504 23:55:10.888847 139677978408704 tf_logging.py:115] Batch [400]:  current exp/sec = 621.978, average exp/sec = 619.964
+[400] batches complete. Kill Thread.
+[400] batches complete. Kill Thread.
+[400] batches complete. Kill Thread.

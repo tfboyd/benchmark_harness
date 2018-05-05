@@ -207,7 +207,7 @@ class TestRunner(object):
     # Default for running on GPU
     args['intra_op_parallelism_threads'] = 1
     # Default to ResNet50v1
-    args['version'] = version
+    args['resnet_version'] = version
     args['resnet_size'] = 50
     args['batch_size'] = batch_size * gpus
     args['num_gpus'] = gpus
