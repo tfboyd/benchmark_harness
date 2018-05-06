@@ -9,4 +9,5 @@ run_configs:
     batch_size: 128
     optimizer: 'sgd'
     all_reduce_spec: nccl
+    gpu_thread_mode: gpu_shared
     datasets_use_prefetch: True

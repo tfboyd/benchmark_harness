@@ -12,7 +12,5 @@ sub_configs:
   - 'tests/alexnet/alexnet.8_gpu.512.replicated_hierarchical_repacking.yaml'
   - 'tests/trivial/trivial.8_gpu.128.independent.yaml'
   - 'tests/trivial/trivial.8_gpu.64.independent.yaml'
-  - 'tests/trivial/trivial.8_gpu.128.independent_0_0.yaml'
   - 'tests/trivial/trivial.8_gpu.256.independent.prefetch.yaml'
-  - 'tests/trivial/trivial.8_gpu.256.independent.yaml'
 

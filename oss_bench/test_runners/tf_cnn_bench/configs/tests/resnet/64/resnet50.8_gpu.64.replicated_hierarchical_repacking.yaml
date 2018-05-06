@@ -11,3 +11,4 @@ run_configs:
     hierarchical_copy: True
     gpu_thread_mode: gpu_shared
     gradient_repacking: 8
+    datasets_use_prefetch: True
