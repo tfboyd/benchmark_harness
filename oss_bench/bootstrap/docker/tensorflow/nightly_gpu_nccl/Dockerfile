@@ -1,16 +1,15 @@
 
-# Start from tensorflow nightly GPU.
-FROM tensorflow/tensorflow:nightly-gpu
+# Start from nvidia/cuda which has nccl 2.x
+FROM nvidia/cuda:9.0-cudnn7-runtime-ubuntu16.04
 
 # File Author / Maintainer
 MAINTAINER Toby Boyd
 
 # Update apt-get so latest apps can get installed
 RUN apt-get update
-
+RUN apt-get install -y python-pip
 RUN pip install --upgrade pip
-#RUN apt-get -y install --allow-downgrades libcudnn7=7.0.5.15-1+cuda9.0
-RUN pip install --upgrade --force-reinstall tf-nightly-gpu
+RUN pip install --upgrade --force-reinstall https://s3-us-west-2.amazonaws.com/tf-benchmark/tf_binary/tensorflow-1.7.0.4f92c16.NCCL2-cp27-cp27mu-linux_x86_64.whl
 
 # Install everything needed via apt-get
 RUN apt-get install -y git

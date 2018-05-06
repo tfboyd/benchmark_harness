@@ -1,5 +1,8 @@
 """Utils for the test_runners."""
 from __future__ import print_function
+
+import os
+
 import numpy
 from upload import result_info
 from upload import result_upload
@@ -25,7 +28,6 @@ def report_config_defaults(report_config, test_harness=None):
   config['accel_type'] = report_config.get('accel_type', 'unknown')
   config['framework_describe'] = report_config.get('framework_describe',
                                                    'unknown')
-
   return config
 
 
@@ -127,3 +129,18 @@ def report_aggregate_results(results_list):
     agg_result['min'] = 0
 
   return agg_result
+
+
+def delete_files_in_folder(folder):
+  """Delete files in folder. Does not delete sub folders.
+
+  Args:
+    folder: folders contents to delete.
+  """
+  for files in os.listdir(folder):
+    full_path = os.path.join(folder, files)
+    try:
+      if os.path.isfile(full_path):
+        os.remove(full_path)
+    except OSError as e:
+      print('Error deleting file {}:{}'.format(full_path, e))

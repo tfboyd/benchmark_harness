@@ -1,0 +1,9 @@
+# General settings
+repeat: 1
+
+# Worker settings override
+nodistortions: FLAG_ONLY
+num_batches: 2000
+
+sub_configs:
+  - 'tests/trivial/trivial.8_gpu.128.independent.yaml'
