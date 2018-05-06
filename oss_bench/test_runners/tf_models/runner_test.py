@@ -40,7 +40,7 @@ class TestRunBenchmark(unittest.TestCase):
     self.assertEqual(test_config['batch_size'], 64)
     self.assertEqual(test_config['args']['data_dir'], '/data/imagenet')
     self.assertEqual(test_config['args']['batch_size'], 64)
-    self.assertEqual(test_config['args']['version'], 2)
+    self.assertEqual(test_config['args']['resnet_version'], 2)
     self.assertEqual(test_config['args']['dtype'], 'fp32')
     self.assertEqual(test_config['test_id'], 'garden.resnet50v2.gpu_1.64.real')
     self.assertIn('model', test_config)
