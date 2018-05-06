@@ -1,0 +1,43 @@
+# Config for a AWS reporting to production schema.
+test_harness: 'tf_cnn_benchmark'
+test_environment: 'aws'
+# System basics
+# platform is not part of the key in the dashboard.
+platform: 'aws'
+platform_type: 'p3.16xlarge'
+
+# Build type info
+channel: CUSTOM
+build_type: NCCL_2
+
+# reporting
+report_auth: 'benchmark_upload_aws.json'
+report_project: 'google.com:tensorflow-performance'
+report_dataset: 'benchmark_results'
+report_table: 'result'
+
+# tf-cnn-benchmarks
+tf_cnn_bench_configs:
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/io_warmup_real.yaml
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/dgx_v100_real.yaml
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/dgx_v100.yaml
+
+tf_models_tests:
+  - 'resnet50_128_gpu_1'
+  - 'resnet50_128_gpu_2'
+  - 'resnet50_128_gpu_4'
+  - 'resnet50_128_gpu_8'
+  - 'resnet50_128_gpu_1_real'
+  - 'resnet50_128_gpu_2_real'
+  - 'resnet50_128_gpu_4_real'
+  - 'resnet50_128_gpu_8_real'
+  - 'resnet50_256_gpu_1_fp16'
+  - 'resnet50_256_gpu_8_fp16'
+  - 'resnet50v2_256_gpu_1_fp16'
+  - 'resnet50v2_256_gpu_2_fp16'
+  - 'resnet50v2_256_gpu_4_fp16'
+  - 'resnet50v2_256_gpu_8_fp16'
+  - 'resnet50v2_256_gpu_1_fp16_real'
+  - 'resnet50v2_256_gpu_2_fp16_real'
+  - 'resnet50v2_256_gpu_4_fp16_real'
+  - 'resnet50v2_256_gpu_8_fp16_real'
