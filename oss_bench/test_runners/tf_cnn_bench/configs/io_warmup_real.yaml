@@ -5,5 +5,10 @@ repeat: 1
 nodistortions: FLAG_ONLY
 num_batches: 2000
 
+# Data directory mounted in the docker
+data_dir: '/data/imagenet'
+# Causes .real to be appended to all test_ids if data_dir is found.
+test_id_hacks: True
+
 sub_configs:
   - 'tests/trivial/trivial.8_gpu.128.independent.yaml'
