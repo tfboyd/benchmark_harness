@@ -163,10 +163,8 @@ class BenchmarkRunner(object):
     self._git_clone('https://github.com/tensorflow/benchmarks.git',
                     os.path.join(self.git_repo_base, 'benchmarks'))
 
-    self._git_clone(
-        'https://github.com/tfboyd/models.git',
-        os.path.join(self.git_repo_base, 'tf_models'),
-        branch='perf')
+    self._git_clone('https://github.com/tensorflow/models.git',
+                    os.path.join(self.git_repo_base, 'tf_models'))
 
   def _make_logs_dir(self):
     try:
