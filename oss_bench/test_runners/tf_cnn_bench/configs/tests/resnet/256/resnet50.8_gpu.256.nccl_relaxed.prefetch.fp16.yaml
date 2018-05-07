@@ -13,3 +13,4 @@ run_configs:
     datasets_use_prefetch: True
     variable_consistency: relaxed
     all_reduce_spec: nccl
+    compact_gradient_transfer: False

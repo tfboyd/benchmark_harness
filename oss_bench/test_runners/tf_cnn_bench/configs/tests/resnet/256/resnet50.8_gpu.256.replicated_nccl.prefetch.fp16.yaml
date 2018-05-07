@@ -13,3 +13,4 @@ run_configs:
     all_reduce_spec: nccl
     gpu_thread_mode: gpu_shared
     datasets_use_prefetch: True
+    compact_gradient_transfer: False

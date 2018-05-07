@@ -12,6 +12,7 @@ run_configs:
     gpu_thread_mode: gpu_shared
     datasets_use_prefetch: True
     all_reduce_spec: nccl
+    compact_gradient_transfer: False
 
 
   - test_id: resnet50.4_gpu.256.replicated_nccl.fp16
