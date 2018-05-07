@@ -25,7 +25,8 @@ def build_run_command(run_config):
       'nodistortions', 'gpu_thread_mode', 'hierarchical_copy', 'use_tf_layers',
       'gradient_repacking', 'datasets_use_prefetch',
       'datasets_prefetch_buffer_size', 'datasets_prefetch_threadpool_size',
-      'datasets_num_private_threads', 'variable_consistency'
+      'datasets_num_private_threads', 'variable_consistency',
+      'compact_gradient_transfer'
   ]
 
   for arg in pass_through_args:
