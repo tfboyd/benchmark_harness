@@ -22,7 +22,9 @@ class TestHarnessConfigs(unittest.TestCase):
         'harness/configs/prod/dgx_v100_RC.yaml',
         'harness/configs/prod/dgx_v100_FINAL.yaml',
         'harness/configs/prod/aws_v100.yaml',
+        'harness/configs/prod/aws_v100_nccl2.yaml',
         'harness/configs/prod/gce_v100.yaml',
+        'harness/configs/prod/gce_v100_nccl2.yaml',
     ]
     for config in configs:
       self.check_config_paths(config)
