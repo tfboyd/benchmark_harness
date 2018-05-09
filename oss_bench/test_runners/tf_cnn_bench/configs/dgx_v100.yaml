@@ -9,12 +9,10 @@ nodistortions: FLAG_ONLY
 datasets_use_prefetch: False
 
 sub_configs:
-  - 'tests/resnet/128/resnet50.1_gpu.forward_only.128.ps_gpu.cuda_visible_0.yaml'
   - 'tests/resnet/128/resnet50.1_gpu.forward_only.128.ps_gpu.cuda_visible_0.fp16.yaml'
   - 'tests/resnet/128/resnet50.1_gpu.128.ps_gpu.cuda_visible_0.fp16.yaml'
   - 'tests/resnet/128/resnet50.1_gpu.128.ps_gpu.fp16.yaml'
   - 'tests/resnet/128/resnet50.8_gpu.128.replicated_nccl.prefetch.fp16.yaml'
-  - 'tests/resnet/128/resnet50.8_gpu.128.ps_cpu.fp16.yaml'
   - 'tests/resnet/128/resnet50.8_gpu.128.replicated_hierarchical_repacking.prefetch.fp16.yaml'
   - 'tests/resnet/256/resnet50.1_gpu.256.ps_gpu.cuda_visible_0.fp16.yaml'
   - 'tests/resnet/256/resnet50.8_gpu.256.replicated_hierarchical_repacking.prefetch.fp16.yaml'
@@ -25,4 +23,4 @@ sub_configs:
   - 'tests/resnet/256/resnet50.8_gpu.256.replicated_hierarchical_repacking.prefetch.nhwc.fp16.yaml'
   - 'tests/vgg/vgg16.1_gpu.128.ps_gpu.yaml'
   - 'tests/vgg/vgg16.8_gpu.128.replicated_nccl.yaml'
-  - 'tests/vgg/vgg16.8_gpu.64.replicated_hierarchical_repacking.yaml'
+  - 'tests/vgg/vgg16.8_gpu.128.replicated_hierarchical_repacking.yaml'
