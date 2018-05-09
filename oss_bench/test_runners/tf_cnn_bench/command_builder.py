@@ -26,7 +26,7 @@ def build_run_command(run_config):
       'gradient_repacking', 'datasets_use_prefetch',
       'datasets_prefetch_buffer_size', 'datasets_prefetch_threadpool_size',
       'datasets_num_private_threads', 'variable_consistency',
-      'compact_gradient_transfer'
+      'compact_gradient_transfer', 'network_topology'
   ]
 
   for arg in pass_through_args:

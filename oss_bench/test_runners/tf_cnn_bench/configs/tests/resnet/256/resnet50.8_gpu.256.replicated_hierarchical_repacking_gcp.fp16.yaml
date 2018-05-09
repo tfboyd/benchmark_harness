@@ -1,15 +1,15 @@
 run_configs:
-  - test_id: resnet50.8_gpu.128.replicated_nccl.prefetch
+  - test_id: resnet50.8_gpu.256.replicated_hierarchical_repacking_gcp.prefech.fp16
     gpus: 8
     model: 'resnet50'
-    ps_server: gpu
+    use_fp16: True
     data_format: NCHW
     variable_update: replicated
     num_batches: 100
-    batch_size: 128
+    batch_size: 256
     optimizer: 'sgd'
-    all_reduce_spec: nccl
+    hierarchical_copy: True
     gpu_thread_mode: gpu_shared
     datasets_use_prefetch: True
-    compact_gradient_transfer: False
     gradient_repacking: 8
+    network_topology: gcp_v100
