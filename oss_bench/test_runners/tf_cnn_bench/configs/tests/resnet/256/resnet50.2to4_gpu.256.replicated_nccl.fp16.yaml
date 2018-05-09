@@ -13,7 +13,7 @@ run_configs:
     datasets_use_prefetch: True
     all_reduce_spec: nccl
     compact_gradient_transfer: False
-
+    gradient_repacking: 8
 
   - test_id: resnet50.4_gpu.256.replicated_nccl.fp16
     gpus: 4
