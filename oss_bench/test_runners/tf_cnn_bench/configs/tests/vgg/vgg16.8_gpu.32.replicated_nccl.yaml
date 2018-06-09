@@ -11,3 +11,4 @@ run_configs:
     all_reduce_spec: nccl
     gpu_thread_mode: gpu_shared
     datasets_use_prefetch: True
+    gradient_repacking: 2
