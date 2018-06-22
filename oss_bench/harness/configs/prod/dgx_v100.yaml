@@ -17,6 +17,7 @@ report_table: 'result'
 
 # tf-cnn-benchmarks
 tf_cnn_bench_configs:
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/io_warmup_real.yaml
   - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/dgx_v100_real.yaml
   - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/dgx_v100.yaml
   - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/dgx_io_test_real.yaml
