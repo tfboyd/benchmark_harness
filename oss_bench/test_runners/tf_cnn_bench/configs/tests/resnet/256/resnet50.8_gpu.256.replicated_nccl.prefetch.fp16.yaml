@@ -11,7 +11,5 @@ run_configs:
     batch_size: 256
     optimizer: 'sgd'
     all_reduce_spec: nccl
-    gpu_thread_mode: gpu_shared
     datasets_use_prefetch: True
-    compact_gradient_transfer: False
-    gradient_repacking: 8
+    gradient_repacking: 2
