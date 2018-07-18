@@ -9,5 +9,4 @@ run_configs:
     batch_size: 256
     optimizer: 'sgd'
     hierarchical_copy: True
-    gpu_thread_mode: gpu_shared
     gradient_repacking: 8
