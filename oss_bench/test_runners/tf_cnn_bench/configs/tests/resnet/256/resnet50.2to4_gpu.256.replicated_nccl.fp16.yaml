@@ -8,11 +8,8 @@ run_configs:
     num_batches: 100
     batch_size: 256
     optimizer: 'sgd'
-    hierarchical_copy: True
-    gpu_thread_mode: gpu_shared
     datasets_use_prefetch: True
     all_reduce_spec: nccl
-    compact_gradient_transfer: False
     gradient_repacking: 2
 
   - test_id: resnet50.4_gpu.256.replicated_nccl.fp16
