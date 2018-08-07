@@ -20,11 +20,13 @@ git clone https://github.com/tfboyd/benchmark_harness.git
 
 cd benchmark_harness/oss_bench
 # Runs a test config (configs/dev/default.yaml') targeting TensorFlow that will run on most GPUs.  
-python -m harness.controller --workspace=<path to an empty location>
+python -m harness.controller --workspace=<path to workspace with /git/benchmark_harness>
 
 
 ```
 
 ## How to add a new test runner
+
+
 
 
