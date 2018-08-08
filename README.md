@@ -28,5 +28,13 @@ python -m harness.controller --workspace=<path to workspace with /git/benchmark_
 ## How to add a new test runner
 
 
+## Development basics
+
+### Unit tests
+
+```bash
+# From oss_bench directory
+python -m unittest discover -p '*_test.py'
+```
 
 
