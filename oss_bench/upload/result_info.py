@@ -45,7 +45,7 @@ def build_result_info(results,
     result (float): Float value representing the result of the test.
     result_type (str): Type of result, total_time, exps_per_sec,
       oom_batch_size, or global_step_per_sec.  Defaults to total_time.
-    result_units (str, optional): Unitest of the results, defaults to ms.
+    result_units (str, optional): Unit of the results, defaults to ms.
 
   Returns:
     results appended with new result dict.

@@ -1,7 +1,9 @@
 """Generates and updates test results from stored log files."""
+from __future__ import print_function
 import os
 
 from test_runners.common import util
+from upload import result_info
 import yaml
 
 
@@ -32,16 +34,19 @@ def _collect_results(folder_path):
     for f in files:
       if f == 'worker_0_stdout.log':
         result_file = os.path.join(r, f)
-        results.append(parse_result_file(result_file))
+        result = parse_result_file(result_file)
+        eval_file = os.path.join(r, 'eval_0_stdout.log')
+        eval_results = parse_eval_result_file(eval_file)
+        if 'raw_extra_results' in result:
+          result['raw_extra_results'].extend(eval_results)
+        else:
+          result['raw_extra_results'] = eval_results
+        results.append(result)
   return results
 
 
 def parse_result_file(result_file_path):
   """Parses a result file.
-
-  Parse a results.txt file into an object.  Example of one line:
-  repeatResNet50WinoSendRecv/20170310_204841_tensorflow_resnet50_32/8.txt:
-  images/sec:391.0 +/- 1.6 (jitter = 8.0)
 
   Args:
     result_file_path: Path to file to parse
@@ -51,18 +56,28 @@ def parse_result_file(result_file_path):
   """
   result = {}
   result_file = open(result_file_path, 'r')
+
+  # Get the config
+  result_dir = os.path.dirname(result_file_path)
+  config_file = os.path.join(result_dir, 'config.yaml')
+  f = open(config_file, 'r')
+  config = yaml.safe_load(f)
+
+  # Load extra results
+  extra_results_file = os.path.join(result_dir, 'extra_results.yaml')
+  try:
+    f = open(extra_results_file, 'r')
+    extra_results = yaml.safe_load(f)
+    result['raw_extra_results'] = extra_results
+  except IOError:
+    extra_results = None
+    print('{}  not found.'.format(extra_results_file))
+
   for line in result_file:
     # Summary line starts with images/sec
     if line.find('total images/sec') == 0:
-      result = {}
       parts = line.split(' ')
       result['imgs_sec'] = float(parts[2].rstrip())
-
-      # Get the config
-      result_dir = os.path.dirname(result_file_path)
-      config_file = os.path.join(result_dir, 'config.yaml')
-      f = open(config_file)
-      config = yaml.safe_load(f)
       result['config'] = config
       result['result_dir'] = result_file_path
       result['test_id'] = config['test_id']
@@ -80,6 +95,42 @@ def parse_result_file(result_file_path):
       break
 
   return result
+
+
+def parse_eval_result_file(result_file_path):
+  """Parses a eval result file.
+
+  Args:
+    result_file_path: Path to file to parse
+
+  Returns:
+    `dict` representing the results.
+  """
+  results = []
+  try:
+    result_file = open(result_file_path, 'r')
+  except IOError:
+    print('{}  not found.'.format(result_file_path))
+    return results
+
+  for line in result_file:
+    # Summary line starts with images/sec
+    if line.find('Accuracy @') == 0:
+      results = []
+      parts = line.split(' ')
+      top_1 = float(parts[4].rstrip())
+      result_info.build_result_info(results,
+                                    top_1,
+                                    'top_1',
+                                    result_units='accuracy')
+      top_5 = float(parts[9].rstrip())
+      result_info.build_result_info(results,
+                                    top_5,
+                                    'top_5',
+                                    result_units='accuracy')
+      break
+
+  return results
 
 
 def check_oom(result_file_path):

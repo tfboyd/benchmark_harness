@@ -1,4 +1,5 @@
 """Upload test results."""
+from __future__ import print_function
 import copy
 from datetime import datetime
 import json
@@ -43,27 +44,34 @@ def upload_result(test_result,
   """
 
   # Project is disgarded in favor of what the user passes in.
-  credentials, _ = google.auth.default()
+  if project == 'LOCAL':
+    print('test_result:{}', test_result)
+    print('result_info:{}', result_info)
+    print('test_info:{}', test_info)
+    print('system_info:{}', system_info)
+    print('extras:{}', extras)
+  else:
+    credentials, _ = google.auth.default()
 
-  row = _build_row(credentials, test_result, result_info, test_info,
-                   system_info, extras)
+    row = _build_row(credentials, test_result, result_info, test_info,
+                     system_info, extras)
 
-  client = bigquery.Client(project=project, credentials=credentials)
-  conn = connect(client=client)
-  cursor = conn.cursor()
-  sql = """INSERT into {}.{} (result_id, test_id, test_harness,
-           test_environment, result_info, user, timestamp, system_info,
-           test_info, extras)
-             VALUES
-           (@result_id, @test_id, @test_harness, @test_environment,
-           @result_info, @user, @timestamp, @system_info, @test_info, @extras)
-           """.format(dataset, table)
+    client = bigquery.Client(project=project, credentials=credentials)
+    conn = connect(client=client)
+    cursor = conn.cursor()
+    sql = """INSERT into {}.{} (result_id, test_id, test_harness,
+             test_environment, result_info, user, timestamp, system_info,
+             test_info, extras)
+               VALUES
+             (@result_id, @test_id, @test_harness, @test_environment,
+             @result_info, @user, @timestamp, @system_info, @test_info, @extras)
+             """.format(dataset, table)
 
-  cursor.execute(sql, parameters=row)
-  conn.commit()
-  # Cursor and connection closes on their own as well.
-  cursor.close()
-  conn.close()
+    cursor.execute(sql, parameters=row)
+    conn.commit()
+    # Cursor and connection closes on their own as well.
+    cursor.close()
+    conn.close()
 
 
 def _build_row(credentials,

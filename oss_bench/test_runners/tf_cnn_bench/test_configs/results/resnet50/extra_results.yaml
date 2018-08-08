@@ -1,0 +1,3 @@
+- {result: 51314, result_type: worker_time, result_units: ms}
+- {result: 229900, result_type: eval_time, result_units: ms}
+- {result: 281214, result_type: total_time, result_units: ms}

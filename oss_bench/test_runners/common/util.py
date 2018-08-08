@@ -56,6 +56,13 @@ def upload_results(report_config, agg_result, framework=None,
       test_harness=report_config['test_harness'],
       test_environment=report_config['test_environment'])
 
+  if 'extra_results' in agg_result:
+    for extra_result in agg_result['extra_results']:
+      result_info.build_result_info(results,
+                                    extra_result['mean'],
+                                    result_type=extra_result['result_type'],
+                                    result_units=extra_result['result_units'])
+
   test_info = result_info.build_test_info(
       framework=framework,
       framework_version=report_config.get('framework_version'),
@@ -109,11 +116,24 @@ def report_aggregate_results(results_list):
 
   # Groups the results to then be aggregated
   results = []
+  all_extra_results = {}
   for result in results_list:
     # Adds the total to list to aggregate later
     if 'imgs_sec' in result:
       results.append(result['imgs_sec'])
+    if 'raw_extra_results' in result:
+      collect_extra_results(all_extra_results, result['raw_extra_results'])
 
+  aggregate_results(agg_result, results)
+  if all_extra_results:
+    extra_results = aggregate_extra_results(all_extra_results)
+    agg_result['extra_results'] = extra_results
+
+  return agg_result
+
+
+def aggregate_results(agg_result, results):
+  """Aggregates list of results with basic statistics."""
   results.sort()
   agg_result['samples'] = len(results)
   if results:
@@ -127,8 +147,36 @@ def report_aggregate_results(results_list):
     agg_result['std'] = 0
     agg_result['max'] = 0
     agg_result['min'] = 0
-
   return agg_result
+
+
+def aggregate_extra_results(result_dict):
+  """Aggregate results by type."""
+  agg_results = []
+  for key in result_dict:
+    results_list = result_dict[key]
+    results = []
+    for item in results_list:
+      results.append(item['result'])
+    results.sort()
+    agg_result = {}
+    if results:
+      first_result = results_list[0]
+      agg_result['result_type'] = first_result['result_type']
+      agg_result['result_units'] = first_result['result_units']
+      aggregate_results(agg_result, results)
+
+    agg_results.append(agg_result)
+
+  return agg_results
+
+
+def collect_extra_results(result_dict, extra_results):
+  for item in extra_results:
+    result_type = item['result_type']
+    result = result_dict.get(result_type, [])
+    result.append(item)
+    result_dict[result_type] = result
 
 
 def delete_files_in_folder(folder):

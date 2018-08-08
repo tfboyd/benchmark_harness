@@ -7,15 +7,13 @@ platform_type: 'z420'
 
 # reporting
 report_auth: 'nightly_benchmark_dev.json'
-report_project: 'google.com:tensorflow-performance'
+# LOCAL causes results to be printed to the console not big table.
+report_project: 'LOCAL'
 report_dataset: 'benchmark_results_dev'
 report_table: 'result'
 
 # tf-cnn-benchmarks
-#tf_cnn_bench_configs:
-#  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/workstation_gtx1080.yaml
+tf_cnn_bench_configs:
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/workstation_gtx1080.yaml
 
 
-tf_models_tests:
-  - 'resnet50v2_64_gpu_1'
-  - 'resnet50v2_64_gpu_1_real'

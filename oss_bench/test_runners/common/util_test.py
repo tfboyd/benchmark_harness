@@ -7,15 +7,27 @@ import util
 
 
 class TestReporting(unittest.TestCase):
-  """Tests for mxnet reporting module."""
+  """Tests for reporting module."""
 
   def test_aggregate_results(self):
     """Tests aggregating multiple results file from the same test."""
     test_id_0 = 'made.up.test_id'
     results_list = []
-    results_list.append(self._mock_result(test_id_0, 10.5))
-    results_list.append(self._mock_result(test_id_0, 20))
-    results_list.append(self._mock_result(test_id_0, .44444))
+    extra_results = []
+    extra_results.append(self._mock_extra_result(250, 'total_time', 'ms'))
+    extra_results.append(self._mock_extra_result(250, 'total_time', 'ms'))
+    extra_results_2 = []
+    extra_results_2.append(self._mock_extra_result(125, 'total_time', 'ms'))
+    extra_results_2.append(self._mock_extra_result(125, 'total_time', 'ms'))
+    results_list.append(self._mock_result(test_id_0,
+                                          10.5,
+                                          extra_results=extra_results))
+    results_list.append(self._mock_result(test_id_0,
+                                          20,
+                                          extra_results=extra_results))
+    results_list.append(self._mock_result(test_id_0,
+                                          .44444,
+                                          extra_results=extra_results_2))
 
     agg_result = util.report_aggregate_results(results_list)
     self.assertEqual(agg_result['test_id'], test_id_0)
@@ -25,6 +37,8 @@ class TestReporting(unittest.TestCase):
     self.assertEqual(agg_result['std'], 7.9845977692276744)
     self.assertEqual(agg_result['samples'], 3)
     self.assertIn('config', agg_result)
+    # Check for extra results
+    self.assertEqual(agg_result['extra_results'][0]['mean'], 208.33333333333334)
 
   def test_aggregate_results_only_1(self):
     """Tests aggregating 1 result."""
@@ -98,6 +112,31 @@ class TestReporting(unittest.TestCase):
     self.assertEqual(arg_test_info['accel_cnt'], agg_result['gpu'])
     self.assertEqual(arg_test_info['cmd'], agg_result['config']['cmd'])
 
+  def test_aggregate_extra_results(self):
+    """Tests aggregating extra results."""
+    total_times = []
+    top_1s = []
+    total_times.append(self._mock_extra_result(250, 'total_time', 'ms'))
+    total_times.append(self._mock_extra_result(100, 'total_time', 'ms'))
+    top_1s.append(self._mock_extra_result(.55, 'top_1', 'accuracy'))
+    top_1s.append(self._mock_extra_result(.77, 'top_1', 'accuracy'))
+
+    result_dict = {}
+    result_dict['total_time'] = total_times
+    result_dict['top_1'] = top_1s
+    agg_result = util.aggregate_extra_results(result_dict)
+    print('agg_result:{}'.format(agg_result))
+    self.assertEqual(agg_result[0]['mean'], 175)
+    self.assertEqual(agg_result[0]['result_type'], 'total_time')
+    self.assertEqual(len(agg_result), 2)
+
+  def _mock_extra_result(self, result, result_type, metric):
+    result_dict = {}
+    result_dict['result_units'] = metric
+    result_dict['result_type'] = result_type
+    result_dict['result'] = result
+    return result_dict
+
   def _mock_config(self, test_id):
     config = {}
     config['test_id'] = test_id
@@ -106,7 +145,7 @@ class TestReporting(unittest.TestCase):
     config['model'] = 'resnet50'
     return config
 
-  def _mock_result(self, test_id, imgs_sec):
+  def _mock_result(self, test_id, imgs_sec, extra_results=None):
     result = {}
     result['config'] = self._mock_config(test_id)
     if imgs_sec:
@@ -114,4 +153,6 @@ class TestReporting(unittest.TestCase):
     result['test_id'] = test_id
     result['gpu'] = 2
     result['batches_sampled'] = 100
+    if extra_results:
+      result['raw_extra_results'] = extra_results
     return result

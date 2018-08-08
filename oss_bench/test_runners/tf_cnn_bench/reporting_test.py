@@ -78,7 +78,18 @@ class TestReporting(unittest.TestCase):
     self.assertEqual(result['imgs_sec'], 351.23)
     self.assertEqual(result['test_id'], 'resnet50.1_gpu.32.replicated_nccl')
     self.assertEqual(result['gpu'], 1)
+    self.assertIn('raw_extra_results', result)
     self.assertIn('config', result)
+
+  def test_parse_eval_result_file(self):
+    """Tests parsing one results file."""
+    result = reporting.parse_eval_result_file(
+        'test_runners/tf_cnn_bench/test_configs/results/resnet50/'
+        'eval_0_stdout.txt')
+
+    self.assertEqual(result[0]['result_type'], 'top_1')
+    self.assertEqual(result[0]['result'], 0.0008)
+    self.assertEqual(len(result), 2)
 
   def _report_config_example(self):
     """Returns a mocked up expected report_config with some values left out."""

@@ -15,7 +15,7 @@ class BenchmarkRunner(object):
 
   Example:
     Run from command line with:
-      python controller.py --workspace=/path/to/where/to/clone/repos
+      python -m harness.controller --workspace=/workspace
 
     Note: Note that this will pull fresh code from git to the workspace folder
       and will not use your local changes beyond this module.  For this to work
@@ -319,9 +319,13 @@ class BenchmarkRunner(object):
     """Runs all tests based on the test_config."""
     self._make_logs_dir()
     test_config = self._load_config()
-
-    auth_token_path = os.path.join('/auth_tokens/', test_config['report_auth'])
-    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = auth_token_path
+    if test_config['report_project'] != 'LOCAL':
+      if test_config['report_auth'].startswith('/'):
+        auth_token_path = test_config['report_auth']
+      else:
+        auth_token_path = os.path.join('/auth_tokens/',
+                                       test_config['report_auth'])
+      os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = auth_token_path
 
     # Modify the python path for the libraries for the tests to run and then
     # import them.
