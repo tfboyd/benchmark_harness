@@ -7,8 +7,9 @@ import time
 
 import command_builder
 import reporting
-import yaml
 from test_runners.common import cluster_local
+from upload import result_info
+import yaml
 
 
 class TestRunner(object):
@@ -84,31 +85,62 @@ class TestRunner(object):
     # Timestamp and other values added for reporting
     run_config['timestamp'] = int(time.time())
     run_config['workspace'] = self.workspace
+    result_dir = self.results_directory(run_config)
+    # Sets training dir to results folder
+    if ('train_dir' in run_config and
+        not run_config['train_dir'].startswith('/')):
+      run_config['train_dir'] = os.path.join(result_dir,
+                                             run_config['train_dir'])
+
     cmd = command_builder.build_run_command(run_config)
     run_config['cmd'] = cmd
     test_home = self.bench_home
-    result_dir = self.results_directory(run_config)
 
-    # Write config to results folder
-    config_file_out = os.path.join(result_dir, 'config.yaml')
-    config_out = open(config_file_out, 'w')
-    config_out.write(yaml.dump(run_config))
-    config_out.close()
+    self._write_results_file(result_dir,
+                             yaml.dump(run_config),
+                             'config.yaml')
 
-    # TODO(tobyboyd@): No longer distributed remove threads.
-    worker_threads = []
+    extra_results = []
     i = 0
     cmd = 'cd {}; {}'.format(test_home, cmd)
     print('[{}] worker | Run benchmark({}):{}'.format(
         run_config.get('copy', '0'), run_config['test_id'], cmd))
     stdout_file = os.path.join(result_dir, 'worker_%d_stdout.log' % i)
     stderr_file = os.path.join(result_dir, 'worker_%d_stderr.log' % i)
+    exec_time = time.time()
     t = instance.ExecuteCommandInThread(
         cmd, stdout_file, stderr_file, print_error=True)
-    worker_threads.append(t)
+    t.join()
 
-    for t in worker_threads:
+    worker_time = self._get_milliseconds_diff(exec_time)
+    total_time = worker_time
+    print('Worker time: {}ms'.format(worker_time))
+    result_info.build_result_info(extra_results, worker_time, 'worker_time')
+
+    if 'run_eval' in run_config:
+      eval_config = run_config.copy()
+      eval_config.update(run_config['run_eval'])
+      eval_cmd = command_builder.build_run_command(eval_config)
+      eval_cmd = 'cd {}; {}'.format(test_home, eval_cmd)
+      print('[{}] eval_worker | Run benchmark({}):{}'.format(
+          run_config.get('copy', '0'), run_config['test_id'], eval_cmd))
+      stdout_file = os.path.join(result_dir, 'eval_%d_stdout.log' % i)
+      stderr_file = os.path.join(result_dir, 'eval_%d_stderr.log' % i)
+      eval_exec_time = time.time()
+      t = instance.ExecuteCommandInThread(
+          eval_cmd, stdout_file, stderr_file, print_error=True)
       t.join()
+      eval_time = self._get_milliseconds_diff(eval_exec_time)
+      print('Eval time: {}ms'.format(eval_time))
+      result_info.build_result_info(extra_results, eval_time, 'eval_time')
+      total_time = self._get_milliseconds_diff(exec_time)
+
+    print('Total time: {}ms'.format(total_time))
+    result_info.build_result_info(extra_results, total_time, 'total_time')
+
+    self._write_results_file(result_dir,
+                             yaml.dump(extra_results),
+                             'extra_results.yaml')
 
     return result_dir
 
@@ -213,6 +245,17 @@ class TestRunner(object):
               full_config[k] = v
 
         self.run_test_suite(full_config)
+
+  def _get_milliseconds_diff(self, start_time):
+    """Convert seconds to int milliseconds."""
+    return int(round((time.time() - start_time) * 1000))
+
+  def _write_results_file(self, result_dir, data, name):
+    """Writes data (string) to results directory."""
+    config_file_out = os.path.join(result_dir, name)
+    config_out = open(config_file_out, 'w')
+    config_out.write(data)
+    config_out.close()
 
 
 def main():

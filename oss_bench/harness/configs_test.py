@@ -34,9 +34,10 @@ class TestHarnessConfigs(unittest.TestCase):
     f = open(config)
     auto_config = yaml.safe_load(f)
     run = runner.TestRunner('/workspace', '/workspace/git/tf_models')
-    for test_method in auto_config['tf_models_tests']:
-      ret = getattr(run, test_method, None)
-      self.assertIsNotNone(
-          ret,
-          msg='Method "{}" not found from file "{}"'.format(
-              test_method, config))
+    if 'tf_models_tests' in auto_config:
+      for test_method in auto_config['tf_models_tests']:
+        ret = getattr(run, test_method, None)
+        self.assertIsNotNone(
+            ret,
+            msg='Method "{}" not found from file "{}"'.format(
+                test_method, config))

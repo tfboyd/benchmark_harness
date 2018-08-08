@@ -1,0 +1,62 @@
+cd /workspace/git/benchmarks/scripts/tf_cnn_benchmarks; python tf_cnn_benchmarks.py --data_format=NCHW --batch_size=250 --num_batches=200 --model=resne
+t50 --data_dir=/data/imagenet --optimizer=sgd --weight_decay=1e-4 --variable_update=parameter_server --num_warmup_batches=10 --all_reduce_spec='' --nod
+istortions --eval=True --train_dir=/workspace/logs/tf_cnn_workspace/results/20180808T210905_resnet50.1_gpu.32.ps_gpu.real/20180808T210905/resnet_hierar
+chical_redo_2 --summary_verbosity=1 --save_summaries_steps=100 --local_parameter_device=gpu --num_gpus=1 --display_every=10
+2018-08-08 21:09:57.798129: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1406] Found device 0 with properties:
+name: GeForce GTX 1080 major: 6 minor: 1 memoryClockRate(GHz): 1.7335
+pciBusID: 0000:05:00.0
+totalMemory: 7.92GiB freeMemory: 7.80GiB
+2018-08-08 21:09:57.842360: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1406] Found device 1 with properties:
+name: Quadro K600 major: 3 minor: 0 memoryClockRate(GHz): 0.8755
+pciBusID: 0000:04:00.0
+totalMemory: 979.12MiB freeMemory: 233.38MiB
+2018-08-08 21:09:57.842418: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1456] Ignoring visible gpu device (device: 1, name: Quadro K600, pci bus
+ id: 0000:04:00.0, compute capability: 3.0) with Cuda compute capability 3.0. The minimum required Cuda capability is 3.5.
+2018-08-08 21:09:57.842430: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1485] Adding visible gpu devices: 0
+2018-08-08 21:09:58.096941: I tensorflow/core/common_runtime/gpu/gpu_device.cc:966] Device interconnect StreamExecutor with strength 1 edge matrix:
+2018-08-08 21:09:58.096996: I tensorflow/core/common_runtime/gpu/gpu_device.cc:972]      0 1
+2018-08-08 21:09:58.097007: I tensorflow/core/common_runtime/gpu/gpu_device.cc:985] 0:   N N
+2018-08-08 21:09:58.097015: I tensorflow/core/common_runtime/gpu/gpu_device.cc:985] 1:   N N
+2018-08-08 21:09:58.097244: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1098] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 7528 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1080, pci bus id: 0000:05:00.0, compute capability: 6.1)
+I0808 21:09:58.177135 140004523771648 tf_logging.py:115] Restoring parameters from /workspace/logs/tf_cnn_workspace/results/20180808T210905_resnet50.1_gpu.32.ps_gpu.real/20180808T210905/resnet_hierarchical_redo_2/model.ckpt-110
+TensorFlow:  1.11
+Model:       resnet50
+Dataset:     imagenet
+Mode:        evaluation
+SingleSess:  False
+Batch size:  250 global
+             250 per device
+Num batches: 200
+Num epochs:  1.00
+Devices:     ['/gpu:0']
+Data format: NCHW
+Layout optimizer: False
+Optimizer:   sgd
+Variables:   parameter_server
+==========
+Generating model
+Successfully loaded model from /workspace/logs/tf_cnn_workspace/results/20180808T210905_resnet50.1_gpu.32.ps_gpu.real/20180808T210905/resnet_hierarchical_redo_2/model.ckpt-110.
+10      323.3 examples/sec
+20      490.4 examples/sec
+30      489.3 examples/sec
+40      488.7 examples/sec
+50      488.1 examples/sec
+60      488.2 examples/sec
+70      487.9 examples/sec
+80      487.3 examples/sec
+90      486.8 examples/sec
+100     461.6 examples/sec
+110     488.0 examples/sec
+120     485.9 examples/sec
+130     485.5 examples/sec
+140     487.1 examples/sec
+150     487.0 examples/sec
+160     484.7 examples/sec
+170     482.7 examples/sec
+180     479.3 examples/sec
+190     477.4 examples/sec
+200     475.0 examples/sec
+Accuracy @ 1 = 0.0008 Accuracy @ 5 = 0.0046 [50000 examples]
+----------------------------------------------------------------
+total images/sec: 472.41
+----------------------------------------------------------------
