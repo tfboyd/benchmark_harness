@@ -6,7 +6,6 @@ run_configs:
     ps_server: gpu
     data_format: NCHW
     variable_update: replicated
-    num_batches: 100
     batch_size: 256
     optimizer: 'momentum'
     weight_decay: 1e-4
