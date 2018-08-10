@@ -1,0 +1,18 @@
+run_configs:
+  - test_id: resnet50.8_gpu.256.full_training.fp16.yaml
+    gpus: 8
+    model: 'resnet50'
+    use_fp16: True
+    ps_server: gpu
+    data_format: NCHW
+    variable_update: replicated
+    num_batches: 100
+    batch_size: 256
+    optimizer: 'momentum'
+    weight_decay: 1e-4
+    all_reduce_spec: nccl
+    datasets_use_prefetch: True
+    gradient_repacking: 2
+    train_dir: training_result
+    nodistortions: FLAG_ONLY
+    num_epochs: 90
