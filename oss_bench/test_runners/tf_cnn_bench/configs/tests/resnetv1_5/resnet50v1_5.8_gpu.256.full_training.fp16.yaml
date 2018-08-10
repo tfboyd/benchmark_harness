@@ -1,5 +1,5 @@
 run_configs:
-  - test_id: resnet50_v_5.8_gpu.256.full_training.fp16.yaml
+  - test_id: resnet50_v1_5.8_gpu.256.full_training.fp16.yaml
     gpus: 8
     model: 'resnet50_v1.5'
     use_fp16: True
