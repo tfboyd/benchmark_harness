@@ -102,11 +102,14 @@ class TestRunner(object):
 
     extra_results = []
     i = 0
+    worker_type = 'eval' if run_config.get('eval') else 'worker'
     cmd = 'cd {}; {}'.format(test_home, cmd)
-    print('[{}] worker | Run benchmark({}):{}'.format(
-        run_config.get('copy', '0'), run_config['test_id'], cmd))
-    stdout_file = os.path.join(result_dir, 'worker_%d_stdout.log' % i)
-    stderr_file = os.path.join(result_dir, 'worker_%d_stderr.log' % i)
+    print('[{}] {} | Run benchmark({}):{}'.format(
+        run_config.get('copy', '0'), worker_type, run_config['test_id'], cmd))
+    stdout_file = os.path.join(result_dir,
+                               '{}_{}_stdout.log'.format(worker_type, i))
+    stderr_file = os.path.join(result_dir,
+                               '{}_{}_stderr.log'.format(worker_type, i))
     exec_time = time.time()
     t = instance.ExecuteCommandInThread(
         cmd, stdout_file, stderr_file, print_error=True)
@@ -117,7 +120,9 @@ class TestRunner(object):
     print('Worker time: {}ms'.format(worker_time))
     result_info.build_result_info(extra_results, worker_time, 'worker_time')
 
-    if 'run_eval' in run_config:
+    # run_eval is only used to run an eval after training. A single eval test
+    # without a preceding training run is just a "plain" worker test.
+    if 'run_eval' in run_config and not run_config.get('eval'):
       eval_config = run_config.copy()
       eval_config.update(run_config['run_eval'])
       eval_cmd = command_builder.build_run_command(eval_config)
