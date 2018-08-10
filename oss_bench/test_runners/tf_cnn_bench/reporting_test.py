@@ -69,27 +69,37 @@ class TestReporting(unittest.TestCase):
     arg_extras = mock_upload.call_args[1]['extras']
     self.assertIn('config', arg_extras)
 
-  def test_parse_result_file(self):
-    """Tests parsing one results file."""
-    result = reporting.parse_result_file(
-        'test_runners/tf_cnn_bench/test_configs/results/resnet50/'
-        'worker_0_stdout.txt')
-
-    self.assertEqual(result['imgs_sec'], 351.23)
-    self.assertEqual(result['test_id'], 'resnet50.1_gpu.32.replicated_nccl')
-    self.assertEqual(result['gpu'], 1)
+  def test_process_base_result_files(self):
+    """Tests loading the config file."""
+    result = {}
+    reporting.process_base_result_files(result,
+                                        'test_runners/tf_cnn_bench/test_configs'
+                                        '/results/resnet50/config.yaml')
     self.assertIn('raw_extra_results', result)
     self.assertIn('config', result)
+    self.assertEqual(result['test_id'], 'resnet50.1_gpu.32.replicated_nccl')
+    self.assertEqual(result['gpu'], 1)
+
+  def test_parse_result_file(self):
+    """Tests parsing one results file."""
+    result = {}
+    reporting.parse_result_file(result,
+                                'test_runners/tf_cnn_bench/test_configs'
+                                '/results/resnet50/worker_0_stdout.txt')
+    self.assertEqual(result['imgs_sec'], 351.23)
 
   def test_parse_eval_result_file(self):
     """Tests parsing one results file."""
-    result = reporting.parse_eval_result_file(
-        'test_runners/tf_cnn_bench/test_configs/results/resnet50/'
-        'eval_0_stdout.txt')
-
-    self.assertEqual(result[0]['result_type'], 'top_1')
-    self.assertEqual(result[0]['result'], 0.0008)
-    self.assertEqual(len(result), 2)
+    result = {}
+    reporting.parse_eval_result_file(result,
+                                     'test_runners/tf_cnn_bench/test_configs/'
+                                     'results/resnet50/eval_0_stdout.txt')
+    print('result here:{}'.format(result))
+    results = result['raw_extra_results']
+    self.assertEqual(result['imgs_sec'], 472.41)
+    self.assertEqual(results[0]['result_type'], 'top_1')
+    self.assertEqual(results[0]['result'], 0.0008)
+    self.assertEqual(len(results), 3)
 
   def _report_config_example(self):
     """Returns a mocked up expected report_config with some values left out."""

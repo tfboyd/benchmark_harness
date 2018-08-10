@@ -1,0 +1,22 @@
+# General settings
+repeat: 1
+
+# Worker settings override
+num_warmup_batches: 0
+
+# Data directory mounted in the docker
+data_dir: '/data/imagenet'
+
+# Turn off to save disk and possibly total time.
+summary_verbosity: 1
+save_summaries_steps: 100
+
+sub_configs:
+  - 'tests/resnet/resnet50.8_gpu.256.full_training.fp16.yaml'
+
+run_eval:
+  batch_size: 250
+  num_batches: 20
+  gpus: 1
+  eval: True
+  num_epochs: 0
