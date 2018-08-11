@@ -16,7 +16,7 @@ sub_configs:
 
 run_eval:
   batch_size: 250
-  num_batches: 20
+  num_batches: 200
   gpus: 1
   eval: True
   num_epochs: 0
