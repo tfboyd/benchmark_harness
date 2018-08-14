@@ -8,6 +8,7 @@ import pwd
 import uuid
 
 import pytz
+from six import u as unicode  # pylint: disable=W0622
 
 import google.auth
 from google.cloud import bigquery
@@ -97,7 +98,7 @@ def _build_row(credentials,
     `dict` to be inserted into BigQuery.
   """
   row = copy.copy(test_result)
-  row['result_id'] = unicode(uuid.uuid4())
+  row['result_id'] = unicode(str(uuid.uuid4()))
   # The user is set to the email address of the service account.  If that is not
   # found, then the logged in user is used as a last best guess.
   if hasattr(credentials, 'service_account_email'):
