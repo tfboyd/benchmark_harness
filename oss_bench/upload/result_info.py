@@ -1,6 +1,13 @@
 """Structures for a variety of different test results."""
 
 
+def safe_unicode(s):
+  if isinstance(s, str):
+    return s
+  else:
+    return s.decode(encoding)
+
+
 def build_test_result(test_id,
                       result,
                       result_type='total_time',
@@ -24,9 +31,9 @@ def build_test_result(test_id,
     Tuple with test_result and result in results array.
   """
   test_result = {}
-  test_result['test_id'] = unicode(test_id)
-  test_result['test_harness'] = unicode(test_harness)
-  test_result['test_environment'] = unicode(test_environment)
+  test_result['test_id'] = safe_unicode(test_id)
+  test_result['test_harness'] = safe_unicode(test_harness)
+  test_result['test_environment'] = safe_unicode(test_environment)
 
   results = []
   result = build_result_info(results, result, result_type, result_units)
@@ -82,15 +89,15 @@ def build_system_info(platform=None,
   """
   system_info = {}
   if platform:
-    system_info['platform'] = unicode(platform)
+    system_info['platform'] = safe_unicode(platform)
   if platform_type:
-    system_info['platform_type'] = unicode(platform_type)
+    system_info['platform_type'] = safe_unicode(platform_type)
   if accel_type:
-    system_info['accel_type'] = unicode(accel_type)
+    system_info['accel_type'] = safe_unicode(accel_type)
   if cpu_cores:
     system_info['cpu_cores'] = cpu_cores
   if cpu_type:
-    system_info['cpu_type'] = unicode(cpu_type)
+    system_info['cpu_type'] = safe_unicode(cpu_type)
   if cpu_type:
     system_info['cpu_sockets'] = cpu_sockets
   return system_info

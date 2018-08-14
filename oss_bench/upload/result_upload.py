@@ -14,6 +14,13 @@ from google.cloud import bigquery
 from google.cloud.bigquery.dbapi import connect
 
 
+def safe_unicode(s):
+  if isinstance(s, str):
+    return s
+  else:
+    return s.decode(encoding)
+
+
 def upload_result(test_result,
                   result_info,
                   project,
@@ -97,22 +104,22 @@ def _build_row(credentials,
     `dict` to be inserted into BigQuery.
   """
   row = copy.copy(test_result)
-  row['result_id'] = unicode(uuid.uuid4())
+  row['result_id'] = safe_unicode(str(uuid.uuid4()))
   # The user is set to the email address of the service account.  If that is not
   # found, then the logged in user is used as a last best guess.
   if hasattr(credentials, 'service_account_email'):
     row['user'] = credentials.service_account_email
   else:
-    row['user'] = unicode(pwd.getpwuid(os.getuid())[0])
+    row['user'] = safe_unicode(pwd.getpwuid(os.getuid())[0])
 
   # gpylint warning suggests using a different lib that does not look helpful.
   # pylint: disable=W6421
   row['timestamp'] = datetime.utcnow().replace(tzinfo=pytz.utc)
 
   # BigQuery expects unicode object and maps that to datatype.STRING.
-  row['result_info'] = unicode(json.dumps(result_info))
-  row['system_info'] = unicode(json.dumps(system_info if system_info else None))
-  row['test_info'] = unicode(json.dumps(test_info) if test_info else None)
-  row['extras'] = unicode(json.dumps(extras))
+  row['result_info'] = safe_unicode(json.dumps(result_info))
+  row['system_info'] = safe_unicode(json.dumps(system_info if system_info else None))
+  row['test_info'] = safe_unicode(json.dumps(test_info) if test_info else None)
+  row['extras'] = safe_unicode(json.dumps(extras))
 
   return row
