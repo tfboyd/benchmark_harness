@@ -1,4 +1,5 @@
 """Structures for a variety of different test results."""
+from six import u as unicode  # pylint: disable=W0622
 
 
 def build_test_result(test_id,
