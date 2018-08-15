@@ -14,13 +14,14 @@ pip install --upgrade google-api-python-client pyyaml paramiko google-cloud goog
 # Running tests without Docker
 
 # Pick a folder as the workspace
+WORK_DIR=`pwd`
 mkdir git
 cd git
 git clone https://github.com/tfboyd/benchmark_harness.git 
 
 cd benchmark_harness/oss_bench
 # Runs a test config (configs/dev/default.yaml') targeting TensorFlow that will run on most GPUs.  
-python -m harness.controller --workspace=<path to workspace with /git/benchmark_harness>
+python -m harness.controller --workspace=$WORK_DIR
 
 
 ```
