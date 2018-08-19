@@ -12,7 +12,6 @@ data_dir: '/data/imagenet'
 test_id_hacks: True
 
 sub_configs:
-sub_configs:
   - 'tests/resnet/128/resnet50.1_gpu.forward_only.128.ps_gpu.cuda_visible_0.fp16.yaml'
   - 'tests/resnet/128/resnet50.1_gpu.128.ps_gpu.cuda_visible_0.fp16.yaml'
   - 'tests/resnet/128/resnet50.1_gpu.128.ps_gpu.fp16.yaml'

@@ -31,57 +31,70 @@ def _collect_results(folder_path):
   results = []
   for r, _, files in os.walk(folder_path):
     for f in files:
-      if f == 'worker_0_stdout.log':
-        result_file = os.path.join(r, f)
-        results.append(parse_result_file(result_file))
+      if f == 'config.yaml':
+        result = {}
+        process_base_result_files(result, os.path.join(r, f))
+        result_file = os.path.join(r, 'worker_0_stdout.log')
+        parse_result_file(result, result_file)
+        results.append(result)
   return results
 
 
-def parse_result_file(result_file_path):
-  """Parses a result file.
+def process_base_result_files(result, config_file_path):
+  """Process config.yaml file and extra_results.yaml."""
 
-  Note: MXNet prints samples/sec every so often to the console and then code
-  below averages a number of the rows together.  This is mathematically
-  incorrect as speed cannot be averaged this way and should be total time /
-  total_items_processes. Getting a more correct number would require changing
-  how the MXNet code works, which can be done but was not needed for the initial
-  number.
-
-  Args:
-    result_file_path: Path to file to parse
-
-  Returns:
-    `dict` representing the results.
-  """
-  result = {}
-  result_file = open(result_file_path, 'r')
-  samples = 0
-  sum_speed = 0
-
-  # Get the config
-  result_dir = os.path.dirname(result_file_path)
-  config = get_config(result_dir)
+   # Get the config
+  f = open(config_file_path, 'r')
+  config = yaml.safe_load(f)
   result['config'] = config
-  result['result_dir'] = result_dir
+
+  # Number of gpus = number of servers * number of gpus
+  if 'gpus' in config:
+    result['gpu'] = int(config['gpus'])
+  # Avoids files that might have multiple total lines in them.
+  # First line found wins.
+
   result['test_id'] = config['test_id']
+
   if 'use_synthetic_data' in config['args']:
     result['data_type'] = 'synth'
   else:
     result['data_type'] = 'real'
 
-  # Number of gpus = number of servers * number of gpus
-  if 'gpus' in config:
-    result['gpu'] = int(config['gpus'])
+  result_dir = os.path.dirname(config_file_path)
+  result['result_dir'] = result_dir
+
+  # Load extra results
+  extra_results_file = os.path.join(result_dir, 'extra_results.yaml')
+  try:
+    f = open(extra_results_file, 'r')
+    extra_results = yaml.safe_load(f)
+    result['raw_extra_results'] = extra_results
+  except IOError:
+    extra_results = None
+    print('{}  not found.'.format(extra_results_file))
+
+
+def parse_result_file(result, result_file_path):
+  """Parses a result file."""
+  try:
+    result_file = open(result_file_path, 'r')
+  except IOError:
+    print('{}  not found.'.format(result_file_path))
+    return
+  samples = 0
+  sum_speed = 0
 
   # Processes results file and aggregates the results of one run.
   for line in result_file:
     # Rows with 'tensorflow:Batch [' and 'exp/sec' contain speed data.
-    if line.find(' Batch [') > 0 and line.find('exp/sec') > 0:
-      parts = line.split()
-      batch = int(parts[5].replace(']', '').replace('[', '').replace(':', ''))
+    if (line.find('Benchmark metric:') > 0 and
+        line.find('current_examples_per_sec') > 0):
+      parts = line.split(',')
+      batch = int(parts[5].split(':')[1].replace('}', '').strip())
       # Ignores first 100 batches as a warm up
       if batch > 100:
-        sum_speed += float(parts[9].rstrip().replace(',', ''))
+        sum_speed += float(parts[2].split(':')[1].strip())
         samples += 1
 
   result['imgs_sec'] = sum_speed / samples

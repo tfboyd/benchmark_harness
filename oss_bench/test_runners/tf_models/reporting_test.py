@@ -62,19 +62,28 @@ class TestReporting(unittest.TestCase):
     self.assertIn('config', arg_extras)
     self.assertIn('batches_sampled', arg_extras)
 
-  def test_parse_result_file(self):
-    """Tests parsing one results file."""
-    result = reporting.parse_result_file(
-        'test_runners/tf_models/unittest_files/results/basic/'
-        'worker_0_stdout.txt')
+  def test_process_base_result_files(self):
+    """Tests loading the config file."""
+    result = {}
+    reporting.process_base_result_files(result,
+                                        'test_runners/tf_models/unittest_files'
+                                        '/results/basic/config.yaml')
 
-    self.assertEqual(result['imgs_sec'], 622.9143333333333)
-    self.assertEqual(result['batches_sampled'], 3)
     self.assertEqual(result['test_id'], 'resnet50v2.gpu_1.32')
     self.assertEqual(result['gpu'], 1)
     self.assertEqual(result['data_type'], 'real')
     self.assertIn('config', result)
     self.assertEqual(result['config']['pycmd'], 'imagenet_main.py')
+
+  def test_parse_result_file(self):
+    """Tests parsing one results file."""
+    result = {}
+    reporting.parse_result_file(result,
+                                'test_runners/tf_models/unittest_files/results'
+                                '/basic/worker_0_stdout.txt')
+
+    self.assertEqual(result['imgs_sec'], 132.21041311752728)
+    self.assertEqual(result['batches_sampled'], 200)
 
   def _mock_config(self, test_id):
     config = {}
