@@ -1,5 +1,4 @@
 # Config for a DGX-1 V100 reporting to production schema.
-test_harness: 'tf_cnn_benchmark'
 test_environment: 'brain-lab'
 # System basics
 platform: 'NVIDIA'
