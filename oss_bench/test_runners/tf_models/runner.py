@@ -119,7 +119,7 @@ class TestRunner(object):
       time.sleep(5)
       wait_time += 5
 
-    batch_killer = '[{}]'.format(total_batches)
+    batch_killer = 'step = {}'.format(total_batches)
     while t.is_alive():
       with open(stdout_file, 'r') as log:
         for line in log:
@@ -178,7 +178,7 @@ class TestRunner(object):
       use_synth: If True use synthetic data.
     """
     config = {}
-    config['total_batches'] = 400
+    config['total_batches'] = 600
     # Relative path in the repo to the test folder.
     config['cmd_path'] = 'official/resnet'
     config['pycmd'] = 'imagenet_main.py'
@@ -186,7 +186,7 @@ class TestRunner(object):
     config['repeat'] = 3
     # Normalized name of model being tested
     if version == 1:
-      config['model'] = 'resnet50'
+      config['model'] = 'resnet50v1.5'
     else:
       config['model'] = 'resnet50v2'
 
@@ -237,336 +237,44 @@ class TestRunner(object):
       arg_str += '--{} {} '.format(key, value)
     return 'python {} {}'.format(test_config['pycmd'], arg_str)
 
-  def resnet50v2_64_gpu_1_real(self):
-    """Tests ResNet50v2 real data data on 1 GPU with batch size 32."""
-    test_id = 'garden.resnet50v2.gpu_1.64.real'
+  def resnet50_32_gpu_1_real(self):
+    """Tests ResNet50 real data data on 1 GPU with batch size 32."""
+    test_id = 'official.resnet50.gpu_1.32.real'
     args = {}
     config = self.build_resnet_test_config(
-        test_id, args, batch_size=64, gpus=1, version=2)
-    self.run_test_suite(config)
-
-  def resnet50v2_64_gpu_8_real(self):
-    """Tests ResNet50v2 real data data on 8 GPU with batch size 32."""
-    test_id = 'garden.resnet50v2.gpu_8.64.real'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=64, gpus=8, version=2)
-    self.run_test_suite(config)
-
-  def resnet50v2_64_gpu_1(self):
-    """Tests ResNet50v2 synth data data on 1 GPU with batch size 64."""
-    test_id = 'garden.resnet50v2.gpu_1.64'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=64, gpus=1, version=2, use_synth=True)
-    self.run_test_suite(config)
-
-  def resnet50v2_64_gpu_8(self):
-    """Tests ResNet50v2 synth data data on 8 GPU with batch size 64."""
-    test_id = 'garden.resnet50v2.gpu_8.64'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=64, gpus=8, version=2, use_synth=True)
-    self.run_test_suite(config)
-
-  def resnet50_64_gpu_1_real(self):
-    """Tests ResNet50 real data data on 1 GPU with batch size 64."""
-    test_id = 'garden.resnet50.gpu_1.64.real'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=64, gpus=1, version=1)
-    self.run_test_suite(config)
-
-  def resnet50_64_gpu_8_real(self):
-    """Tests ResNet50 real data data on 8 GPU with batch size 64."""
-    test_id = 'garden.resnet50.gpu_8.64.real'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=64, gpus=8, version=1)
-    self.run_test_suite(config)
-
-  def resnet50_64_gpu_1(self):
-    """Tests ResNet50 synth data data on 1 GPU with batch size 64."""
-    test_id = 'garden.resnet50.gpu_1.64'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=64, gpus=1, version=1, use_synth=True)
-    self.run_test_suite(config)
-
-  def resnet50_64_gpu_8(self):
-    """Tests ResNet50 synth data data on 8 GPU with batch size 64."""
-    test_id = 'garden.resnet50.gpu_8.64'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=64, gpus=8, version=1, use_synth=True)
+        test_id, args, batch_size=32, gpus=1, version=1)
     self.run_test_suite(config)
 
   def resnet50_128_gpu_1_real(self):
     """Tests ResNet50 real data data on 1 GPU with batch size 128."""
-    test_id = 'garden.resnet50.gpu_1.128.real'
+    test_id = 'official.resnet50.gpu_1.128.real'
     args = {}
     config = self.build_resnet_test_config(
         test_id, args, batch_size=128, gpus=1, version=1)
     self.run_test_suite(config)
 
-  def resnet50_128_gpu_2_real(self):
-    """Tests ResNet50 real data data on 2 GPU with batch size 128."""
-    test_id = 'garden.resnet50.gpu_2.128.real'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=128, gpus=2, version=1)
-    self.run_test_suite(config)
-
-  def resnet50_128_gpu_4_real(self):
-    """Tests ResNet50 real data data on 4 GPU with batch size 128."""
-    test_id = 'garden.resnet50.gpu_4.128.real'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=128, gpus=4, version=1)
-    self.run_test_suite(config)
-
   def resnet50_128_gpu_8_real(self):
     """Tests ResNet50 real data data on 8 GPU with batch size 128."""
-    test_id = 'garden.resnet50.gpu_8.128.real'
+    test_id = 'official.resnet50.gpu_8.128.real'
     args = {}
     config = self.build_resnet_test_config(
         test_id, args, batch_size=128, gpus=8, version=1)
     self.run_test_suite(config)
 
-  def resnet50_128_gpu_1(self):
-    """Tests ResNet50 synth data data on 1 GPU with batch size 128."""
-    test_id = 'garden.resnet50.gpu_1.128'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=128, gpus=1, version=1, use_synth=True)
-    self.run_test_suite(config)
-
-  def resnet50_128_gpu_2(self):
-    """Tests ResNet50 synth data data on 2 GPU with batch size 128."""
-    test_id = 'garden.resnet50.gpu_2.128'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=128, gpus=2, version=1, use_synth=True)
-    self.run_test_suite(config)
-
-  def resnet50_128_gpu_4(self):
-    """Tests ResNet50 synth data data on 4 GPU with batch size 128."""
-    test_id = 'garden.resnet50.gpu_4.128'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=128, gpus=4, version=1, use_synth=True)
-    self.run_test_suite(config)
-
-  def resnet50_128_gpu_8(self):
-    """Tests ResNet50 synth data data on 8 GPU with batch size 128."""
-    test_id = 'garden.resnet50.gpu_8.128'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=128, gpus=8, version=1, use_synth=True)
-    self.run_test_suite(config)
-
-  def resnet50_128_gpu_1_real_fp16(self):
-    """Tests ResNet50 FP16 real data data on 1 GPU with batch size 128."""
-    test_id = 'garden.resnet50.gpu_1.128.fp16.real'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=128, gpus=1, version=1, dtype='fp16')
-    self.run_test_suite(config)
-
-  def resnet50_128_gpu_8_real_fp16(self):
-    """Tests ResNet50 FP16 real data data on 8 GPU with batch size 128."""
-    test_id = 'garden.resnet50.gpu_8.128.fp16.real'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=128, gpus=8, version=1, dtype='fp16')
-    self.run_test_suite(config)
-
-  def resnet50_128_gpu_1_fp16(self):
-    """Tests ResNet50 FP16 synth data data on 1 GPU with batch size 128."""
-    test_id = 'garden.resnet50.gpu_1.128.fp16'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id,
-        args,
-        batch_size=128,
-        gpus=1,
-        version=1,
-        dtype='fp16',
-        use_synth=True)
-    self.run_test_suite(config)
-
-  def resnet50_128_gpu_8_fp16(self):
-    """Tests ResNet50 FP16 synth data data on 8 GPU with batch size 128."""
-    test_id = 'garden.resnet50.gpu_8.128.fp16'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id,
-        args,
-        batch_size=128,
-        gpus=8,
-        version=1,
-        dtype='fp16',
-        use_synth=True)
-    self.run_test_suite(config)
-
-  def resnet50_256_gpu_1_fp16_real(self):
+  def resnet50_256_gpu_1_real_fp16(self):
     """Tests ResNet50 FP16 real data data on 1 GPU with batch size 256."""
-    test_id = 'garden.resnet50.gpu_1.256.fp16.real'
+    test_id = 'official.resnet50.gpu_1.256.fp16.real'
     args = {}
     config = self.build_resnet_test_config(
         test_id, args, batch_size=256, gpus=1, version=1, dtype='fp16')
     self.run_test_suite(config)
 
-  def resnet50_256_gpu_8_fp16_real(self):
+  def resnet50_256_gpu_8_real_fp16(self):
     """Tests ResNet50 FP16 real data data on 8 GPU with batch size 256."""
-    test_id = 'garden.resnet50.gpu_8.256.fp16.real'
+    test_id = 'official.resnet50.gpu_8.256.fp16.real'
     args = {}
     config = self.build_resnet_test_config(
         test_id, args, batch_size=256, gpus=8, version=1, dtype='fp16')
-    self.run_test_suite(config)
-
-  def resnet50_256_gpu_1_fp16(self):
-    """Tests ResNet50 FP16 synth data data on 1 GPU with batch size 256."""
-    test_id = 'garden.resnet50.gpu_1.256.fp16'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id,
-        args,
-        batch_size=256,
-        gpus=1,
-        version=1,
-        dtype='fp16',
-        use_synth=True)
-    self.run_test_suite(config)
-
-  def resnet50_256_gpu_2_fp16(self):
-    """Tests ResNet50 FP16 synth data data on 2 GPU with batch size 256."""
-    test_id = 'garden.resnet50.gpu_2.256.fp16'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id,
-        args,
-        batch_size=256,
-        gpus=2,
-        version=1,
-        dtype='fp16',
-        use_synth=True)
-    self.run_test_suite(config)
-
-  def resnet50_256_gpu_4_fp16(self):
-    """Tests ResNet50 FP16 synth data data on 4 GPU with batch size 256."""
-    test_id = 'garden.resnet50.gpu_4.256.fp16'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id,
-        args,
-        batch_size=256,
-        gpus=4,
-        version=1,
-        dtype='fp16',
-        use_synth=True)
-    self.run_test_suite(config)
-
-  def resnet50_256_gpu_8_fp16(self):
-    """Tests ResNet50 FP16 synth data data on 8 GPU with batch size 256."""
-    test_id = 'garden.resnet50.gpu_8.256.fp16'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id,
-        args,
-        batch_size=256,
-        gpus=8,
-        version=1,
-        dtype='fp16',
-        use_synth=True)
-    self.run_test_suite(config)
-
-  def resnet50v2_256_gpu_1_fp16_real(self):
-    """Tests ResNet50v2 FP16 real data data on 1 GPU with batch size 256."""
-    test_id = 'garden.resnet50v2.gpu_1.256.fp16.real'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=256, gpus=1, version=2, dtype='fp16')
-    self.run_test_suite(config)
-
-  def resnet50v2_256_gpu_2_fp16_real(self):
-    """Tests ResNet50v2 FP16 real data data on 2 GPU with batch size 256."""
-    test_id = 'garden.resnet50v2.gpu_2.256.fp16.real'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=256, gpus=2, version=2, dtype='fp16')
-    self.run_test_suite(config)
-
-  def resnet50v2_256_gpu_4_fp16_real(self):
-    """Tests ResNet50v2 FP16 real data data on 4 GPU with batch size 256."""
-    test_id = 'garden.resnet50v2.gpu_4.256.fp16.real'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=256, gpus=4, version=2, dtype='fp16')
-    self.run_test_suite(config)
-
-  def resnet50v2_256_gpu_8_fp16_real(self):
-    """Tests ResNet50v2 FP16 real data data on 8 GPU with batch size 256."""
-    test_id = 'garden.resnet50v2.gpu_8.256.fp16.real'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=256, gpus=8, version=2, dtype='fp16')
-    self.run_test_suite(config)
-
-  def resnet50v2_256_gpu_1_fp16(self):
-    """Tests ResNet50v2 FP16 synth data data on 1 GPU with batch size 256."""
-    test_id = 'garden.resnet50v2.gpu_1.256.fp16'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id,
-        args,
-        batch_size=256,
-        gpus=1,
-        version=2,
-        dtype='fp16',
-        use_synth=True)
-    self.run_test_suite(config)
-
-  def resnet50v2_256_gpu_2_fp16(self):
-    """Tests ResNet50v2 FP16 synth data data on 2 GPUs with batch size 256."""
-    test_id = 'garden.resnet50v2.gpu_2.256.fp16'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id,
-        args,
-        batch_size=256,
-        gpus=2,
-        version=2,
-        dtype='fp16',
-        use_synth=True)
-    self.run_test_suite(config)
-
-  def resnet50v2_256_gpu_4_fp16(self):
-    """Tests ResNet50v2 FP16 synth data data on 4 GPUs with batch size 256."""
-    test_id = 'garden.resnet50v2.gpu_4.256.fp16'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id,
-        args,
-        batch_size=256,
-        gpus=4,
-        version=2,
-        dtype='fp16',
-        use_synth=True)
-    self.run_test_suite(config)
-
-  def resnet50v2_256_gpu_8_fp16(self):
-    """Tests ResNet50v2 FP16 synth data data on 8 GPU with batch size 256."""
-    test_id = 'garden.resnet50v2.gpu_8.256.fp16'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id,
-        args,
-        batch_size=256,
-        gpus=8,
-        version=2,
-        dtype='fp16',
-        use_synth=True)
     self.run_test_suite(config)
 
   def run_tests(self, test_list):
