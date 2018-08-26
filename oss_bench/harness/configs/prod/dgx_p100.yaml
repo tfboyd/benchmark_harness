@@ -24,3 +24,7 @@ tf_cnn_bench_configs:
 tf_models_tests:
   - 'resnet50_128_gpu_1_real'
   - 'resnet50_128_gpu_8_real'
+  - 'resnet50_128_gpu_1_stock_real'
+  - 'resnet50_128_gpu_8_stock_real'
+  - 'resnet50_64_gpu_1_stock_real'
+  - 'resnet50_64_gpu_8_stock_real'
