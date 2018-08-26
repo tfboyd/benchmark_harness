@@ -1,8 +1,7 @@
 run_configs:
-  - test_id: resnet50v1_5.1_gpu.128.ps_gpu.cuda_visible_0.fp16
+  - test_id: resnet50v1_5.1_gpu.128.ps_gpu.cuda_visible_0
     gpus: 1
-    model: 'resnet50v1.5'
-    use_fp16: True
+    model: 'resnet50_v1.5'
     ps_server: gpu
     data_format: NCHW
     variable_update: parameter_server

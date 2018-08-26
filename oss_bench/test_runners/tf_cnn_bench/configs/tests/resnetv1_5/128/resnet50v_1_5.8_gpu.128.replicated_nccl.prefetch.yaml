@@ -1,7 +1,7 @@
 run_configs:
   - test_id: resnet50v1_5.8_gpu.128.replicated_nccl.prefetch
     gpus: 8
-    model: 'resnet50v1.5'
+    model: 'resnet50_v1.5'
     ps_server: gpu
     data_format: NCHW
     variable_update: replicated

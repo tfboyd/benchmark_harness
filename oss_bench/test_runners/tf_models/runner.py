@@ -186,9 +186,9 @@ class TestRunner(object):
     config['repeat'] = 3
     # Normalized name of model being tested
     if version == 1:
-      config['model'] = 'resnet50v1.5'
+      config['model'] = 'resnet50_v1.5'
     else:
-      config['model'] = 'resnet50v2'
+      config['model'] = 'resnet50_v2'
 
     # Reporting looks for this value
     if dtype == 'fp16':

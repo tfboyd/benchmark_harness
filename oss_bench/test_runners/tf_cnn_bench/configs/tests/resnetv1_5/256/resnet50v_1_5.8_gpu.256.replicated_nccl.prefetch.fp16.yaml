@@ -2,7 +2,7 @@
 run_configs:
   - test_id: resnet50v1_5.8_gpu.256.replicated_nccl.prefetch.fp16
     gpus: 8
-    model: 'resnet50v1.5'
+    model: 'resnet50_v1.5'
     use_fp16: True
     ps_server: gpu
     data_format: NCHW
