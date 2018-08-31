@@ -278,6 +278,26 @@ class TestRunner(object):
         test_id, args, batch_size=128, gpus=1, version=1)
     self.run_test_suite(config)
 
+  def resnet50_128_gpu_2_real(self):
+    """Tests ResNet50 real data data on 2 GPU with batch size 128."""
+    test_id = 'official.resnet50.gpu_2.128.real'
+    args = {'tf_gpu_thread_mode': 'gpu_private',
+            'num_parallel_calls': 2,
+            'intra_op_parallelism_threads': 1}
+    config = self.build_resnet_test_config(
+        test_id, args, batch_size=128, gpus=2, version=1)
+    self.run_test_suite(config)
+
+  def resnet50_128_gpu_4_real(self):
+    """Tests ResNet50 real data data on 4 GPU with batch size 128."""
+    test_id = 'official.resnet50.gpu_4.128.real'
+    args = {'tf_gpu_thread_mode': 'gpu_private',
+            'num_parallel_calls': 2,
+            'intra_op_parallelism_threads': 1}
+    config = self.build_resnet_test_config(
+        test_id, args, batch_size=128, gpus=4, version=1)
+    self.run_test_suite(config)
+
   def resnet50_128_gpu_8_real(self):
     """Tests ResNet50 real data data on 8 GPU with batch size 128."""
     test_id = 'official.resnet50.gpu_8.128.real'
