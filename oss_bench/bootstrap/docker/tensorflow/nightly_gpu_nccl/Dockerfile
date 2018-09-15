@@ -7,7 +7,7 @@ MAINTAINER Toby Boyd
 
 # Update apt-get so latest apps can get installed
 RUN apt-get update
-RUN sudo apt-get install -y cuda9.2 cuda-cublas-9-2 cuda-cufft-9-2 cuda-curand-9-2 \
+RUN apt-get install -y cuda9.2 cuda-cublas-9-2 cuda-cufft-9-2 cuda-curand-9-2 \
   cuda-cusolver-9-2 cuda-cusparse-9-2 libcudnn7=7.2.1.38-1+cuda9.2 \
    libnccl2=2.2.13-1+cuda9.2 cuda-command-line-tools-9-2
 
