@@ -7,10 +7,10 @@ MAINTAINER Toby Boyd
 
 # Update apt-get so latest apps can get installed
 RUN apt-get update
-RUN apt-get install -y python-pip
-RUN pip install --upgrade pip
-RUN pip install --upgrade --force-reinstall https://s3-us-west-2.amazonaws.com/tf-benchmark/tf_binary/tensorflow-1.8.0.f528eba.CUDA_9_2.NCCL_2-cp27-cp27mu-linux_x86_64.whl
-
+RUN sudo apt-get install cuda9.2 cuda-cublas-9-2 cuda-cufft-9-2 cuda-curand-9-2 \
+  cuda-cusolver-9-2 cuda-cusparse-9-2 libcudnn7=7.2.1.38-1+cuda9.2 \
+   libnccl2=2.2.13-1+cuda9.2 cuda-command-line-tools-9-2
+   
 # Install everything needed via apt-get
 RUN apt-get install -y git
 RUN pip install --upgrade google-api-python-client pyyaml paramiko google-cloud
