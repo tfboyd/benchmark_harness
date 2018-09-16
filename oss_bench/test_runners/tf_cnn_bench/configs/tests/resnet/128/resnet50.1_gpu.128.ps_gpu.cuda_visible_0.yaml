@@ -13,4 +13,3 @@ run_configs:
     all_reduce_spec: ''''''
     env_vars: 'CUDA_VISIBLE_DEVICES=0'
     per_gpu_thread_count: 1
-    per_gpu_thread_count: 1
