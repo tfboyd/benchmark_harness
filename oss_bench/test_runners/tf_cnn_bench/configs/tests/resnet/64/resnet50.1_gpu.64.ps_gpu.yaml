@@ -11,3 +11,4 @@ run_configs:
     gradient_repacking: 2
     per_gpu_thread_count: 1
     all_reduce_spec: ''''''
+    env_vars: 'CUDA_VISIBLE_DEVICES=0'
