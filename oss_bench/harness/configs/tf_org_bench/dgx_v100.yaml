@@ -1,0 +1,21 @@
+# Config for a DGX-1 V100 reporting to production schema.
+test_environment: 'brain-lab'
+# System basics
+platform: 'NVIDIA'
+platform_type: 'DGX-1 (V100)'
+
+# Build type info
+channel: TF_ORG_BENCH
+build_type: OTB
+
+# reporting
+report_auth: 'brain_lab_benchmarks.json'
+report_project: 'google.com:tensorflow-performance'
+report_dataset: 'benchmark_results'
+report_table: 'result'
+
+# tf-cnn-benchmarks
+tf_cnn_bench_configs:
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/tf_org_benchmark/io_warmup_real.yaml
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/tf_org_benchmark/dgx_v100_real.yaml
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/tf_org_benchmark/dgx_v100.yaml

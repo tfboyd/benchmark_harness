@@ -1,12 +1,9 @@
 # General settings
 repeat: 5
 
-# Worker settings override
+# override sub_configs
 num_batches: 100
 nodistortions: FLAG_ONLY
-
-# Synthetic tests do not support prefetch and it does not matter.
-datasets_use_prefetch: False
 
 sub_configs:
   - '../tests/resnet/128/resnet50.1_gpu.128.ps_gpu.cuda_visible_0.yaml'

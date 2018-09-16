@@ -9,5 +9,5 @@ run_configs:
     optimizer: 'momentum'
     datasets_use_prefetch: True
     gradient_repacking: 2
-    per_gpu_thread_count: 2
+    per_gpu_thread_count: 1
     all_reduce_spec: ''''''

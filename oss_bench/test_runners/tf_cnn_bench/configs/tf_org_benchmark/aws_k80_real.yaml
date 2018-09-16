@@ -3,8 +3,12 @@ repeat: 5
 
 # override sub_configs
 num_batches: 100
+num_warmup_batches: 10
 nodistortions: FLAG_ONLY
-per_gpu_thread_count: 1 # synth tests run much better with 1 than 2
+# Data directory mounted in the docker
+data_dir: '/data/imagenet'
+# Causes .real to be appended to all test_ids if data_dir is found.
+test_id_hacks: True
 
 sub_configs:
   - '../tests/resnet/64/resnet50.1_gpu.64.ps_gpu.yaml'

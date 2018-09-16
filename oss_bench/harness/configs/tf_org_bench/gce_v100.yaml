@@ -1,0 +1,22 @@
+# Config for a GCE reporting to production schema.
+test_environment: 'gce'
+# System basics
+platform: 'gce'
+platform_type: 'v100-Alpha'
+
+# Build type info
+channel: TF_ORG_BENCH
+build_type: OTB
+
+# reporting
+report_auth: 'gce_upload.json'
+report_project: 'google.com:tensorflow-performance'
+report_dataset: 'benchmark_results'
+report_table: 'result'
+
+# tf-cnn-benchmarks
+tf_cnn_bench_configs:
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/io_warmup_real.yaml
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/tf_org_benchmark/io_warmup_real.yaml
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/tf_org_benchmark/dgx_v100_real.yaml
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/tf_org_benchmark/dgx_v100.yaml

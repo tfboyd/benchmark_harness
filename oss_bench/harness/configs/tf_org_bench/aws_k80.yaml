@@ -1,0 +1,22 @@
+# Config for a AWS reporting to production schema.
+test_environment: 'aws'
+# System basics
+platform: 'aws'
+platform_type: 'p2.8xlarge'
+
+# Build type info
+channel: TF_ORG_BENCH
+build_type: OTB
+
+# reporting
+report_auth: 'benchmark_upload_aws.json'
+report_project: 'google.com:tensorflow-performance'
+report_dataset: 'benchmark_results'
+report_table: 'result'
+
+# tf-cnn-benchmarks
+tf_cnn_bench_configs:
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/tf_org_benchmark/io_warmup_real.yaml
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/tf_org_benchmark/aws_k80_real.yaml
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/tf_org_benchmark/aws_k80.yaml
+
