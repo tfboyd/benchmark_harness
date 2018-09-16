@@ -1,9 +1,0 @@
-run_configs:
-  - test_id: trivial.1_gpu.256.independent
-    gpus: 1
-    model: 'trivial'
-    data_format: NCHW
-    variable_update: independent
-    num_batches: 6000  # Just over 1 epoch
-    batch_size: 256
-    optimizer: 'sgd'

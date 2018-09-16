@@ -10,4 +10,4 @@ data_dir: '/data/imagenet'
 test_id_hacks: True
 
 sub_configs:
-  - 'tests/trivial/trivial.1_gpu.256.independent.yaml'
+  - '../tests/trivial/trivial.1_gpu.256.independent.yaml'

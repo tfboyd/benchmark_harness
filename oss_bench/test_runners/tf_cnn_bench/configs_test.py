@@ -25,7 +25,8 @@ class TestRunConfigs(unittest.TestCase):
         'tf_org_benchmark/dgx_p100.yaml', 'tf_org_benchmark/dgx_v100.yaml',
         'tf_org_benchmark/aws_k80_real.yaml',
         'tf_org_benchmark/dgx_p100_real.yaml',
-        'tf_org_benchmark/dgx_v100_real.yaml'
+        'tf_org_benchmark/dgx_v100_real.yaml',
+        'tf_org_benchmark/io_warmup_real.yaml'
     ]
 
     for relative_config in relative_configs:
