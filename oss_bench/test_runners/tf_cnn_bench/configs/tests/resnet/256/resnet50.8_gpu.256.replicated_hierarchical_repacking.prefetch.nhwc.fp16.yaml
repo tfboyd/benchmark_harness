@@ -7,7 +7,7 @@ run_configs:
     variable_update: replicated
     num_batches: 100
     batch_size: 256
-    optimizer: 'sgd'
+    optimizer: 'momentum'
     hierarchical_copy: True
     datasets_use_prefetch: True
     gradient_repacking: 8

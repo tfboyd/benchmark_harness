@@ -19,9 +19,10 @@ class TestRunConfigs(unittest.TestCase):
 
     relative_configs = [
         'dgx_v100.yaml', 'dgx_v100_real.yaml', 'dgx_p100.yaml',
-        'dgx_p100_real.yaml', 'dgx_v100_quick.yaml', 'dgx_v100_quick_real.yaml',
-        'dgx_io_test.yaml', 'dgx_io_test_real.yaml', 'io_warmup_real.yaml',
-        'v100_training_resnetv1.yaml', 'v100_training_resnetv1.yaml'
+        'dgx_p100_real.yaml', 'dgx_io_test.yaml', 'dgx_io_test_real.yaml',
+        'io_warmup_real.yaml', 'v100_training_resnetv1.yaml',
+        'v100_training_resnetv1.yaml', 'tf_org_benchmark/aws_k80.yaml',
+        'tf_org_benchmark/dgx_p100.yaml', 'tf_org_benchmark/dgx_v100.yaml'
     ]
 
     for relative_config in relative_configs:

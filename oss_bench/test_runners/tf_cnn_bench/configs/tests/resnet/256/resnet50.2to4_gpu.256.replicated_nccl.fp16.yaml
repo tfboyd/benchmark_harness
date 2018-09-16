@@ -7,10 +7,11 @@ run_configs:
     variable_update: replicated
     num_batches: 100
     batch_size: 256
-    optimizer: 'sgd'
+    optimizer: 'momentum'
     datasets_use_prefetch: True
     all_reduce_spec: nccl
     gradient_repacking: 2
+    per_gpu_thread_count: 1
 
   - test_id: resnet50.4_gpu.256.replicated_nccl.fp16
     gpus: 4

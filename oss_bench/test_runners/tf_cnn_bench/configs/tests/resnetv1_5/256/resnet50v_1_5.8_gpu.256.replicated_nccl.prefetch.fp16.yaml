@@ -13,3 +13,4 @@ run_configs:
     all_reduce_spec: nccl
     datasets_use_prefetch: True
     gradient_repacking: 2
+    per_gpu_thread_count: 1

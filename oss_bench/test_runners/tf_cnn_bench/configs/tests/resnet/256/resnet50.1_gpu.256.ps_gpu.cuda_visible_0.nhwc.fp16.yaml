@@ -8,6 +8,6 @@ run_configs:
     variable_update: parameter_server
     num_batches: 100
     batch_size: 256
-    optimizer: 'sgd'
+    optimizer: 'momentum'
     all_reduce_spec: ''''''
     env_vars: 'CUDA_VISIBLE_DEVICES=0'

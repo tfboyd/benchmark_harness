@@ -1,0 +1,23 @@
+# General settings
+repeat: 5
+
+# Worker settings override
+num_batches: 100
+nodistortions: FLAG_ONLY
+
+# Synthetic tests do not support prefetch and it does not matter.
+datasets_use_prefetch: False
+
+sub_configs:
+  - '../tests/resnet/256/resnet50.1_gpu.256.ps_gpu.cuda_visible_0.fp16.yaml'
+  - '../tests/resnet/256/resnet50.8_gpu.256.replicated_nccl.prefetch.fp16.yaml'
+  - '../tests/resnet/256/resnet50.2to4_gpu.256.replicated_nccl.fp16.yaml'
+  - '../tests/resnetv1_5/256/resnet50v_1_5.8_gpu.256.replicated_nccl.prefetch.fp16.yaml'
+  - '../tests/resnetv1_5/256/resnet50v_1_5.2to4_gpu.256.nccl.fp16.yaml'
+  - '../tests/resnetv1_5/256/resnet50v_1_5.1_gpu.256.ps_gpu.cuda_visible_0.fp16.yaml'
+  - '../tests/resnet/128/resnet50.1_gpu.128.ps_gpu.cuda_visible_0.yaml'
+  - '../tests/resnet/128/resnet50.2to4_gpu.128.nccl.yaml'
+  - '../tests/resnet/128/resnet50.8_gpu.128.replicated_nccl.prefetch.yaml'
+  - '../tests/resnetv1_5/128/resnet50v_1_5.1_gpu.128.ps_gpu.cuda_visible_0.yaml'
+  - '../tests/resnetv1_5/128/resnet50v_1_5.2to4_gpu.128.nccl.yaml'
+  - '../tests/resnetv1_5/128/resnet50v_1_5.8_gpu.128.replicated_nccl.prefetch.yaml'

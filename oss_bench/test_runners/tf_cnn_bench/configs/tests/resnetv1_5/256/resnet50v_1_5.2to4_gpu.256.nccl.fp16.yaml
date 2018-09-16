@@ -1,14 +1,18 @@
 run_configs:
-  - test_id: resnet50v1_5.8_gpu.128.replicated_nccl.prefetch
-    gpus: 8
+  - test_id: resnet50v1_5.2_gpu.256.replicated_nccl.prefetch.fp16
+    gpus: 2
     model: 'resnet50_v1.5'
+    use_fp16: True
     ps_server: gpu
     data_format: NCHW
     variable_update: replicated
     num_batches: 100
-    batch_size: 128
+    batch_size: 256
     optimizer: 'momentum'
     all_reduce_spec: nccl
     datasets_use_prefetch: True
     gradient_repacking: 2
     per_gpu_thread_count: 1
+
+  - test_id: resnet50v1_5.4_gpu.256.replicated_nccl.prefetch.fp16
+    gpus: 4

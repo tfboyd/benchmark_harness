@@ -14,4 +14,6 @@ run_configs:
     gradient_repacking: 2
     train_dir: training_result
     nodistortions: FLAG_ONLY
+    per_gpu_thread_count: 1
+    num_warmup_batches: 0
     num_epochs: 81

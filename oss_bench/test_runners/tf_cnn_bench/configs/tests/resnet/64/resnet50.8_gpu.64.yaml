@@ -1,14 +1,15 @@
+# K80s on AWS with nccl benefits significantly from per_gpu_thread_count=2
+# gpu_thread_mode=global was nearly as good.
 run_configs:
-  - test_id: resnet50.8_gpu.64.replicated_hierarchical_repacking
+  - test_id: resnet50.8_gpu.64
     gpus: 8
     model: 'resnet50'
-    ps_server: gpu
     data_format: NCHW
     variable_update: replicated
     num_batches: 100
     batch_size: 64
-    optimizer: 'sgd'
-    hierarchical_copy: True
-    gpu_thread_mode: gpu_shared
-    gradient_repacking: 8
+    optimizer: 'momentum'
     datasets_use_prefetch: True
+    all_reduce_spec: nccl
+    gradient_repacking: 2
+    per_gpu_thread_count: 2

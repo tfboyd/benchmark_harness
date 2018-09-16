@@ -10,4 +10,3 @@ run_configs:
     num_intra_threads: 36
     num_batches: 50
     batch_size: 128
-    optimizer: 'sgd'
