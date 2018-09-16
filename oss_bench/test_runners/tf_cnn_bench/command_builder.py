@@ -27,7 +27,8 @@ def build_run_command(run_config):
       'datasets_prefetch_buffer_size', 'datasets_prefetch_threadpool_size',
       'datasets_num_private_threads', 'variable_consistency',
       'compact_gradient_transfer', 'network_topology', 'train_dir',
-      'summary_verbosity', 'save_summaries_steps', 'num_epochs'
+      'summary_verbosity', 'save_summaries_steps', 'num_epochs',
+      'per_gpu_thread_count', 'gpu_thread_mode'
   ]
 
   for arg in pass_through_args:
