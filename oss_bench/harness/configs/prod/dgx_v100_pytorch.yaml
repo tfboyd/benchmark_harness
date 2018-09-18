@@ -17,9 +17,10 @@ report_table: 'result'
 
 # pytorch tests to run.
 pytorch_tests:
-  - renset50_64_gpu_1_real
-  - renset50_64_gpu_2_real
-  - renset50_64_gpu_4_real
-  - renset50_64_gpu_8_real
+  - warmup_resnet_imagenet_128_gpu_8_real
+  - renset50_128_gpu_1_real
+  - renset50_128_gpu_2_real
+  - renset50_128_gpu_4_real
+  - renset50_128_gpu_8_real
 
 input_threads: 36
