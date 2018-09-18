@@ -153,8 +153,9 @@ class TestRunner(object):
         os.path.join(self.workspace, 'results', suite_dir_name),
         report_config=self.auto_test_config)
 
-  def build_resnet_test_config(self, test_id, test_args, batch_size=32, gpus=1):
-    """Returns a base test config for ResNet50-v2 tests.
+  def build_resnet_test_config(self, test_id, test_args, batch_size=32, gpus=1,
+                               total_batches=150, repeat=3):
+    """Returns a base test config for ResNet50-v1.5 tests.
 
     Args:
       test_id: unique id for the test.
@@ -165,7 +166,7 @@ class TestRunner(object):
       gpus: number of gpus to run against.
     """
     config = {}
-    config['total_batches'] = 150
+    config['total_batches'] = total_batches
     # Relative path in the repo to the test folder.
     config['cmd_path'] = 'imagenet'
 
@@ -175,9 +176,9 @@ class TestRunner(object):
     config['pycmd'] = '{} python main.py {} {}'.format(visible_devices, '{}',
                                                        self.imagenet_dir)
     config['test_id'] = test_id
-    config['repeat'] = 3
+    config['repeat'] = repeat
     # Normalized name of model being tested
-    config['model'] = 'resnet50'
+    config['model'] = 'resnet50_v1.5'
     config['gpus'] = gpus
     config['batch_size'] = batch_size
     args = {}
@@ -211,7 +212,15 @@ class TestRunner(object):
     for key, value in sorted(test_config['args'].iteritems()):
       arg_str += '--{} {} '.format(key, value)
     return test_config['pycmd'].format(arg_str)
-
+  
+  def warmup_resnet_imagenet_128_gpu_8_real(self):
+    """Cache imagenet dataset. 8 GPU with batch size 128*8."""
+    test_id = 'warmup_resnet_imagenet.gpu_8.128.real'
+    args = {}
+    config = self.build_resnet_test_config(test_id, args, batch_size=128, gpus=8,
+                                           repeats=1, total_batches=1300)
+    self.run_test_suite(config)
+  
   def renset50_32_gpu_1_real(self):
     """Tests ResNet50 real data data on 1 GPU with batch size 32."""
     test_id = 'resnet50.gpu_1.32.real'
@@ -247,6 +256,34 @@ class TestRunner(object):
     config = self.build_resnet_test_config(test_id, args, batch_size=64, gpus=8)
     self.run_test_suite(config)
 
+  def renset50_128_gpu_1_real(self):
+    """Tests ResNet50 real data data on 8 GPU with batch size 128."""
+    test_id = 'resnet50.gpu_1.128.real'
+    args = {}
+    config = self.build_resnet_test_config(test_id, args, batch_size=128, gpus=1)
+    self.run_test_suite(config)
+
+  def renset50_128_gpu_2_real(self):
+    """Tests ResNet50 real data data on 2 GPU with batch size 128."""
+    test_id = 'resnet50.gpu_2.128.real'
+    args = {}
+    config = self.build_resnet_test_config(test_id, args, batch_size=128, gpus=2)
+    self.run_test_suite(config)
+
+  def renset50_128_gpu_4_real(self):
+    """Tests ResNet50 real data data on 4 GPU with batch size 128."""
+    test_id = 'resnet50.gpu_4.128.real'
+    args = {}
+    config = self.build_resnet_test_config(test_id, args, batch_size=128, gpus=4)
+    self.run_test_suite(config)
+
+  def renset50_128_gpu_8_real(self):
+    """Tests ResNet50 real data data on 8 GPU with batch size 128."""
+    test_id = 'resnet50.gpu_8.128.real'
+    args = {}
+    config = self.build_resnet_test_config(test_id, args, batch_size=128, gpus=8)
+    self.run_test_suite(config)    
+    
   def run_tests(self, test_list):
     for t in test_list:
       getattr(self, t)()
