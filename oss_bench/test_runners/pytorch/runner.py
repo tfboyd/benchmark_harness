@@ -218,7 +218,7 @@ class TestRunner(object):
     test_id = 'warmup_resnet_imagenet.gpu_8.128.real'
     args = {}
     config = self.build_resnet_test_config(test_id, args, batch_size=128, gpus=8,
-                                           repeats=1, total_batches=1300)
+                                           repeat=1, total_batches=1300)
     self.run_test_suite(config)
   
   def renset50_32_gpu_1_real(self):
