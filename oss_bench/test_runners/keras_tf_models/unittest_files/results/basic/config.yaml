@@ -1,0 +1,14 @@
+args: {batch_size: 32, data_dir: /data/tensorflow/imagenet/, resnet_size: 50, train_epochs: 1}
+batch_size: 32
+cmd: 'python imagenet_main.py --batch_size 32 --data_dir /data/tensorflow/imagenet/
+  --resnet_size 50 --train_epochs 1 '
+cmd_path: official/resnet
+gpus: 1
+model: resnet50
+pycmd: imagenet_main.py
+repeat: 3
+test_id: resnet50v2.gpu_1.32
+test_suite_start_time: 20180131T214200
+timestamp: 1517434992
+total_batches: 20
+workspace: /tmp/benchmark_workspace

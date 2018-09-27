@@ -1,0 +1,888 @@
+python imagenet_main.py --batch_size 64 --data_dir /data/imagenet --num_gpus 1 --resnet_size 50 --train_epochs 1 --hooks ExamplesPerSecondHook
+2018-08-17 16:54:39.932057: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1406] Found device 0 with properties:
+name: GeForce GTX 1080 major: 6 minor: 1 memoryClockRate(GHz): 1.7335
+pciBusID: 0000:05:00.0
+totalMemory: 7.92GiB freeMemory: 7.80GiB
+2018-08-17 16:54:39.970162: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1406] Found device 1 with properties:
+name: Quadro K600 major: 3 minor: 0 memoryClockRate(GHz): 0.8755
+pciBusID: 0000:04:00.0
+totalMemory: 979.12MiB freeMemory: 345.88MiB
+2018-08-17 16:54:39.970233: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1456] Ignoring visible gpu device (device: 1, name: Quadro K600, pci bus id: 0000:04:00.0, compute capability: 3.0) with Cuda compute capability 3.0. The minimum required Cuda capability is 3.5.
+2018-08-17 16:54:39.970259: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1485] Adding visible gpu devices: 0
+2018-08-17 16:54:40.235364: I tensorflow/core/common_runtime/gpu/gpu_device.cc:966] Device interconnect StreamExecutor with strength 1 edge matrix:
+2018-08-17 16:54:40.235416: I tensorflow/core/common_runtime/gpu/gpu_device.cc:972]      0 1
+2018-08-17 16:54:40.235435: I tensorflow/core/common_runtime/gpu/gpu_device.cc:985] 0:   N N
+2018-08-17 16:54:40.235448: I tensorflow/core/common_runtime/gpu/gpu_device.cc:985] 1:   N N
+2018-08-17 16:54:40.235702: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1098] Created TensorFlow device (/device:GPU:0 with 7528 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1080, pci bus id: 0000:05:00.0, compute capability: 6.1)
+I0817 16:54:41.019886 139765615351552 tf_logging.py:115] Using config: {'_save_checkpoints_secs': 600, '_session_config': allow_soft_placement: true
+, '_keep_checkpoint_max': 5, '_task_type': 'worker', '_train_distribute': <tensorflow.contrib.distribute.python.one_device_strategy.OneDeviceStrategy object at 0x7f1cb17ab0d0>, '_is_chief': True, '_cluster_spec': <tensorflow.python.training.server_lib.ClusterSpec object at 0x7f1cb17ab090>, '_model_dir': '/tmp', '_protocol': None, '_save_checkpoints_steps': None, '_keep_checkpoint_every_n_hours': 10000, '_service': None, '_num_ps_replicas': 0, '_tf_random_seed': None, '_save_summary_steps': 100, '_device_fn': None, '_num_worker_replicas': 1, '_task_id': 0, '_log_step_count_steps': 100, '_evaluation_master': '', '_eval_distribute': None, '_global_id_in_cluster': 0, '_master': ''}
+2018-08-17 16:54:41.199722: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1456] Ignoring visible gpu device (device: 1, name: Quadro K600, pci bus id: 0000:04:00.0, compute capability: 3.0) with Cuda compute capability 3.0. The minimum required Cuda capability is 3.5.
+2018-08-17 16:54:41.199773: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1485] Adding visible gpu devices: 0
+2018-08-17 16:54:41.199812: I tensorflow/core/common_runtime/gpu/gpu_device.cc:966] Device interconnect StreamExecutor with strength 1 edge matrix:
+2018-08-17 16:54:41.199827: I tensorflow/core/common_runtime/gpu/gpu_device.cc:972]      0 1
+2018-08-17 16:54:41.199838: I tensorflow/core/common_runtime/gpu/gpu_device.cc:985] 0:   N N
+2018-08-17 16:54:41.199848: I tensorflow/core/common_runtime/gpu/gpu_device.cc:985] 1:   N N
+2018-08-17 16:54:41.199994: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1098] Created TensorFlow device (/device:GPU:0 with 7528 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1080, pci bus id: 0000:05:00.0, compute capability: 6.1)
+I0817 16:54:41.333460 139765615351552 tf_logging.py:115] Benchmark run: {'machine_config': {'cpu_info': {'cpu_info': 'Intel(R) Xeon(R) CPU E5-1650 v2 @ 3.50GHz', 'mhz_per_cpu': 3500.0, 'num_cores': 12}, 'gpu_info': {'count': 1, 'model': u'GeForce GTX 1080'}, 'memory_total': 33726345216, 'memory_available': 23413243904}, 'run_date': '2018-08-17T16:54:41.020358Z', 'tensorflow_version': {'git_hash': 'v1.9.0-rc2-1737-g91f75c8ca7', 'version': '1.11.0-dev20180806'}, 'dataset': {'name': 'ImageNet'}, 'tensorflow_environment_variables': [{'name': 'TF_ENABLE_WINOGRAD_NONFUSED', 'value': '1'}], 'run_parameters': [{'long_value': 64, 'name': 'batch_size'}, {'name': 'dtype', 'string_value': "<dtype: 'float32'>"}, {'name': 'resnet_size', 'string_value': '50'}, {'name': 'resnet_version', 'string_value': '2'}, {'bool_value': 'False', 'name': 'synthetic_data'}, {'long_value': 1, 'name': 'train_epochs'}], 'test_id': None, 'model_name': 'resnet'}
+I0817 16:54:41.333930 139765615351552 tf_logging.py:115] Starting a training cycle: 0/1
+I0817 16:54:41.449179 139765615351552 tf_logging.py:115] Calling model_fn.
+I0817 16:54:46.414674 139765615351552 tf_logging.py:115] Done calling model_fn.
+I0817 16:54:46.846792 139765615351552 tf_logging.py:115] Create CheckpointSaverHook.
+I0817 16:54:48.490766 139765615351552 tf_logging.py:115] Graph was finalized.
+2018-08-17 16:54:48.491100: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1456] Ignoring visible gpu device (device: 1, name: Quadro K600, pci bus id: 0000:04:00.0, compute capability: 3.0) with Cuda compute capability 3.0. The minimum required Cuda capability is 3.5.
+2018-08-17 16:54:48.491130: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1485] Adding visible gpu devices: 0
+2018-08-17 16:54:48.491167: I tensorflow/core/common_runtime/gpu/gpu_device.cc:966] Device interconnect StreamExecutor with strength 1 edge matrix:
+2018-08-17 16:54:48.491180: I tensorflow/core/common_runtime/gpu/gpu_device.cc:972]      0 1
+2018-08-17 16:54:48.491191: I tensorflow/core/common_runtime/gpu/gpu_device.cc:985] 0:   N N
+2018-08-17 16:54:48.491201: I tensorflow/core/common_runtime/gpu/gpu_device.cc:985] 1:   N N
+2018-08-17 16:54:48.491356: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1098] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 7528 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1080, pci bus id: 0000:05:00.0, compute capability: 6.1)
+I0817 16:54:48.493966 139765615351552 tf_logging.py:115] Restoring parameters from /tmp/model.ckpt-0
+I0817 16:54:49.211311 139765615351552 tf_logging.py:115] Running local_init_op.
+I0817 16:54:49.271541 139765615351552 tf_logging.py:115] Done running local_init_op.
+I0817 16:54:53.060383 139765615351552 tf_logging.py:115] Saving checkpoints for 0 into /tmp/model.ckpt.
+2018-08-17 16:55:06.261931: I tensorflow/core/kernels/data/shuffle_dataset_op.cc:97] Filling up shuffle buffer (this may take a while): 2948 of 10000
+2018-08-17 16:55:16.216109: I tensorflow/core/kernels/data/shuffle_dataset_op.cc:97] Filling up shuffle buffer (this may take a while): 6186 of 10000
+2018-08-17 16:55:26.237788: I tensorflow/core/kernels/data/shuffle_dataset_op.cc:97] Filling up shuffle buffer (this may take a while): 9543 of 10000
+2018-08-17 16:55:28.220140: I tensorflow/core/kernels/data/shuffle_dataset_op.cc:135] Shuffle buffer filled.
+2018-08-17 16:55:29.907522: W tensorflow/core/common_runtime/bfc_allocator.cc:215] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.54GiB. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
+2018-08-17 16:55:29.965648: W tensorflow/core/common_runtime/bfc_allocator.cc:215] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.54GiB. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
+2018-08-17 16:55:30.064024: W tensorflow/core/common_runtime/bfc_allocator.cc:215] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.32GiB. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
+I0817 16:55:31.056756 139765615351552 tf_logging.py:115] loss = 8.397907, step = 0
+I0817 16:56:18.911066 139765615351552 tf_logging.py:115] global_step/sec: 2.08965
+I0817 16:56:18.912095 139765615351552 tf_logging.py:115] loss = 8.502083, step = 100 (47.855 sec)
+I0817 16:56:21.708216 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T16:56:21.708146Z', 'value': 137.42570712902446, 'extras': [], 'unit': None, 'global_step': 106}
+I0817 16:56:21.708496 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T16:56:21.708468Z', 'value': 137.42570712902446, 'extras': [], 'unit': None, 'global_step': 106}
+I0817 16:57:05.730173 139765615351552 tf_logging.py:115] global_step/sec: 2.13588
+I0817 16:57:05.731317 139765615351552 tf_logging.py:115] loss = 8.209768, step = 200 (46.819 sec)
+I0817 16:57:08.545136 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T16:57:08.545081Z', 'value': 137.03378355739153, 'extras': [], 'unit': None, 'global_step': 206}
+I0817 16:57:08.545350 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T16:57:08.545328Z', 'value': 136.6440890777147, 'extras': [], 'unit': None, 'global_step': 206}
+I0817 16:57:53.331059 139765615351552 tf_logging.py:115] global_step/sec: 2.1008
+I0817 16:57:53.332947 139765615351552 tf_logging.py:115] loss = 8.12916, step = 300 (47.602 sec)
+I0817 16:57:56.220010 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T16:57:56.219955Z', 'value': 136.09058623416666, 'extras': [], 'unit': None, 'global_step': 306}
+I0817 16:57:56.220221 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T16:57:56.220203Z', 'value': 134.24261456710153, 'extras': [], 'unit': None, 'global_step': 306}
+I0817 16:58:42.606600 139765615351552 tf_logging.py:115] global_step/sec: 2.02941
+I0817 16:58:42.607826 139765615351552 tf_logging.py:115] loss = 8.096618, step = 400 (49.275 sec)
+I0817 16:58:45.501734 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T16:58:45.501662Z', 'value': 134.47907530734767, 'extras': [], 'unit': None, 'global_step': 406}
+I0817 16:58:45.502006 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T16:58:45.501987Z', 'value': 129.86567847359052, 'extras': [], 'unit': None, 'global_step': 406}
+I0817 16:59:30.870647 139765615351552 tf_logging.py:115] global_step/sec: 2.07193
+I0817 16:59:30.871753 139765615351552 tf_logging.py:115] loss = 8.024996, step = 500 (48.264 sec)
+I0817 16:59:33.771752 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T16:59:33.771644Z', 'value': 134.09649096023338, 'extras': [], 'unit': None, 'global_step': 506}
+I0817 16:59:33.772219 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T16:59:33.772150Z', 'value': 132.58767719720117, 'extras': [], 'unit': None, 'global_step': 506}
+I0817 17:00:19.149697 139765615351552 tf_logging.py:115] global_step/sec: 2.07129
+I0817 17:00:19.150691 139765615351552 tf_logging.py:115] loss = 8.04455, step = 600 (48.279 sec)
+I0817 17:00:22.042016 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:00:22.041944Z', 'value': 133.84245928576536, 'extras': [], 'unit': None, 'global_step': 606}
+I0817 17:00:22.042295 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:00:22.042268Z', 'value': 132.58660253615537, 'extras': [], 'unit': None, 'global_step': 606}
+I0817 17:01:07.449384 139765615351552 tf_logging.py:115] global_step/sec: 2.07041
+I0817 17:01:07.451596 139765615351552 tf_logging.py:115] loss = 8.036256, step = 700 (48.301 sec)
+I0817 17:01:10.342310 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:01:10.342241Z', 'value': 133.64965016198647, 'extras': [], 'unit': None, 'global_step': 706}
+I0817 17:01:10.342597 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:01:10.342565Z', 'value': 132.50436114508116, 'extras': [], 'unit': None, 'global_step': 706}
+I0817 17:01:55.723620 139765615351552 tf_logging.py:115] global_step/sec: 2.07149
+I0817 17:01:55.724953 139765615351552 tf_logging.py:115] loss = 7.901471, step = 800 (48.273 sec)
+I0817 17:01:58.629165 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:01:58.629094Z', 'value': 133.5100933805426, 'extras': [], 'unit': None, 'global_step': 806}
+I0817 17:01:58.629451 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:01:58.629423Z', 'value': 132.54129729424884, 'extras': [], 'unit': None, 'global_step': 806}
+I0817 17:02:44.029725 139765615351552 tf_logging.py:115] global_step/sec: 2.07013
+I0817 17:02:44.030812 139765615351552 tf_logging.py:115] loss = 7.785701, step = 900 (48.306 sec)
+I0817 17:02:46.926132 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:02:46.926023Z', 'value': 133.39863967560265, 'extras': [], 'unit': None, 'global_step': 906}
+I0817 17:02:46.926578 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:02:46.926528Z', 'value': 132.51366455524192, 'extras': [], 'unit': None, 'global_step': 906}
+I0817 17:03:32.329781 139765615351552 tf_logging.py:115] global_step/sec: 2.07039
+I0817 17:03:32.330895 139765615351552 tf_logging.py:115] loss = 7.7880893, step = 1000 (48.300 sec)
+I0817 17:03:35.235002 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:03:35.234930Z', 'value': 133.3062679882458, 'extras': [], 'unit': None, 'global_step': 1006}
+I0817 17:03:35.235287 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:03:35.235260Z', 'value': 132.48064378588907, 'extras': [], 'unit': None, 'global_step': 1006}
+I0817 17:04:20.569515 139765615351552 tf_logging.py:115] global_step/sec: 2.07298
+I0817 17:04:20.570780 139765615351552 tf_logging.py:115] loss = 7.714431, step = 1100 (48.240 sec)
+I0817 17:04:23.464555 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:04:23.464499Z', 'value': 133.25079806590705, 'extras': [], 'unit': None, 'global_step': 1106}
+I0817 17:04:23.464773 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:04:23.464755Z', 'value': 132.69862728944722, 'extras': [], 'unit': None, 'global_step': 1106}
+I0817 17:04:54.838830 139765615351552 tf_logging.py:115] Saving checkpoints for 1172 into /tmp/model.ckpt.
+I0817 17:05:09.645755 139765615351552 tf_logging.py:115] global_step/sec: 2.03765
+I0817 17:05:09.646882 139765615351552 tf_logging.py:115] loss = 7.7107263, step = 1200 (49.076 sec)
+I0817 17:05:12.539184 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:05:12.539109Z', 'value': 133.00966835223912, 'extras': [], 'unit': None, 'global_step': 1206}
+I0817 17:05:12.539433 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:05:12.539405Z', 'value': 130.41371512220624, 'extras': [], 'unit': None, 'global_step': 1206}
+I0817 17:05:58.512058 139765615351552 tf_logging.py:115] global_step/sec: 2.0464
+I0817 17:05:58.512995 139765615351552 tf_logging.py:115] loss = 7.6560235, step = 1300 (48.866 sec)
+I0817 17:06:01.405221 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:06:01.405167Z', 'value': 132.85053448456173, 'extras': [], 'unit': None, 'global_step': 1306}
+I0817 17:06:01.405428 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:06:01.405411Z', 'value': 130.97020839364922, 'extras': [], 'unit': None, 'global_step': 1306}
+I0817 17:06:46.765002 139765615351552 tf_logging.py:115] global_step/sec: 2.07241
+I0817 17:06:46.766067 139765615351552 tf_logging.py:115] loss = 7.533931, step = 1400 (48.253 sec)
+I0817 17:06:49.658970 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:06:49.658857Z', 'value': 132.83493722499045, 'extras': [], 'unit': None, 'global_step': 1406}
+I0817 17:06:49.659460 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:06:49.659390Z', 'value': 132.6325056191648, 'extras': [], 'unit': None, 'global_step': 1406}
+I0817 17:07:35.031891 139765615351552 tf_logging.py:115] global_step/sec: 2.07182
+I0817 17:07:35.033967 139765615351552 tf_logging.py:115] loss = 7.542402, step = 1500 (48.268 sec)
+I0817 17:07:37.933624 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:07:37.933563Z', 'value': 132.8175391600297, 'extras': [], 'unit': None, 'global_step': 1506}
+I0817 17:07:37.933856 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:07:37.933838Z', 'value': 132.574443904405, 'extras': [], 'unit': None, 'global_step': 1506}
+I0817 17:08:23.256531 139765615351552 tf_logging.py:115] global_step/sec: 2.07362
+I0817 17:08:23.257508 139765615351552 tf_logging.py:115] loss = 7.3856525, step = 1600 (48.224 sec)
+I0817 17:08:26.154683 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:08:26.154617Z', 'value': 132.81157269101996, 'extras': [], 'unit': None, 'global_step': 1606}
+I0817 17:08:26.154939 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:08:26.154914Z', 'value': 132.7221399391565, 'extras': [], 'unit': None, 'global_step': 1606}
+I0817 17:09:11.499456 139765615351552 tf_logging.py:115] global_step/sec: 2.07285
+I0817 17:09:11.502124 139765615351552 tf_logging.py:115] loss = 7.706419, step = 1700 (48.245 sec)
+I0817 17:09:14.389610 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:09:14.389554Z', 'value': 132.80405465684848, 'extras': [], 'unit': None, 'global_step': 1706}
+I0817 17:09:14.389848 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:09:14.389828Z', 'value': 132.68388176084298, 'extras': [], 'unit': None, 'global_step': 1706}
+I0817 17:09:59.715588 139765615351552 tf_logging.py:115] global_step/sec: 2.07399
+I0817 17:09:59.716725 139765615351552 tf_logging.py:115] loss = 7.3753433, step = 1800 (48.215 sec)
+I0817 17:10:02.604908 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:10:02.604813Z', 'value': 132.80039121974588, 'extras': [], 'unit': None, 'global_step': 1806}
+I0817 17:10:02.605297 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:10:02.605245Z', 'value': 132.7381436979309, 'extras': [], 'unit': None, 'global_step': 1806}
+I0817 17:10:47.934140 139765615351552 tf_logging.py:115] global_step/sec: 2.07389
+I0817 17:10:47.935576 139765615351552 tf_logging.py:115] loss = 7.2804327, step = 1900 (48.219 sec)
+I0817 17:10:50.826948 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:10:50.826877Z', 'value': 132.79612030091585, 'extras': [], 'unit': None, 'global_step': 1906}
+I0817 17:10:50.827231 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:10:50.827204Z', 'value': 132.71929071007827, 'extras': [], 'unit': None, 'global_step': 1906}
+I0817 17:11:36.183182 139765615351552 tf_logging.py:115] global_step/sec: 2.07258
+I0817 17:11:36.184602 139765615351552 tf_logging.py:115] loss = 7.3426027, step = 2000 (48.249 sec)
+I0817 17:11:39.076786 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:11:39.076728Z', 'value': 132.7884486443636, 'extras': [], 'unit': None, 'global_step': 2006}
+I0817 17:11:39.077028 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:11:39.077007Z', 'value': 132.64285539856715, 'extras': [], 'unit': None, 'global_step': 2006}
+I0817 17:12:24.443286 139765615351552 tf_logging.py:115] global_step/sec: 2.07211
+I0817 17:12:24.444551 139765615351552 tf_logging.py:115] loss = 7.333042, step = 2100 (48.260 sec)
+I0817 17:12:27.341202 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:12:27.341098Z', 'value': 132.7796125655285, 'extras': [], 'unit': None, 'global_step': 2106}
+I0817 17:12:27.341648 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:12:27.341597Z', 'value': 132.60313761011412, 'extras': [], 'unit': None, 'global_step': 2106}
+I0817 17:13:12.690629 139765615351552 tf_logging.py:115] global_step/sec: 2.07265
+I0817 17:13:12.691871 139765615351552 tf_logging.py:115] loss = 7.298801, step = 2200 (48.247 sec)
+I0817 17:13:15.585794 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:13:15.585725Z', 'value': 132.7740414169505, 'extras': [], 'unit': None, 'global_step': 2206}
+I0817 17:13:15.586097 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:13:15.586069Z', 'value': 132.65715519584802, 'extras': [], 'unit': None, 'global_step': 2206}
+I0817 17:14:00.935841 139765615351552 tf_logging.py:115] global_step/sec: 2.07275
+I0817 17:14:00.939749 139765615351552 tf_logging.py:115] loss = 7.2091227, step = 2300 (48.248 sec)
+I0817 17:14:03.825978 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:14:03.825891Z', 'value': 132.76949831440007, 'extras': [], 'unit': None, 'global_step': 2306}
+I0817 17:14:03.826342 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:14:03.826299Z', 'value': 132.6696286570379, 'extras': [], 'unit': None, 'global_step': 2306}
+I0817 17:14:49.161087 139765615351552 tf_logging.py:115] global_step/sec: 2.0736
+I0817 17:14:49.162336 139765615351552 tf_logging.py:115] loss = 7.2493563, step = 2400 (48.223 sec)
+I0817 17:14:52.059444 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:14:52.059389Z', 'value': 132.76608894730506, 'extras': [], 'unit': None, 'global_step': 2406}
+I0817 17:14:52.059659 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:14:52.059641Z', 'value': 132.68772180242289, 'extras': [], 'unit': None, 'global_step': 2406}
+I0817 17:14:54.952841 139765615351552 tf_logging.py:115] Saving checkpoints for 2413 into /tmp/model.ckpt.
+I0817 17:15:38.050652 139765615351552 tf_logging.py:115] global_step/sec: 2.04543
+I0817 17:15:38.051534 139765615351552 tf_logging.py:115] loss = 6.8804164, step = 2500 (48.889 sec)
+I0817 17:15:40.942971 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:15:40.942916Z', 'value': 132.69138819689178, 'extras': [], 'unit': None, 'global_step': 2506}
+I0817 17:15:40.943187 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:15:40.943170Z', 'value': 130.9234523842428, 'extras': [], 'unit': None, 'global_step': 2506}
+I0817 17:16:26.298178 139765615351552 tf_logging.py:115] global_step/sec: 2.07264
+I0817 17:16:26.299269 139765615351552 tf_logging.py:115] loss = 6.969328, step = 2600 (48.248 sec)
+I0817 17:16:29.204684 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:16:29.204586Z', 'value': 132.68827659997794, 'extras': [], 'unit': None, 'global_step': 2606}
+I0817 17:16:29.205101 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:16:29.205057Z', 'value': 132.61053407761358, 'extras': [], 'unit': None, 'global_step': 2606}
+I0817 17:17:14.549360 139765615351552 tf_logging.py:115] global_step/sec: 2.07249
+I0817 17:17:14.550357 139765615351552 tf_logging.py:115] loss = 6.8322315, step = 2700 (48.251 sec)
+I0817 17:17:17.444818 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:17:17.444749Z', 'value': 132.68757933178054, 'extras': [], 'unit': None, 'global_step': 2706}
+I0817 17:17:17.445100 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:17:17.445073Z', 'value': 132.66945293049415, 'extras': [], 'unit': None, 'global_step': 2706}
+I0817 17:18:02.774810 139765615351552 tf_logging.py:115] global_step/sec: 2.07359
+I0817 17:18:02.775819 139765615351552 tf_logging.py:115] loss = 7.1242123, step = 2800 (48.225 sec)
+I0817 17:18:05.668551 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:18:05.668442Z', 'value': 132.68855718261392, 'extras': [], 'unit': None, 'global_step': 2806}
+I0817 17:18:05.669024 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:18:05.668972Z', 'value': 132.7149646041952, 'extras': [], 'unit': None, 'global_step': 2806}
+I0817 17:18:51.062042 139765615351552 tf_logging.py:115] global_step/sec: 2.07094
+I0817 17:18:51.063116 139765615351552 tf_logging.py:115] loss = 7.1736407, step = 2900 (48.287 sec)
+I0817 17:18:53.962549 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:18:53.962451Z', 'value': 132.68279217440232, 'extras': [], 'unit': None, 'global_step': 2906}
+I0817 17:18:53.962986 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:18:53.962942Z', 'value': 132.52157508398975, 'extras': [], 'unit': None, 'global_step': 2906}
+I0817 17:19:39.302951 139765615351552 tf_logging.py:115] global_step/sec: 2.07293
+I0817 17:19:39.303992 139765615351552 tf_logging.py:115] loss = 6.6147766, step = 3000 (48.241 sec)
+I0817 17:19:42.189632 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:19:42.189562Z', 'value': 132.68354442058632, 'extras': [], 'unit': None, 'global_step': 3006}
+I0817 17:19:42.189974 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:19:42.189946Z', 'value': 132.70536327096514, 'extras': [], 'unit': None, 'global_step': 3006}
+I0817 17:20:27.517292 139765615351552 tf_logging.py:115] global_step/sec: 2.07408
+I0817 17:20:27.519491 139765615351552 tf_logging.py:115] loss = 6.8879, step = 3100 (48.215 sec)
+I0817 17:20:30.415906 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:20:30.415852Z', 'value': 132.68432195641824, 'extras': [], 'unit': None, 'global_step': 3106}
+I0817 17:20:30.416120 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:20:30.416101Z', 'value': 132.70765226959213, 'extras': [], 'unit': None, 'global_step': 3106}
+I0817 17:21:15.749480 139765615351552 tf_logging.py:115] global_step/sec: 2.0733
+I0817 17:21:15.750557 139765615351552 tf_logging.py:115] loss = 6.981282, step = 3200 (48.231 sec)
+I0817 17:21:18.640368 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:21:18.640297Z', 'value': 132.68521244863408, 'extras': [], 'unit': None, 'global_step': 3206}
+I0817 17:21:18.640665 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:21:18.640625Z', 'value': 132.7128236371611, 'extras': [], 'unit': None, 'global_step': 3206}
+I0817 17:22:03.979000 139765615351552 tf_logging.py:115] global_step/sec: 2.07346
+I0817 17:22:03.980081 139765615351552 tf_logging.py:115] loss = 6.6761146, step = 3300 (48.230 sec)
+I0817 17:22:06.874802 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:22:06.874715Z', 'value': 132.68521755694326, 'extras': [], 'unit': None, 'global_step': 3306}
+I0817 17:22:06.875086 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:22:06.875068Z', 'value': 132.68538102304464, 'extras': [], 'unit': None, 'global_step': 3306}
+I0817 17:22:52.230530 139765615351552 tf_logging.py:115] global_step/sec: 2.07244
+I0817 17:22:52.231487 139765615351552 tf_logging.py:115] loss = 7.122785, step = 3400 (48.251 sec)
+I0817 17:22:55.117408 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:22:55.117322Z', 'value': 132.68455851176955, 'extras': [], 'unit': None, 'global_step': 3406}
+I0817 17:22:55.117785 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:22:55.117738Z', 'value': 132.66281369326398, 'extras': [], 'unit': None, 'global_step': 3406}
+I0817 17:23:40.456573 139765615351552 tf_logging.py:115] global_step/sec: 2.07357
+I0817 17:23:40.458003 139765615351552 tf_logging.py:115] loss = 6.597818, step = 3500 (48.227 sec)
+I0817 17:23:43.347029 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:23:43.346913Z', 'value': 132.6849616347128, 'extras': [], 'unit': None, 'global_step': 3506}
+I0817 17:23:43.347479 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:23:43.347435Z', 'value': 132.69866927241094, 'extras': [], 'unit': None, 'global_step': 3506}
+I0817 17:24:28.682075 139765615351552 tf_logging.py:115] global_step/sec: 2.07359
+I0817 17:24:28.683078 139765615351552 tf_logging.py:115] loss = 6.9434724, step = 3600 (48.225 sec)
+I0817 17:24:31.577704 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:24:31.577634Z', 'value': 132.68525194772639, 'extras': [], 'unit': None, 'global_step': 3606}
+I0817 17:24:31.578003 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:24:31.577976Z', 'value': 132.69541370361577, 'extras': [], 'unit': None, 'global_step': 3606}
+I0817 17:24:55.229662 139765615351552 tf_logging.py:115] Saving checkpoints for 3656 into /tmp/model.ckpt.
+I0817 17:25:17.727998 139765615351552 tf_logging.py:115] global_step/sec: 2.03891
+I0817 17:25:17.728960 139765615351552 tf_logging.py:115] loss = 6.9340544, step = 3700 (49.046 sec)
+I0817 17:25:20.618120 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:25:20.618064Z', 'value': 132.62535536217845, 'extras': [], 'unit': None, 'global_step': 3706}
+I0817 17:25:20.618331 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:25:20.618313Z', 'value': 130.5045175459619, 'extras': [], 'unit': None, 'global_step': 3706}
+I0817 17:26:05.948077 139765615351552 tf_logging.py:115] global_step/sec: 2.07383
+I0817 17:26:05.949508 139765615351552 tf_logging.py:115] loss = 6.726435, step = 3800 (48.221 sec)
+I0817 17:26:08.839838 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:26:08.839783Z', 'value': 132.62785154238054, 'extras': [], 'unit': None, 'global_step': 3806}
+I0817 17:26:08.840048 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:26:08.840029Z', 'value': 132.7202763116407, 'extras': [], 'unit': None, 'global_step': 3806}
+I0817 17:26:54.177261 139765615351552 tf_logging.py:115] global_step/sec: 2.07344
+I0817 17:26:54.178359 139765615351552 tf_logging.py:115] loss = 6.79148, step = 3900 (48.229 sec)
+I0817 17:26:57.085063 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:26:57.084992Z', 'value': 132.62856567362275, 'extras': [], 'unit': None, 'global_step': 3906}
+I0817 17:26:57.085350 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:26:57.085322Z', 'value': 132.6557083606109, 'extras': [], 'unit': None, 'global_step': 3906}
+I0817 17:27:42.431022 139765615351552 tf_logging.py:115] global_step/sec: 2.07237
+I0817 17:27:42.432049 139765615351552 tf_logging.py:115] loss = 6.788065, step = 4000 (48.254 sec)
+I0817 17:27:45.327819 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:27:45.327746Z', 'value': 132.62941156699054, 'extras': [], 'unit': None, 'global_step': 4006}
+I0817 17:27:45.328110 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:27:45.328081Z', 'value': 132.66240982668117, 'extras': [], 'unit': None, 'global_step': 4006}
+I0817 17:28:30.702543 139765615351552 tf_logging.py:115] global_step/sec: 2.07161
+I0817 17:28:30.703598 139765615351552 tf_logging.py:115] loss = 6.759516, step = 4100 (48.272 sec)
+I0817 17:28:33.588844 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:28:33.588787Z', 'value': 132.62898914752282, 'extras': [], 'unit': None, 'global_step': 4106}
+I0817 17:28:33.589063 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:28:33.589039Z', 'value': 132.61209457497037, 'extras': [], 'unit': None, 'global_step': 4106}
+I0817 17:29:18.940917 139765615351552 tf_logging.py:115] global_step/sec: 2.07304
+I0817 17:29:18.943190 139765615351552 tf_logging.py:115] loss = 6.875433, step = 4200 (48.240 sec)
+I0817 17:29:21.838107 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:29:21.838034Z', 'value': 132.62936068690794, 'extras': [], 'unit': None, 'global_step': 4206}
+I0817 17:29:21.838393 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:29:21.838366Z', 'value': 132.64459559417895, 'extras': [], 'unit': None, 'global_step': 4206}
+I0817 17:30:07.187988 139765615351552 tf_logging.py:115] global_step/sec: 2.07267
+I0817 17:30:07.189188 139765615351552 tf_logging.py:115] loss = 6.8602686, step = 4300 (48.246 sec)
+I0817 17:30:10.084527 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:30:10.084471Z', 'value': 132.62989277836687, 'extras': [], 'unit': None, 'global_step': 4306}
+I0817 17:30:10.084739 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:30:10.084722Z', 'value': 132.6522444755241, 'extras': [], 'unit': None, 'global_step': 4306}
+I0817 17:30:55.434626 139765615351552 tf_logging.py:115] global_step/sec: 2.07268
+I0817 17:30:55.436124 139765615351552 tf_logging.py:115] loss = 6.6690855, step = 4400 (48.247 sec)
+I0817 17:30:58.328011 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:30:58.327953Z', 'value': 132.63058627464525, 'extras': [], 'unit': None, 'global_step': 4406}
+I0817 17:30:58.328226 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:30:58.328207Z', 'value': 132.66041347685183, 'extras': [], 'unit': None, 'global_step': 4406}
+I0817 17:31:43.674102 139765615351552 tf_logging.py:115] global_step/sec: 2.07299
+I0817 17:31:43.675175 139765615351552 tf_logging.py:115] loss = 6.957529, step = 4500 (48.239 sec)
+I0817 17:31:46.569278 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:31:46.569207Z', 'value': 132.63138577153876, 'extras': [], 'unit': None, 'global_step': 4506}
+I0817 17:31:46.569566 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:31:46.569538Z', 'value': 132.66657317972812, 'extras': [], 'unit': None, 'global_step': 4506}
+I0817 17:32:31.928637 139765615351552 tf_logging.py:115] global_step/sec: 2.07234
+I0817 17:32:31.929677 139765615351552 tf_logging.py:115] loss = 6.6362557, step = 4600 (48.255 sec)
+I0817 17:32:34.828856 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:32:34.828786Z', 'value': 132.63105477708768, 'extras': [], 'unit': None, 'global_step': 4606}
+I0817 17:32:34.829157 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:32:34.829115Z', 'value': 132.6161617364763, 'extras': [], 'unit': None, 'global_step': 4606}
+I0817 17:33:20.209208 139765615351552 tf_logging.py:115] global_step/sec: 2.07123
+I0817 17:33:20.210747 139765615351552 tf_logging.py:115] loss = 6.605256, step = 4700 (48.281 sec)
+I0817 17:33:23.111464 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:33:23.111391Z', 'value': 132.6293911875292, 'extras': [], 'unit': None, 'global_step': 4706}
+I0817 17:33:23.111745 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:33:23.111717Z', 'value': 132.55291115494194, 'extras': [], 'unit': None, 'global_step': 4706}
+I0817 17:34:08.453557 139765615351552 tf_logging.py:115] global_step/sec: 2.07278
+I0817 17:34:08.454797 139765615351552 tf_logging.py:115] loss = 6.776879, step = 4800 (48.244 sec)
+I0817 17:34:11.348118 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:34:11.348063Z', 'value': 132.63042637149184, 'extras': [], 'unit': None, 'global_step': 4806}
+I0817 17:34:11.348335 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:34:11.348316Z', 'value': 132.67909825223072, 'extras': [], 'unit': None, 'global_step': 4806}
+I0817 17:34:55.265245 139765615351552 tf_logging.py:115] Saving checkpoints for 4898 into /tmp/model.ckpt.
+I0817 17:34:57.405246 139765615351552 tf_logging.py:115] global_step/sec: 2.04283
+I0817 17:34:57.406562 139765615351552 tf_logging.py:115] loss = 6.566377, step = 4900 (48.952 sec)
+I0817 17:35:00.311398 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:35:00.311326Z', 'value': 132.59067592629788, 'extras': [], 'unit': None, 'global_step': 4906}
+I0817 17:35:00.311677 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:35:00.311651Z', 'value': 130.71027781492677, 'extras': [], 'unit': None, 'global_step': 4906}
+I0817 17:35:45.665824 139765615351552 tf_logging.py:115] global_step/sec: 2.07208
+I0817 17:35:45.667125 139765615351552 tf_logging.py:115] loss = 6.830364, step = 5000 (48.261 sec)
+I0817 17:35:48.564893 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:35:48.564821Z', 'value': 132.5915197408291, 'extras': [], 'unit': None, 'global_step': 5006}
+I0817 17:35:48.565181 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:35:48.565153Z', 'value': 132.6328798136677, 'extras': [], 'unit': None, 'global_step': 5006}
+I0817 17:36:33.939125 139765615351552 tf_logging.py:115] global_step/sec: 2.07154
+I0817 17:36:33.940473 139765615351552 tf_logging.py:115] loss = 6.4921937, step = 5100 (48.273 sec)
+I0817 17:36:36.836010 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:36:36.835940Z', 'value': 132.5913813165235, 'extras': [], 'unit': None, 'global_step': 5106}
+I0817 17:36:36.836292 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:36:36.836265Z', 'value': 132.58446046973378, 'extras': [], 'unit': None, 'global_step': 5106}
+I0817 17:37:22.219592 139765615351552 tf_logging.py:115] global_step/sec: 2.07123
+I0817 17:37:22.220813 139765615351552 tf_logging.py:115] loss = 6.908766, step = 5200 (48.280 sec)
+I0817 17:37:25.119868 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:37:25.119801Z', 'value': 132.5905747455944, 'extras': [], 'unit': None, 'global_step': 5206}
+I0817 17:37:25.120136 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:37:25.120110Z', 'value': 132.5494526361542, 'extras': [], 'unit': None, 'global_step': 5206}
+I0817 17:38:10.484252 139765615351552 tf_logging.py:115] global_step/sec: 2.07192
+I0817 17:38:10.487122 139765615351552 tf_logging.py:115] loss = 6.3429475, step = 5300 (48.266 sec)
+I0817 17:38:13.380671 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:38:13.380601Z', 'value': 132.59099424635463, 'extras': [], 'unit': None, 'global_step': 5306}
+I0817 17:38:13.380968 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:38:13.380929Z', 'value': 132.61281194438976, 'extras': [], 'unit': None, 'global_step': 5306}
+I0817 17:38:58.760258 139765615351552 tf_logging.py:115] global_step/sec: 2.07141
+I0817 17:38:58.761290 139765615351552 tf_logging.py:115] loss = 6.7774677, step = 5400 (48.274 sec)
+I0817 17:39:01.662019 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:39:01.661913Z', 'value': 132.59035804393963, 'extras': [], 'unit': None, 'global_step': 5406}
+I0817 17:39:01.662476 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:39:01.662425Z', 'value': 132.55664805039888, 'extras': [], 'unit': None, 'global_step': 5406}
+I0817 17:39:46.998723 139765615351552 tf_logging.py:115] global_step/sec: 2.07304
+I0817 17:39:47.001542 139765615351552 tf_logging.py:115] loss = 6.0855784, step = 5500 (48.240 sec)
+I0817 17:39:49.896739 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:39:49.896669Z', 'value': 132.59206358569716, 'extras': [], 'unit': None, 'global_step': 5506}
+I0817 17:39:49.897022 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:39:49.896994Z', 'value': 132.6842280441167, 'extras': [], 'unit': None, 'global_step': 5506}
+I0817 17:40:35.247843 139765615351552 tf_logging.py:115] global_step/sec: 2.07258
+I0817 17:40:35.249114 139765615351552 tf_logging.py:115] loss = 6.896372, step = 5600 (48.248 sec)
+I0817 17:40:38.141644 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:40:38.141578Z', 'value': 132.59321310725684, 'extras': [], 'unit': None, 'global_step': 5606}
+I0817 17:40:38.141937 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:40:38.141913Z', 'value': 132.6564675026676, 'extras': [], 'unit': None, 'global_step': 5606}
+I0817 17:41:23.470284 139765615351552 tf_logging.py:115] global_step/sec: 2.07372
+I0817 17:41:23.471728 139765615351552 tf_logging.py:115] loss = 6.784169, step = 5700 (48.223 sec)
+I0817 17:41:26.363596 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:41:26.363484Z', 'value': 132.5954335824342, 'extras': [], 'unit': None, 'global_step': 5706}
+I0817 17:41:26.364090 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:41:26.364034Z', 'value': 132.71989899906023, 'extras': [], 'unit': None, 'global_step': 5706}
+I0817 17:42:11.707297 139765615351552 tf_logging.py:115] global_step/sec: 2.0731
+I0817 17:42:11.708563 139765615351552 tf_logging.py:115] loss = 6.6863937, step = 5800 (48.237 sec)
+I0817 17:42:14.606885 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:42:14.606812Z', 'value': 132.5965584565391, 'extras': [], 'unit': None, 'global_step': 5806}
+I0817 17:42:14.607167 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:42:14.607139Z', 'value': 132.66070784452788, 'extras': [], 'unit': None, 'global_step': 5806}
+I0817 17:42:59.957751 139765615351552 tf_logging.py:115] global_step/sec: 2.07252
+I0817 17:42:59.959124 139765615351552 tf_logging.py:115] loss = 6.2593307, step = 5900 (48.251 sec)
+I0817 17:43:02.849889 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:43:02.849800Z', 'value': 132.59766319069584, 'extras': [], 'unit': None, 'global_step': 5906}
+I0817 17:43:02.850186 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:43:02.850157Z', 'value': 132.66176928358857, 'extras': [], 'unit': None, 'global_step': 5906}
+I0817 17:43:48.197451 139765615351552 tf_logging.py:115] global_step/sec: 2.07299
+I0817 17:43:48.199711 139765615351552 tf_logging.py:115] loss = 6.2847047, step = 6000 (48.241 sec)
+I0817 17:43:51.093405 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:43:51.093299Z', 'value': 132.59870936108817, 'extras': [], 'unit': None, 'global_step': 6006}
+I0817 17:43:51.093933 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:43:51.093870Z', 'value': 132.66046264730815, 'extras': [], 'unit': None, 'global_step': 6006}
+I0817 17:44:36.424884 139765615351552 tf_logging.py:115] global_step/sec: 2.0735
+I0817 17:44:36.427129 139765615351552 tf_logging.py:115] loss = 6.0842533, step = 6100 (48.227 sec)
+I0817 17:44:39.322303 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:44:39.322217Z', 'value': 132.60037524648772, 'extras': [], 'unit': None, 'global_step': 6106}
+I0817 17:44:39.322664 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:44:39.322628Z', 'value': 132.70040502881946, 'extras': [], 'unit': None, 'global_step': 6106}
+I0817 17:44:55.741075 139765615351552 tf_logging.py:115] Saving checkpoints for 6141 into /tmp/model.ckpt.
+I0817 17:45:28.195842 139765615351552 tf_logging.py:115] global_step/sec: 1.93158
+I0817 17:45:28.197309 139765615351552 tf_logging.py:115] loss = 5.9650464, step = 6200 (51.770 sec)
+I0817 17:45:31.087527 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:45:31.087455Z', 'value': 132.4454688896281, 'extras': [], 'unit': None, 'global_step': 6206}
+I0817 17:45:31.087826 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:45:31.087788Z', 'value': 123.6350618629539, 'extras': [], 'unit': None, 'global_step': 6206}
+I0817 17:46:16.401216 139765615351552 tf_logging.py:115] global_step/sec: 2.07446
+I0817 17:46:16.402441 139765615351552 tf_logging.py:115] loss = 6.3373218, step = 6300 (48.205 sec)
+I0817 17:46:19.296674 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:46:19.296603Z', 'value': 132.45036905802493, 'extras': [], 'unit': None, 'global_step': 6306}
+I0817 17:46:19.296950 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:46:19.296923Z', 'value': 132.75488926349112, 'extras': [], 'unit': None, 'global_step': 6306}
+I0817 17:47:04.592963 139765615351552 tf_logging.py:115] global_step/sec: 2.07504
+I0817 17:47:04.594425 139765615351552 tf_logging.py:115] loss = 6.307963, step = 6400 (48.192 sec)
+I0817 17:47:07.483392 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:47:07.483303Z', 'value': 132.45607814848768, 'extras': [], 'unit': None, 'global_step': 6406}
+I0817 17:47:07.483721 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:47:07.483688Z', 'value': 132.8167457538531, 'extras': [], 'unit': None, 'global_step': 6406}
+I0817 17:47:52.853543 139765615351552 tf_logging.py:115] global_step/sec: 2.07208
+I0817 17:47:52.854711 139765615351552 tf_logging.py:115] loss = 6.4017587, step = 6500 (48.260 sec)
+I0817 17:47:55.748903 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:47:55.748803Z', 'value': 132.45828929146174, 'extras': [], 'unit': None, 'global_step': 6506}
+I0817 17:47:55.749332 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:47:55.749286Z', 'value': 132.59995615789106, 'extras': [], 'unit': None, 'global_step': 6506}
+I0817 17:48:41.119620 139765615351552 tf_logging.py:115] global_step/sec: 2.07185
+I0817 17:48:41.120961 139765615351552 tf_logging.py:115] loss = 6.2673697, step = 6600 (48.266 sec)
+I0817 17:48:44.019284 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:48:44.019227Z', 'value': 132.46022605240015, 'extras': [], 'unit': None, 'global_step': 6606}
+I0817 17:48:44.019619 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:48:44.019590Z', 'value': 132.58623711607586, 'extras': [], 'unit': None, 'global_step': 6606}
+I0817 17:49:29.384111 139765615351552 tf_logging.py:115] global_step/sec: 2.07192
+I0817 17:49:29.385159 139765615351552 tf_logging.py:115] loss = 6.421934, step = 6700 (48.264 sec)
+I0817 17:49:32.283931 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:49:32.283860Z', 'value': 132.46234452316867, 'extras': [], 'unit': None, 'global_step': 6706}
+I0817 17:49:32.284236 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:49:32.284194Z', 'value': 132.60231357510267, 'extras': [], 'unit': None, 'global_step': 6706}
+I0817 17:50:17.626924 139765615351552 tf_logging.py:115] global_step/sec: 2.07285
+I0817 17:50:17.629599 139765615351552 tf_logging.py:115] loss = 6.3137374, step = 6800 (48.244 sec)
+I0817 17:50:20.522872 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:50:20.522798Z', 'value': 132.46543634500685, 'extras': [], 'unit': None, 'global_step': 6806}
+I0817 17:50:20.523189 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:50:20.523160Z', 'value': 132.6729177143634, 'extras': [], 'unit': None, 'global_step': 6806}
+I0817 17:51:05.859041 139765615351552 tf_logging.py:115] global_step/sec: 2.0733
+I0817 17:51:05.860074 139765615351552 tf_logging.py:115] loss = 6.5140033, step = 6900 (48.231 sec)
+I0817 17:51:08.752995 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:51:08.752903Z', 'value': 132.46879021318307, 'extras': [], 'unit': None, 'global_step': 6906}
+I0817 17:51:08.753391 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:51:08.753348Z', 'value': 132.6972523620674, 'extras': [], 'unit': None, 'global_step': 6906}
+I0817 17:51:54.111023 139765615351552 tf_logging.py:115] global_step/sec: 2.07245
+I0817 17:51:54.112168 139765615351552 tf_logging.py:115] loss = 6.165969, step = 7000 (48.252 sec)
+I0817 17:51:57.000319 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:51:57.000263Z', 'value': 132.4713703112598, 'extras': [], 'unit': None, 'global_step': 7006}
+I0817 17:51:57.000530 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:51:57.000512Z', 'value': 132.6496401254263, 'extras': [], 'unit': None, 'global_step': 7006}
+I0817 17:52:42.354861 139765615351552 tf_logging.py:115] global_step/sec: 2.0728
+I0817 17:52:42.355954 139765615351552 tf_logging.py:115] loss = 6.3542433, step = 7100 (48.244 sec)
+I0817 17:52:45.245940 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:52:45.245884Z', 'value': 132.4739463891414, 'extras': [], 'unit': None, 'global_step': 7106}
+I0817 17:52:45.246155 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:52:45.246136Z', 'value': 132.65452115327633, 'extras': [], 'unit': None, 'global_step': 7106}
+I0817 17:53:30.573143 139765615351552 tf_logging.py:115] global_step/sec: 2.0739
+I0817 17:53:30.574120 139765615351552 tf_logging.py:115] loss = 6.2113004, step = 7200 (48.218 sec)
+I0817 17:53:33.464730 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:53:33.464673Z', 'value': 132.47747307586366, 'extras': [], 'unit': None, 'global_step': 7206}
+I0817 17:53:33.464947 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:53:33.464929Z', 'value': 132.72834868997907, 'extras': [], 'unit': None, 'global_step': 7206}
+I0817 17:54:18.803966 139765615351552 tf_logging.py:115] global_step/sec: 2.07336
+I0817 17:54:18.805002 139765615351552 tf_logging.py:115] loss = 5.9442005, step = 7300 (48.231 sec)
+I0817 17:54:21.698029 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:54:21.697915Z', 'value': 132.48036361575956, 'extras': [], 'unit': None, 'global_step': 7306}
+I0817 17:54:21.698543 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:54:21.698468Z', 'value': 132.68881450047752, 'extras': [], 'unit': None, 'global_step': 7306}
+I0817 17:54:55.950908 139765615351552 tf_logging.py:115] Saving checkpoints for 7378 into /tmp/model.ckpt.
+I0817 17:55:07.882159 139765615351552 tf_logging.py:115] global_step/sec: 2.03757
+I0817 17:55:07.883749 139765615351552 tf_logging.py:115] loss = 5.941807, step = 7400 (49.079 sec)
+I0817 17:55:10.768832 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:55:10.768761Z', 'value': 132.45213553830072, 'extras': [], 'unit': None, 'global_step': 7406}
+I0817 17:55:10.769128 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:55:10.769099Z', 'value': 130.4234794378297, 'extras': [], 'unit': None, 'global_step': 7406}
+I0817 17:55:56.099340 139765615351552 tf_logging.py:115] global_step/sec: 2.07395
+I0817 17:55:56.100666 139765615351552 tf_logging.py:115] loss = 5.983137, step = 7500 (48.217 sec)
+I0817 17:55:59.011756 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:55:59.011684Z', 'value': 132.45492866713084, 'extras': [], 'unit': None, 'global_step': 7506}
+I0817 17:55:59.012038 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:55:59.012010Z', 'value': 132.66194761226222, 'extras': [], 'unit': None, 'global_step': 7506}
+I0817 17:56:44.398253 139765615351552 tf_logging.py:115] global_step/sec: 2.07044
+I0817 17:56:44.399194 139765615351552 tf_logging.py:115] loss = 5.9279404, step = 7600 (48.299 sec)
+I0817 17:56:47.286031 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:56:47.285971Z', 'value': 132.45651664980986, 'extras': [], 'unit': None, 'global_step': 7606}
+I0817 17:56:47.286278 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:56:47.286248Z', 'value': 132.57572396551885, 'extras': [], 'unit': None, 'global_step': 7606}
+I0817 17:57:32.662365 139765615351552 tf_logging.py:115] global_step/sec: 2.07193
+I0817 17:57:32.663963 139765615351552 tf_logging.py:115] loss = 6.16985, step = 7700 (48.265 sec)
+I0817 17:57:35.559499 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:57:35.559444Z', 'value': 132.4580925465226, 'extras': [], 'unit': None, 'global_step': 7706}
+I0817 17:57:35.559705 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:57:35.559687Z', 'value': 132.57797051616348, 'extras': [], 'unit': None, 'global_step': 7706}
+I0817 17:58:20.929347 139765615351552 tf_logging.py:115] global_step/sec: 2.07181
+I0817 17:58:20.930382 139765615351552 tf_logging.py:115] loss = 5.8758698, step = 7800 (48.266 sec)
+I0817 17:58:23.849977 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:58:23.849908Z', 'value': 132.4590317944239, 'extras': [], 'unit': None, 'global_step': 7806}
+I0817 17:58:23.850260 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:58:23.850232Z', 'value': 132.53139390534955, 'extras': [], 'unit': None, 'global_step': 7806}
+I0817 17:59:09.240299 139765615351552 tf_logging.py:115] global_step/sec: 2.06992
+I0817 17:59:09.241281 139765615351552 tf_logging.py:115] loss = 6.0930815, step = 7900 (48.311 sec)
+I0817 17:59:12.138307 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T17:59:12.138239Z', 'value': 132.4600207476216, 'extras': [], 'unit': None, 'global_step': 7906}
+I0817 17:59:12.138573 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T17:59:12.138548Z', 'value': 132.53720462147933, 'extras': [], 'unit': None, 'global_step': 7906}
+I0817 17:59:57.502211 139765615351552 tf_logging.py:115] global_step/sec: 2.07203
+I0817 17:59:57.503694 139765615351552 tf_logging.py:115] loss = 6.172603, step = 8000 (48.262 sec)
+I0817 18:00:00.401917 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:00:00.401804Z', 'value': 132.46183418443292, 'extras': [], 'unit': None, 'global_step': 8006}
+I0817 18:00:00.402307 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:00:00.402264Z', 'value': 132.6052527675307, 'extras': [], 'unit': None, 'global_step': 8006}
+I0817 18:00:45.776175 139765615351552 tf_logging.py:115] global_step/sec: 2.07152
+I0817 18:00:45.779510 139765615351552 tf_logging.py:115] loss = 6.2312593, step = 8100 (48.276 sec)
+I0817 18:00:48.668523 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:00:48.668413Z', 'value': 132.4635002034411, 'extras': [], 'unit': None, 'global_step': 8106}
+I0817 18:00:48.668997 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:00:48.668953Z', 'value': 132.59691764346255, 'extras': [], 'unit': None, 'global_step': 8106}
+I0817 18:01:34.057416 139765615351552 tf_logging.py:115] global_step/sec: 2.07119
+I0817 18:01:34.058469 139765615351552 tf_logging.py:115] loss = 6.01584, step = 8200 (48.279 sec)
+I0817 18:01:36.954057 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:01:36.954001Z', 'value': 132.46448804905745, 'extras': [], 'unit': None, 'global_step': 8206}
+I0817 18:01:36.954281 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:01:36.954255Z', 'value': 132.54455250418616, 'extras': [], 'unit': None, 'global_step': 8206}
+I0817 18:02:22.831763 139765615351552 tf_logging.py:115] global_step/sec: 2.05026
+I0817 18:02:22.833323 139765615351552 tf_logging.py:115] loss = 6.105116, step = 8300 (48.775 sec)
+I0817 18:02:25.732556 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:02:25.732499Z', 'value': 132.44917389183786, 'extras': [], 'unit': None, 'global_step': 8306}
+I0817 18:02:25.732769 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:02:25.732751Z', 'value': 131.20534960891135, 'extras': [], 'unit': None, 'global_step': 8306}
+I0817 18:03:11.085712 139765615351552 tf_logging.py:115] global_step/sec: 2.07237
+I0817 18:03:11.086551 139765615351552 tf_logging.py:115] loss = 5.8970165, step = 8400 (48.253 sec)
+I0817 18:03:13.972109 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:03:13.972051Z', 'value': 132.45181287247556, 'extras': [], 'unit': None, 'global_step': 8406}
+I0817 18:03:13.972326 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:03:13.972308Z', 'value': 132.67121546258088, 'extras': [], 'unit': None, 'global_step': 8406}
+I0817 18:04:00.080538 139765615351552 tf_logging.py:115] global_step/sec: 2.04103
+I0817 18:04:00.081617 139765615351552 tf_logging.py:115] loss = 6.244549, step = 8500 (48.995 sec)
+I0817 18:04:02.974523 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:04:02.974452Z', 'value': 132.42979282949977, 'extras': [], 'unit': None, 'global_step': 8506}
+I0817 18:04:02.974807 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:04:02.974776Z', 'value': 130.60588748455828, 'extras': [], 'unit': None, 'global_step': 8506}
+I0817 18:04:50.465380 139765615351552 tf_logging.py:115] global_step/sec: 1.98472
+I0817 18:04:50.466536 139765615351552 tf_logging.py:115] loss = 5.796204, step = 8600 (50.385 sec)
+I0817 18:04:53.356859 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:04:53.356804Z', 'value': 132.36434981467292, 'extras': [], 'unit': None, 'global_step': 8606}
+I0817 18:04:53.357074 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:04:53.357052Z', 'value': 127.02856960357126, 'extras': [], 'unit': None, 'global_step': 8606}
+I0817 18:04:56.246581 139765615351552 tf_logging.py:115] Saving checkpoints for 8613 into /tmp/model.ckpt.
+I0817 18:05:39.336841 139765615351552 tf_logging.py:115] global_step/sec: 2.04618
+I0817 18:05:39.337802 139765615351552 tf_logging.py:115] loss = 5.9840794, step = 8700 (48.871 sec)
+I0817 18:05:42.221760 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:05:42.221704Z', 'value': 132.34819346818838, 'extras': [], 'unit': None, 'global_step': 8706}
+I0817 18:05:42.221992 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:05:42.221967Z', 'value': 130.97334918506547, 'extras': [], 'unit': None, 'global_step': 8706}
+I0817 18:06:27.524280 139765615351552 tf_logging.py:115] global_step/sec: 2.07523
+I0817 18:06:27.525665 139765615351552 tf_logging.py:115] loss = 6.6451964, step = 8800 (48.188 sec)
+I0817 18:06:30.423748 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:06:30.423679Z', 'value': 132.3530249934131, 'extras': [], 'unit': None, 'global_step': 8806}
+I0817 18:06:30.424045 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:06:30.424012Z', 'value': 132.774722359295, 'extras': [], 'unit': None, 'global_step': 8806}
+I0817 18:07:15.775677 139765615351552 tf_logging.py:115] global_step/sec: 2.07248
+I0817 18:07:15.777216 139765615351552 tf_logging.py:115] loss = 6.1898956, step = 8900 (48.252 sec)
+I0817 18:07:18.676239 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:07:18.676163Z', 'value': 132.35619377618946, 'extras': [], 'unit': None, 'global_step': 8906}
+I0817 18:07:18.676548 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:07:18.676516Z', 'value': 132.63564210285858, 'extras': [], 'unit': None, 'global_step': 8906}
+I0817 18:08:07.676143 139765615351552 tf_logging.py:115] global_step/sec: 1.92677
+I0817 18:08:07.677093 139765615351552 tf_logging.py:115] loss = 5.793247, step = 9000 (51.900 sec)
+I0817 18:08:11.250016 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:08:11.249962Z', 'value': 132.22798976393213, 'extras': [], 'unit': None, 'global_step': 9006}
+I0817 18:08:11.250245 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:08:11.250218Z', 'value': 121.7335859905798, 'extras': [], 'unit': None, 'global_step': 9006}
+I0817 18:08:57.623719 139765615351552 tf_logging.py:115] global_step/sec: 2.0021
+I0817 18:08:57.624773 139765615351552 tf_logging.py:115] loss = 6.5436954, step = 9100 (49.948 sec)
+I0817 18:09:01.030472 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:09:01.030394Z', 'value': 132.1865990587164, 'extras': [], 'unit': None, 'global_step': 9106}
+I0817 18:09:01.030742 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:09:01.030718Z', 'value': 128.56464047777277, 'extras': [], 'unit': None, 'global_step': 9106}
+I0817 18:09:53.035053 139765615351552 tf_logging.py:115] global_step/sec: 1.80469
+I0817 18:09:53.036163 139765615351552 tf_logging.py:115] loss = 5.853173, step = 9200 (55.411 sec)
+I0817 18:09:55.924675 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:09:55.924620Z', 'value': 131.99464099232304, 'extras': [], 'unit': None, 'global_step': 9206}
+I0817 18:09:55.924894 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:09:55.924875Z', 'value': 116.58780511567666, 'extras': [], 'unit': None, 'global_step': 9206}
+I0817 18:10:41.279098 139765615351552 tf_logging.py:115] global_step/sec: 2.07279
+I0817 18:10:41.280153 139765615351552 tf_logging.py:115] loss = 5.7741556, step = 9300 (48.244 sec)
+I0817 18:10:44.172687 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:10:44.172597Z', 'value': 132.0016336961059, 'extras': [], 'unit': None, 'global_step': 9306}
+I0817 18:10:44.173072 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:10:44.173030Z', 'value': 132.6481475701723, 'extras': [], 'unit': None, 'global_step': 9306}
+I0817 18:11:29.564327 139765615351552 tf_logging.py:115] global_step/sec: 2.07103
+I0817 18:11:29.565237 139765615351552 tf_logging.py:115] loss = 5.6547475, step = 9400 (48.285 sec)
+I0817 18:11:32.462167 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:11:32.462095Z', 'value': 132.00727394962996, 'extras': [], 'unit': None, 'global_step': 9406}
+I0817 18:11:32.462449 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:11:32.462420Z', 'value': 132.53393275918006, 'extras': [], 'unit': None, 'global_step': 9406}
+I0817 18:12:17.836323 139765615351552 tf_logging.py:115] global_step/sec: 2.07159
+I0817 18:12:17.837368 139765615351552 tf_logging.py:115] loss = 5.8004413, step = 9500 (48.272 sec)
+I0817 18:12:20.729692 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:12:20.729621Z', 'value': 132.01342641277276, 'extras': [], 'unit': None, 'global_step': 9506}
+I0817 18:12:20.730005 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:12:20.729970Z', 'value': 132.5943298743051, 'extras': [], 'unit': None, 'global_step': 9506}
+I0817 18:13:06.107445 139765615351552 tf_logging.py:115] global_step/sec: 2.07164
+I0817 18:13:06.111541 139765615351552 tf_logging.py:115] loss = 6.169118, step = 9600 (48.274 sec)
+I0817 18:13:09.007447 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:13:09.007378Z', 'value': 132.0191605449683, 'extras': [], 'unit': None, 'global_step': 9606}
+I0817 18:13:09.007733 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:13:09.007705Z', 'value': 132.5661840123661, 'extras': [], 'unit': None, 'global_step': 9606}
+I0817 18:13:54.407593 139765615351552 tf_logging.py:115] global_step/sec: 2.07038
+I0817 18:13:54.408806 139765615351552 tf_logging.py:115] loss = 5.910215, step = 9700 (48.297 sec)
+I0817 18:13:57.303071 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:13:57.303002Z', 'value': 132.02427611183188, 'extras': [], 'unit': None, 'global_step': 9706}
+I0817 18:13:57.303319 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:13:57.303301Z', 'value': 132.51722326043839, 'extras': [], 'unit': None, 'global_step': 9706}
+I0817 18:14:42.645575 139765615351552 tf_logging.py:115] global_step/sec: 2.07306
+I0817 18:14:42.646646 139765615351552 tf_logging.py:115] loss = 5.4496064, step = 9800 (48.238 sec)
+I0817 18:14:45.542346 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:14:45.542265Z', 'value': 132.03085364873303, 'extras': [], 'unit': None, 'global_step': 9806}
+I0817 18:14:45.542639 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:14:45.542601Z', 'value': 132.67200494526415, 'extras': [], 'unit': None, 'global_step': 9806}
+I0817 18:14:56.630718 139765615351552 tf_logging.py:115] Saving checkpoints for 9830 into /tmp/model.ckpt.
+I0817 18:15:31.546485 139765615351552 tf_logging.py:115] global_step/sec: 2.04495
+I0817 18:15:31.547647 139765615351552 tf_logging.py:115] loss = 5.5059347, step = 9900 (48.901 sec)
+I0817 18:15:34.437922 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:15:34.437866Z', 'value': 132.01924279430065, 'extras': [], 'unit': None, 'global_step': 9906}
+I0817 18:15:34.438206 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:15:34.438168Z', 'value': 130.8912007768722, 'extras': [], 'unit': None, 'global_step': 9906}
+I0817 18:16:19.753092 139765615351552 tf_logging.py:115] global_step/sec: 2.07441
+I0817 18:16:19.756535 139765615351552 tf_logging.py:115] loss = 6.009526, step = 10000 (48.209 sec)
+I0817 18:16:22.655375 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:16:22.655305Z', 'value': 132.02633230056063, 'extras': [], 'unit': None, 'global_step': 10006}
+I0817 18:16:22.655663 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:16:22.655635Z', 'value': 132.7319825978918, 'extras': [], 'unit': None, 'global_step': 10006}
+I0817 18:17:08.025881 139765615351552 tf_logging.py:115] global_step/sec: 2.07155
+I0817 18:17:08.026967 139765615351552 tf_logging.py:115] loss = 5.49817, step = 10100 (48.270 sec)
+I0817 18:17:10.924169 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:17:10.924096Z', 'value': 132.0318986931164, 'extras': [], 'unit': None, 'global_step': 10106}
+I0817 18:17:10.924523 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:17:10.924483Z', 'value': 132.59091831276257, 'extras': [], 'unit': None, 'global_step': 10106}
+I0817 18:17:56.264117 139765615351552 tf_logging.py:115] global_step/sec: 2.07304
+I0817 18:17:56.265214 139765615351552 tf_logging.py:115] loss = 6.020661, step = 10200 (48.238 sec)
+I0817 18:17:59.155725 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:17:59.155620Z', 'value': 132.03835123326658, 'extras': [], 'unit': None, 'global_step': 10206}
+I0817 18:17:59.156202 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:17:59.156143Z', 'value': 132.69332256214145, 'extras': [], 'unit': None, 'global_step': 10206}
+I0817 18:18:44.532557 139765615351552 tf_logging.py:115] global_step/sec: 2.07175
+I0817 18:18:44.533900 139765615351552 tf_logging.py:115] loss = 5.7017007, step = 10300 (48.269 sec)
+I0817 18:18:47.425369 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:18:47.425303Z', 'value': 132.04366837612184, 'extras': [], 'unit': None, 'global_step': 10306}
+I0817 18:18:47.425786 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:18:47.425732Z', 'value': 132.5882757667269, 'extras': [], 'unit': None, 'global_step': 10306}
+I0817 18:19:32.797224 139765615351552 tf_logging.py:115] global_step/sec: 2.07192
+I0817 18:19:32.799065 139765615351552 tf_logging.py:115] loss = 6.1735907, step = 10400 (48.265 sec)
+I0817 18:19:35.696674 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:19:35.696562Z', 'value': 132.04884496377997, 'extras': [], 'unit': None, 'global_step': 10406}
+I0817 18:19:35.697146 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:19:35.697094Z', 'value': 132.58421620914228, 'extras': [], 'unit': None, 'global_step': 10406}
+I0817 18:20:21.056107 139765615351552 tf_logging.py:115] global_step/sec: 2.07215
+I0817 18:20:21.057142 139765615351552 tf_logging.py:115] loss = 5.9811125, step = 10500 (48.258 sec)
+I0817 18:20:23.948698 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:20:23.948628Z', 'value': 132.0544189047099, 'extras': [], 'unit': None, 'global_step': 10506}
+I0817 18:20:23.948981 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:20:23.948953Z', 'value': 132.63668937804545, 'extras': [], 'unit': None, 'global_step': 10506}
+I0817 18:21:09.302244 139765615351552 tf_logging.py:115] global_step/sec: 2.0727
+I0817 18:21:09.303559 139765615351552 tf_logging.py:115] loss = 5.5590672, step = 10600 (48.246 sec)
+I0817 18:21:12.196588 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:21:12.196496Z', 'value': 132.0599977777026, 'extras': [], 'unit': None, 'global_step': 10606}
+I0817 18:21:12.196978 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:21:12.196935Z', 'value': 132.64841435294568, 'extras': [], 'unit': None, 'global_step': 10606}
+I0817 18:21:57.548125 139765615351552 tf_logging.py:115] global_step/sec: 2.07272
+I0817 18:21:57.549185 139765615351552 tf_logging.py:115] loss = 5.4397836, step = 10700 (48.246 sec)
+I0817 18:22:00.433895 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:22:00.433805Z', 'value': 132.06574051168155, 'extras': [], 'unit': None, 'global_step': 10706}
+I0817 18:22:00.434175 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:22:00.434147Z', 'value': 132.67731583750367, 'extras': [], 'unit': None, 'global_step': 10706}
+I0817 18:22:45.770378 139765615351552 tf_logging.py:115] global_step/sec: 2.07372
+I0817 18:22:45.774523 139765615351552 tf_logging.py:115] loss = 5.739881, step = 10800 (48.225 sec)
+I0817 18:22:48.660134 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:22:48.660063Z', 'value': 132.07165694201638, 'extras': [], 'unit': None, 'global_step': 10806}
+I0817 18:22:48.660419 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:22:48.660392Z', 'value': 132.70779266932664, 'extras': [], 'unit': None, 'global_step': 10806}
+I0817 18:23:33.945327 139765615351552 tf_logging.py:115] global_step/sec: 2.07577
+I0817 18:23:33.946329 139765615351552 tf_logging.py:115] loss = 5.6736975, step = 10900 (48.172 sec)
+I0817 18:23:36.841022 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:23:36.840966Z', 'value': 132.0785990590077, 'extras': [], 'unit': None, 'global_step': 10906}
+I0817 18:23:36.841237 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:23:36.841218Z', 'value': 132.83266782515696, 'extras': [], 'unit': None, 'global_step': 10906}
+I0817 18:24:22.163146 139765615351552 tf_logging.py:115] global_step/sec: 2.07393
+I0817 18:24:22.165417 139765615351552 tf_logging.py:115] loss = 5.7204676, step = 11000 (48.219 sec)
+I0817 18:24:25.059674 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:24:25.059617Z', 'value': 132.0844805933029, 'extras': [], 'unit': None, 'global_step': 11006}
+I0817 18:24:25.059962 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:24:25.059923Z', 'value': 132.72872342547998, 'extras': [], 'unit': None, 'global_step': 11006}
+I0817 18:24:56.884742 139765615351552 tf_logging.py:115] Saving checkpoints for 11073 into /tmp/model.ckpt.
+I0817 18:25:11.252759 139765615351552 tf_logging.py:115] global_step/sec: 2.03709
+I0817 18:25:11.253773 139765615351552 tf_logging.py:115] loss = 5.572399, step = 11100 (49.088 sec)
+I0817 18:25:14.147646 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:25:14.147547Z', 'value': 132.0689112498376, 'extras': [], 'unit': None, 'global_step': 11106}
+I0817 18:25:14.148066 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:25:14.148021Z', 'value': 130.37840471210413, 'extras': [], 'unit': None, 'global_step': 11106}
+I0817 18:25:59.518711 139765615351552 tf_logging.py:115] global_step/sec: 2.07185
+I0817 18:25:59.519861 139765615351552 tf_logging.py:115] loss = 5.821261, step = 11200 (48.266 sec)
+I0817 18:26:02.419681 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:26:02.419610Z', 'value': 132.07347287488426, 'extras': [], 'unit': None, 'global_step': 11206}
+I0817 18:26:02.419965 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:26:02.419938Z', 'value': 132.581779546186, 'extras': [], 'unit': None, 'global_step': 11206}
+I0817 18:26:47.765423 139765615351552 tf_logging.py:115] global_step/sec: 2.07268
+I0817 18:26:47.766452 139765615351552 tf_logging.py:115] loss = 5.5656404, step = 11300 (48.247 sec)
+I0817 18:26:50.662575 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:26:50.662508Z', 'value': 132.07865820729393, 'extras': [], 'unit': None, 'global_step': 11306}
+I0817 18:26:50.662847 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:26:50.662820Z', 'value': 132.66200334007107, 'extras': [], 'unit': None, 'global_step': 11306}
+I0817 18:27:36.023864 139765615351552 tf_logging.py:115] global_step/sec: 2.07218
+I0817 18:27:36.026510 139765615351552 tf_logging.py:115] loss = 5.3579974, step = 11400 (48.260 sec)
+I0817 18:27:38.926510 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:27:38.926455Z', 'value': 132.08324942306703, 'extras': [], 'unit': None, 'global_step': 11406}
+I0817 18:27:38.926975 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:27:38.926926Z', 'value': 132.60412083222045, 'extras': [], 'unit': None, 'global_step': 11406}
+I0817 18:28:24.839549 139765615351552 tf_logging.py:115] global_step/sec: 2.04852
+I0817 18:28:24.841670 139765615351552 tf_logging.py:115] loss = 5.259443, step = 11500 (48.815 sec)
+I0817 18:28:27.736608 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:28:27.736538Z', 'value': 132.0748166664325, 'extras': [], 'unit': None, 'global_step': 11506}
+I0817 18:28:27.736887 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:28:27.736860Z', 'value': 131.12048961192255, 'extras': [], 'unit': None, 'global_step': 11506}
+I0817 18:29:13.100944 139765615351552 tf_logging.py:115] global_step/sec: 2.07205
+I0817 18:29:13.102035 139765615351552 tf_logging.py:115] loss = 5.920791, step = 11600 (48.260 sec)
+I0817 18:29:15.997895 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:29:15.997824Z', 'value': 132.07942514073846, 'extras': [], 'unit': None, 'global_step': 11606}
+I0817 18:29:15.998188 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:29:15.998159Z', 'value': 132.6115534411648, 'extras': [], 'unit': None, 'global_step': 11606}
+I0817 18:30:01.362072 139765615351552 tf_logging.py:115] global_step/sec: 2.07206
+I0817 18:30:01.363202 139765615351552 tf_logging.py:115] loss = 5.6112165, step = 11700 (48.261 sec)
+I0817 18:30:04.258707 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:30:04.258637Z', 'value': 132.08396474995035, 'extras': [], 'unit': None, 'global_step': 11706}
+I0817 18:30:04.258996 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:30:04.258969Z', 'value': 132.6126855033716, 'extras': [], 'unit': None, 'global_step': 11706}
+I0817 18:30:49.614833 139765615351552 tf_logging.py:115] global_step/sec: 2.07242
+I0817 18:30:49.615884 139765615351552 tf_logging.py:115] loss = 5.6666565, step = 11800 (48.253 sec)
+I0817 18:30:52.509215 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:30:52.509142Z', 'value': 132.08866653914458, 'extras': [], 'unit': None, 'global_step': 11806}
+I0817 18:30:52.509501 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:30:52.509474Z', 'value': 132.64109624157928, 'extras': [], 'unit': None, 'global_step': 11806}
+I0817 18:31:37.916318 139765615351552 tf_logging.py:115] global_step/sec: 2.07033
+I0817 18:31:37.917470 139765615351552 tf_logging.py:115] loss = 5.081911, step = 11900 (48.302 sec)
+I0817 18:31:40.814290 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:31:40.814229Z', 'value': 132.09203900465073, 'extras': [], 'unit': None, 'global_step': 11906}
+I0817 18:31:40.814534 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:31:40.814517Z', 'value': 132.49120267756402, 'extras': [], 'unit': None, 'global_step': 11906}
+I0817 18:32:26.141072 139765615351552 tf_logging.py:115] global_step/sec: 2.07363
+I0817 18:32:26.142534 139765615351552 tf_logging.py:115] loss = 5.7512445, step = 12000 (48.225 sec)
+I0817 18:32:29.035317 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:32:29.035245Z', 'value': 132.09726591495672, 'extras': [], 'unit': None, 'global_step': 12006}
+I0817 18:32:29.035604 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:32:29.035576Z', 'value': 132.72223574677426, 'extras': [], 'unit': None, 'global_step': 12006}
+I0817 18:33:14.398873 139765615351552 tf_logging.py:115] global_step/sec: 2.0722
+I0817 18:33:14.400187 139765615351552 tf_logging.py:115] loss = 5.6897187, step = 12100 (48.258 sec)
+I0817 18:33:17.304434 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:33:17.304377Z', 'value': 132.10132205839818, 'extras': [], 'unit': None, 'global_step': 12106}
+I0817 18:33:17.304653 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:33:17.304635Z', 'value': 132.58987437988338, 'extras': [], 'unit': None, 'global_step': 12106}
+I0817 18:34:02.632560 139765615351552 tf_logging.py:115] global_step/sec: 2.07326
+I0817 18:34:02.634701 139765615351552 tf_logging.py:115] loss = 5.8182187, step = 12200 (48.234 sec)
+I0817 18:34:05.526545 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:34:05.526474Z', 'value': 132.1063638918803, 'extras': [], 'unit': None, 'global_step': 12206}
+I0817 18:34:05.526846 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:34:05.526808Z', 'value': 132.7192795548847, 'extras': [], 'unit': None, 'global_step': 12206}
+I0817 18:34:50.873291 139765615351552 tf_logging.py:115] global_step/sec: 2.07291
+I0817 18:34:50.874689 139765615351552 tf_logging.py:115] loss = 5.4468155, step = 12300 (48.240 sec)
+I0817 18:34:53.771624 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:34:53.771554Z', 'value': 132.1108142038051, 'extras': [], 'unit': None, 'global_step': 12306}
+I0817 18:34:53.771923 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:34:53.771885Z', 'value': 132.65601122971614, 'extras': [], 'unit': None, 'global_step': 12306}
+I0817 18:34:57.148931 139765615351552 tf_logging.py:115] Saving checkpoints for 12314 into /tmp/model.ckpt.
+I0817 18:35:39.768520 139765615351552 tf_logging.py:115] global_step/sec: 2.04519
+I0817 18:35:39.769454 139765615351552 tf_logging.py:115] loss = 5.3112445, step = 12400 (48.895 sec)
+I0817 18:35:42.666919 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:35:42.666850Z', 'value': 132.10089376183186, 'extras': [], 'unit': None, 'global_step': 12406}
+I0817 18:35:42.667201 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:35:42.667173Z', 'value': 130.89193730489944, 'extras': [], 'unit': None, 'global_step': 12406}
+I0817 18:36:28.035154 139765615351552 tf_logging.py:115] global_step/sec: 2.07182
+I0817 18:36:28.036464 139765615351552 tf_logging.py:115] loss = 5.3159547, step = 12500 (48.267 sec)
+I0817 18:36:30.927170 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:36:30.927098Z', 'value': 132.10498539698307, 'extras': [], 'unit': None, 'global_step': 12506}
+I0817 18:36:30.927455 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:36:30.927428Z', 'value': 132.61432008330954, 'extras': [], 'unit': None, 'global_step': 12506}
+I0817 18:37:16.272595 139765615351552 tf_logging.py:115] global_step/sec: 2.07309
+I0817 18:37:16.275204 139765615351552 tf_logging.py:115] loss = 5.5184793, step = 12600 (48.239 sec)
+I0817 18:37:19.168112 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:37:19.168042Z', 'value': 132.1094301338006, 'extras': [], 'unit': None, 'global_step': 12606}
+I0817 18:37:19.168411 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:37:19.168380Z', 'value': 132.66738752279957, 'extras': [], 'unit': None, 'global_step': 12606}
+I0817 18:38:04.520450 139765615351552 tf_logging.py:115] global_step/sec: 2.07262
+I0817 18:38:04.521683 139765615351552 tf_logging.py:115] loss = 5.6265345, step = 12700 (48.247 sec)
+I0817 18:38:07.411880 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:38:07.411824Z', 'value': 132.11374389824405, 'extras': [], 'unit': None, 'global_step': 12706}
+I0817 18:38:07.412103 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:38:07.412085Z', 'value': 132.6595415268137, 'extras': [], 'unit': None, 'global_step': 12706}
+I0817 18:38:52.713972 139765615351552 tf_logging.py:115] global_step/sec: 2.07497
+I0817 18:38:52.715058 139765615351552 tf_logging.py:115] loss = 5.580384, step = 12800 (48.193 sec)
+I0817 18:38:55.615088 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:38:55.615034Z', 'value': 132.11885535536106, 'extras': [], 'unit': None, 'global_step': 12806}
+I0817 18:38:55.615307 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:38:55.615288Z', 'value': 132.77124109222152, 'extras': [], 'unit': None, 'global_step': 12806}
+I0817 18:39:41.000581 139765615351552 tf_logging.py:115] global_step/sec: 2.07097
+I0817 18:39:41.001632 139765615351552 tf_logging.py:115] loss = 5.424767, step = 12900 (48.287 sec)
+I0817 18:39:43.905469 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:39:43.905378Z', 'value': 132.12204645548465, 'extras': [], 'unit': None, 'global_step': 12906}
+I0817 18:39:43.905884 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:39:43.905840Z', 'value': 132.53178388791375, 'extras': [], 'unit': None, 'global_step': 12906}
+I0817 18:40:29.286453 139765615351552 tf_logging.py:115] global_step/sec: 2.07101
+I0817 18:40:29.289161 139765615351552 tf_logging.py:115] loss = 5.8219714, step = 13000 (48.287 sec)
+I0817 18:40:32.185296 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:40:32.185199Z', 'value': 132.12540864816677, 'extras': [], 'unit': None, 'global_step': 13006}
+I0817 18:40:32.185707 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:40:32.185661Z', 'value': 132.56057106820217, 'extras': [], 'unit': None, 'global_step': 13006}
+I0817 18:41:17.519404 139765615351552 tf_logging.py:115] global_step/sec: 2.07326
+I0817 18:41:17.520817 139765615351552 tf_logging.py:115] loss = 5.4397426, step = 13100 (48.232 sec)
+I0817 18:41:20.417416 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:41:20.417313Z', 'value': 132.12971309360202, 'extras': [], 'unit': None, 'global_step': 13106}
+I0817 18:41:20.417905 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:41:20.417837Z', 'value': 132.69168931367008, 'extras': [], 'unit': None, 'global_step': 13106}
+I0817 18:42:05.791717 139765615351552 tf_logging.py:115] global_step/sec: 2.07158
+I0817 18:42:05.792726 139765615351552 tf_logging.py:115] loss = 5.4731693, step = 13200 (48.272 sec)
+I0817 18:42:08.686199 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:42:08.686125Z', 'value': 132.13319345870391, 'extras': [], 'unit': None, 'global_step': 13206}
+I0817 18:42:08.686485 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:42:08.686457Z', 'value': 132.59071201355655, 'extras': [], 'unit': None, 'global_step': 13206}
+I0817 18:42:54.031899 139765615351552 tf_logging.py:115] global_step/sec: 2.07296
+I0817 18:42:54.032931 139765615351552 tf_logging.py:115] loss = 5.5812044, step = 13300 (48.240 sec)
+I0817 18:42:56.921345 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:42:56.921276Z', 'value': 132.13731264676514, 'extras': [], 'unit': None, 'global_step': 13306}
+I0817 18:42:56.921626 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:42:56.921598Z', 'value': 132.68330921689503, 'extras': [], 'unit': None, 'global_step': 13306}
+I0817 18:43:42.244895 139765615351552 tf_logging.py:115] global_step/sec: 2.07413
+I0817 18:43:42.245960 139765615351552 tf_logging.py:115] loss = 5.1747136, step = 13400 (48.213 sec)
+I0817 18:43:45.139704 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:43:45.139645Z', 'value': 132.14171212109105, 'extras': [], 'unit': None, 'global_step': 13406}
+I0817 18:43:45.139939 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:43:45.139917Z', 'value': 132.72946437107854, 'extras': [], 'unit': None, 'global_step': 13406}
+I0817 18:44:30.496434 139765615351552 tf_logging.py:115] global_step/sec: 2.07248
+I0817 18:44:30.498863 139765615351552 tf_logging.py:115] loss = 5.1500545, step = 13500 (48.253 sec)
+I0817 18:44:33.396533 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:44:33.396479Z', 'value': 132.14526937669305, 'extras': [], 'unit': None, 'global_step': 13506}
+I0817 18:44:33.396747 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:44:33.396728Z', 'value': 132.6236802216021, 'extras': [], 'unit': None, 'global_step': 13506}
+I0817 18:44:57.549845 139765615351552 tf_logging.py:115] Saving checkpoints for 13557 into /tmp/model.ckpt.
+I0817 18:45:19.496134 139765615351552 tf_logging.py:115] global_step/sec: 2.04083
+I0817 18:45:19.497272 139765615351552 tf_logging.py:115] loss = 5.2190895, step = 13600 (48.998 sec)
+I0817 18:45:22.387029 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:45:22.386926Z', 'value': 132.13405850686502, 'extras': [], 'unit': None, 'global_step': 13606}
+I0817 18:45:22.387470 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:45:22.387422Z', 'value': 130.63785557765902, 'extras': [], 'unit': None, 'global_step': 13606}
+I0817 18:46:07.741676 139765615351552 tf_logging.py:115] global_step/sec: 2.07272
+I0817 18:46:07.743052 139765615351552 tf_logging.py:115] loss = 5.3272796, step = 13700 (48.246 sec)
+I0817 18:46:10.646384 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:46:10.646314Z', 'value': 132.13756793290725, 'extras': [], 'unit': None, 'global_step': 13706}
+I0817 18:46:10.646672 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:46:10.646643Z', 'value': 132.61659283877148, 'extras': [], 'unit': None, 'global_step': 13706}
+I0817 18:46:56.016345 139765615351552 tf_logging.py:115] global_step/sec: 2.07148
+I0817 18:46:56.017257 139765615351552 tf_logging.py:115] loss = 5.227057, step = 13800 (48.274 sec)
+I0817 18:46:58.916548 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:46:58.916493Z', 'value': 132.14081361920483, 'extras': [], 'unit': None, 'global_step': 13806}
+I0817 18:46:58.916759 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:46:58.916742Z', 'value': 132.58698498513414, 'extras': [], 'unit': None, 'global_step': 13806}
+I0817 18:47:44.282382 139765615351552 tf_logging.py:115] global_step/sec: 2.07185
+I0817 18:47:44.283576 139765615351552 tf_logging.py:115] loss = 5.4780273, step = 13900 (48.266 sec)
+I0817 18:47:47.177577 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:47:47.177522Z', 'value': 132.144192756431, 'extras': [], 'unit': None, 'global_step': 13906}
+I0817 18:47:47.177789 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:47:47.177769Z', 'value': 132.61217712119335, 'extras': [], 'unit': None, 'global_step': 13906}
+I0817 18:48:32.544029 139765615351552 tf_logging.py:115] global_step/sec: 2.07204
+I0817 18:48:32.545063 139765615351552 tf_logging.py:115] loss = 5.517032, step = 14000 (48.261 sec)
+I0817 18:48:35.434953 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:48:35.434887Z', 'value': 132.14759545641328, 'extras': [], 'unit': None, 'global_step': 14006}
+I0817 18:48:35.435230 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:48:35.435202Z', 'value': 132.6222819481636, 'extras': [], 'unit': None, 'global_step': 14006}
+I0817 18:49:20.795427 139765615351552 tf_logging.py:115] global_step/sec: 2.07248
+I0817 18:49:20.797472 139765615351552 tf_logging.py:115] loss = 5.5466294, step = 14100 (48.252 sec)
+I0817 18:49:23.697071 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:49:23.697002Z', 'value': 132.15085790185935, 'extras': [], 'unit': None, 'global_step': 14106}
+I0817 18:49:23.697352 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:49:23.697325Z', 'value': 132.6091956954101, 'extras': [], 'unit': None, 'global_step': 14106}
+I0817 18:50:09.035672 139765615351552 tf_logging.py:115] global_step/sec: 2.07296
+I0817 18:50:09.036725 139765615351552 tf_logging.py:115] loss = 5.2495694, step = 14200 (48.239 sec)
+I0817 18:50:11.929238 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:50:11.929178Z', 'value': 132.15464957835388, 'extras': [], 'unit': None, 'global_step': 14206}
+I0817 18:50:11.929454 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:50:11.929436Z', 'value': 132.69146302337842, 'extras': [], 'unit': None, 'global_step': 14206}
+I0817 18:50:57.321576 139765615351552 tf_logging.py:115] global_step/sec: 2.071
+I0817 18:50:57.324518 139765615351552 tf_logging.py:115] loss = 4.919047, step = 14300 (48.288 sec)
+I0817 18:51:00.222913 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:51:00.222814Z', 'value': 132.15721670327542, 'extras': [], 'unit': None, 'global_step': 14306}
+I0817 18:51:00.223340 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:51:00.223294Z', 'value': 132.52276383834896, 'extras': [], 'unit': None, 'global_step': 14306}
+I0817 18:51:45.574515 139765615351552 tf_logging.py:115] global_step/sec: 2.07241
+I0817 18:51:45.576399 139765615351552 tf_logging.py:115] loss = 4.9030895, step = 14400 (48.252 sec)
+I0817 18:51:48.475326 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:51:48.475270Z', 'value': 132.16052699284603, 'extras': [], 'unit': None, 'global_step': 14406}
+I0817 18:51:48.475544 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:51:48.475527Z', 'value': 132.6356119562583, 'extras': [], 'unit': None, 'global_step': 14406}
+I0817 18:52:33.927763 139765615351552 tf_logging.py:115] global_step/sec: 2.06811
+I0817 18:52:33.928915 139765615351552 tf_logging.py:115] loss = 4.940031, step = 14500 (48.353 sec)
+I0817 18:52:36.835489 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:52:36.835435Z', 'value': 132.1617652745751, 'extras': [], 'unit': None, 'global_step': 14506}
+I0817 18:52:36.835709 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:52:36.835691Z', 'value': 132.34032042301186, 'extras': [], 'unit': None, 'global_step': 14506}
+I0817 18:53:22.247823 139765615351552 tf_logging.py:115] global_step/sec: 2.06953
+I0817 18:53:22.249432 139765615351552 tf_logging.py:115] loss = 5.1750793, step = 14600 (48.321 sec)
+I0817 18:53:25.151465 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:53:25.151345Z', 'value': 132.16381479129902, 'extras': [], 'unit': None, 'global_step': 14606}
+I0817 18:53:25.151916 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:53:25.151871Z', 'value': 132.46166908219377, 'extras': [], 'unit': None, 'global_step': 14606}
+I0817 18:54:10.512402 139765615351552 tf_logging.py:115] global_step/sec: 2.07192
+I0817 18:54:10.514878 139765615351552 tf_logging.py:115] loss = 5.532305, step = 14700 (48.265 sec)
+I0817 18:54:13.410937 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:54:13.410879Z', 'value': 132.1668815387175, 'extras': [], 'unit': None, 'global_step': 14706}
+I0817 18:54:13.411150 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:54:13.411132Z', 'value': 132.61615911580222, 'extras': [], 'unit': None, 'global_step': 14706}
+I0817 18:54:57.822017 139765615351552 tf_logging.py:115] Saving checkpoints for 14799 into /tmp/model.ckpt.
+I0817 18:54:59.656256 139765615351552 tf_logging.py:115] global_step/sec: 2.03484
+I0817 18:54:59.657234 139765615351552 tf_logging.py:115] loss = 5.591569, step = 14800 (49.142 sec)
+I0817 18:55:02.557960 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:55:02.557897Z', 'value': 132.15354243922337, 'extras': [], 'unit': None, 'global_step': 14806}
+I0817 18:55:02.558212 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:55:02.558188Z', 'value': 130.22155595495565, 'extras': [], 'unit': None, 'global_step': 14806}
+I0817 18:55:47.888923 139765615351552 tf_logging.py:115] global_step/sec: 2.07329
+I0817 18:55:47.890333 139765615351552 tf_logging.py:115] loss = 5.348198, step = 14900 (48.233 sec)
+I0817 18:55:50.779177 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:55:50.779113Z', 'value': 132.1573391377144, 'extras': [], 'unit': None, 'global_step': 14906}
+I0817 18:55:50.779439 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:55:50.779414Z', 'value': 132.72166615283368, 'extras': [], 'unit': None, 'global_step': 14906}
+I0817 18:56:36.126451 139765615351552 tf_logging.py:115] global_step/sec: 2.07307
+I0817 18:56:36.127604 139765615351552 tf_logging.py:115] loss = 5.4099865, step = 15000 (48.237 sec)
+I0817 18:56:39.020787 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:56:39.020729Z', 'value': 132.16071406811363, 'extras': [], 'unit': None, 'global_step': 15006}
+I0817 18:56:39.020998 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:56:39.020980Z', 'value': 132.66551231944973, 'extras': [], 'unit': None, 'global_step': 15006}
+I0817 18:57:24.402724 139765615351552 tf_logging.py:115] global_step/sec: 2.07141
+I0817 18:57:24.403932 139765615351552 tf_logging.py:115] loss = 5.116142, step = 15100 (48.276 sec)
+I0817 18:57:27.298396 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:57:27.298325Z', 'value': 132.16339458807934, 'extras': [], 'unit': None, 'global_step': 15106}
+I0817 18:57:27.298676 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:57:27.298649Z', 'value': 132.56670775428412, 'extras': [], 'unit': None, 'global_step': 15106}
+I0817 18:58:12.681355 139765615351552 tf_logging.py:115] global_step/sec: 2.07131
+I0817 18:58:12.682976 139765615351552 tf_logging.py:115] loss = 5.211938, step = 15200 (48.279 sec)
+I0817 18:58:15.574316 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:58:15.574258Z', 'value': 132.166069253124, 'extras': [], 'unit': None, 'global_step': 15206}
+I0817 18:58:15.574529 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:58:15.574511Z', 'value': 132.57118984498953, 'extras': [], 'unit': None, 'global_step': 15206}
+I0817 18:59:00.943635 139765615351552 tf_logging.py:115] global_step/sec: 2.07201
+I0817 18:59:00.944694 139765615351552 tf_logging.py:115] loss = 5.19993, step = 15300 (48.262 sec)
+I0817 18:59:03.839663 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:59:03.839591Z', 'value': 132.1688987332926, 'extras': [], 'unit': None, 'global_step': 15306}
+I0817 18:59:03.839951 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:59:03.839923Z', 'value': 132.60039304994623, 'extras': [], 'unit': None, 'global_step': 15306}
+I0817 18:59:49.206542 139765615351552 tf_logging.py:115] global_step/sec: 2.07198
+I0817 18:59:49.207822 139765615351552 tf_logging.py:115] loss = 5.1755843, step = 15400 (48.263 sec)
+I0817 18:59:52.096010 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T18:59:52.095953Z', 'value': 132.17185004346547, 'extras': [], 'unit': None, 'global_step': 15406}
+I0817 18:59:52.096230 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T18:59:52.096209Z', 'value': 132.62495861266925, 'extras': [], 'unit': None, 'global_step': 15406}
+I0817 19:00:37.466311 139765615351552 tf_logging.py:115] global_step/sec: 2.07212
+I0817 19:00:37.467494 139765615351552 tf_logging.py:115] loss = 5.0583334, step = 15500 (48.260 sec)
+I0817 19:00:40.352955 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:00:40.352883Z', 'value': 132.17475392898504, 'extras': [], 'unit': None, 'global_step': 15506}
+I0817 19:00:40.353239 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:00:40.353212Z', 'value': 132.62348037284272, 'extras': [], 'unit': None, 'global_step': 15506}
+I0817 19:01:25.686706 139765615351552 tf_logging.py:115] global_step/sec: 2.07381
+I0817 19:01:25.687819 139765615351552 tf_logging.py:115] loss = 5.2527337, step = 15600 (48.220 sec)
+I0817 19:01:28.578712 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:01:28.578609Z', 'value': 132.1781671116846, 'extras': [], 'unit': None, 'global_step': 15606}
+I0817 19:01:28.579152 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:01:28.579102Z', 'value': 132.70935020780433, 'extras': [], 'unit': None, 'global_step': 15606}
+I0817 19:02:13.946428 139765615351552 tf_logging.py:115] global_step/sec: 2.07213
+I0817 19:02:13.947473 139765615351552 tf_logging.py:115] loss = 4.938155, step = 15700 (48.260 sec)
+I0817 19:02:16.847001 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:02:16.846938Z', 'value': 132.1807948003393, 'extras': [], 'unit': None, 'global_step': 15706}
+I0817 19:02:16.847245 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:02:16.847223Z', 'value': 132.59199762828, 'extras': [], 'unit': None, 'global_step': 15706}
+I0817 19:03:02.211855 139765615351552 tf_logging.py:115] global_step/sec: 2.07188
+I0817 19:03:02.214432 139765615351552 tf_logging.py:115] loss = 4.5760326, step = 15800 (48.267 sec)
+I0817 19:03:05.110987 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:03:05.110877Z', 'value': 132.18346684436708, 'extras': [], 'unit': None, 'global_step': 15806}
+I0817 19:03:05.111466 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:03:05.111415Z', 'value': 132.60432193274178, 'extras': [], 'unit': None, 'global_step': 15806}
+I0817 19:03:50.501264 139765615351552 tf_logging.py:115] global_step/sec: 2.07084
+I0817 19:03:50.502820 139765615351552 tf_logging.py:115] loss = 5.6753283, step = 15900 (48.288 sec)
+I0817 19:03:53.408943 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:03:53.408873Z', 'value': 132.18551896330777, 'extras': [], 'unit': None, 'global_step': 15906}
+I0817 19:03:53.409224 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:03:53.409196Z', 'value': 132.51055607798605, 'extras': [], 'unit': None, 'global_step': 15906}
+I0817 19:04:40.236530 139765615351552 tf_logging.py:115] global_step/sec: 2.01065
+I0817 19:04:40.237517 139765615351552 tf_logging.py:115] loss = 5.0428386, step = 16000 (49.735 sec)
+I0817 19:04:43.136502 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:04:43.136289Z', 'value': 132.16316179952682, 'extras': [], 'unit': None, 'global_step': 16006}
+I0817 19:04:43.137481 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:04:43.137388Z', 'value': 128.70205163911555, 'extras': [], 'unit': None, 'global_step': 16006}
+I0817 19:04:58.087970 139765615351552 tf_logging.py:115] Saving checkpoints for 16038 into /tmp/model.ckpt.
+I0817 19:05:29.167392 139765615351552 tf_logging.py:115] global_step/sec: 2.0437
+I0817 19:05:29.168523 139765615351552 tf_logging.py:115] loss = 5.0169125, step = 16100 (48.931 sec)
+I0817 19:05:32.055558 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:05:32.055491Z', 'value': 132.1547820635056, 'extras': [], 'unit': None, 'global_step': 16106}
+I0817 19:05:32.055840 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:05:32.055805Z', 'value': 130.8275734646739, 'extras': [], 'unit': None, 'global_step': 16106}
+I0817 19:06:17.394131 139765615351552 tf_logging.py:115] global_step/sec: 2.07354
+I0817 19:06:17.395178 139765615351552 tf_logging.py:115] loss = 4.937268, step = 16200 (48.227 sec)
+I0817 19:06:20.287158 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:06:20.287103Z', 'value': 132.15809092627293, 'extras': [], 'unit': None, 'global_step': 16206}
+I0817 19:06:20.287369 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:06:20.287351Z', 'value': 132.6929873821682, 'extras': [], 'unit': None, 'global_step': 16206}
+I0817 19:07:05.668384 139765615351552 tf_logging.py:115] global_step/sec: 2.0715
+I0817 19:07:05.669414 139765615351552 tf_logging.py:115] loss = 5.1032057, step = 16300 (48.274 sec)
+I0817 19:07:08.563510 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:07:08.563441Z', 'value': 132.16061114738395, 'extras': [], 'unit': None, 'global_step': 16306}
+I0817 19:07:08.563805 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:07:08.563766Z', 'value': 132.57015997173804, 'extras': [], 'unit': None, 'global_step': 16306}
+I0817 19:07:53.889889 139765615351552 tf_logging.py:115] global_step/sec: 2.07377
+I0817 19:07:53.891948 139765615351552 tf_logging.py:115] loss = 5.362584, step = 16400 (48.222 sec)
+I0817 19:07:56.782273 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:07:56.782206Z', 'value': 132.16405854938816, 'extras': [], 'unit': None, 'global_step': 16406}
+I0817 19:07:56.782535 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:07:56.782510Z', 'value': 132.72839922336453, 'extras': [], 'unit': None, 'global_step': 16406}
+I0817 19:08:44.295372 139765615351552 tf_logging.py:115] global_step/sec: 1.98392
+I0817 19:08:44.296595 139765615351552 tf_logging.py:115] loss = 4.940549, step = 16500 (50.405 sec)
+I0817 19:08:47.192292 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:08:47.192222Z', 'value': 132.13122697020395, 'extras': [], 'unit': None, 'global_step': 16506}
+I0817 19:08:47.192581 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:08:47.192554Z', 'value': 126.95890647956607, 'extras': [], 'unit': None, 'global_step': 16506}
+I0817 19:09:32.495841 139765615351552 tf_logging.py:115] global_step/sec: 2.07466
+I0817 19:09:32.496786 139765615351552 tf_logging.py:115] loss = 4.561828, step = 16600 (48.200 sec)
+I0817 19:09:35.384509 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:09:35.384443Z', 'value': 132.13524448031362, 'extras': [], 'unit': None, 'global_step': 16606}
+I0817 19:09:35.384763 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:09:35.384739Z', 'value': 132.80149632280214, 'extras': [], 'unit': None, 'global_step': 16606}
+I0817 19:10:20.676840 139765615351552 tf_logging.py:115] global_step/sec: 2.07551
+I0817 19:10:20.677916 139765615351552 tf_logging.py:115] loss = 5.433341, step = 16700 (48.181 sec)
+I0817 19:10:23.574959 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:10:23.574877Z', 'value': 132.13924385088532, 'extras': [], 'unit': None, 'global_step': 16706}
+I0817 19:10:23.575314 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:10:23.575275Z', 'value': 132.80651205818594, 'extras': [], 'unit': None, 'global_step': 16706}
+I0817 19:11:08.938316 139765615351552 tf_logging.py:115] global_step/sec: 2.07205
+I0817 19:11:08.939487 139765615351552 tf_logging.py:115] loss = 5.4584746, step = 16800 (48.262 sec)
+I0817 19:11:11.832923 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:11:11.832853Z', 'value': 132.14209822485208, 'extras': [], 'unit': None, 'global_step': 16806}
+I0817 19:11:11.833209 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:11:11.833180Z', 'value': 132.6205148190841, 'extras': [], 'unit': None, 'global_step': 16806}
+I0817 19:11:57.188568 139765615351552 tf_logging.py:115] global_step/sec: 2.07253
+I0817 19:11:57.190933 139765615351552 tf_logging.py:115] loss = 4.9531083, step = 16900 (48.251 sec)
+I0817 19:12:00.078919 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:12:00.078848Z', 'value': 132.14511263029152, 'extras': [], 'unit': None, 'global_step': 16906}
+I0817 19:12:00.079210 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:12:00.079183Z', 'value': 132.6534926070617, 'extras': [], 'unit': None, 'global_step': 16906}
+I0817 19:12:45.418960 139765615351552 tf_logging.py:115] global_step/sec: 2.07338
+I0817 19:12:45.420032 139765615351552 tf_logging.py:115] loss = 5.3389673, step = 17000 (48.229 sec)
+I0817 19:12:48.312141 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:12:48.312072Z', 'value': 132.14829675385795, 'extras': [], 'unit': None, 'global_step': 17006}
+I0817 19:12:48.312431 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:12:48.312399Z', 'value': 132.68862691717896, 'extras': [], 'unit': None, 'global_step': 17006}
+I0817 19:13:33.666867 139765615351552 tf_logging.py:115] global_step/sec: 2.07263
+I0817 19:13:33.667978 139765615351552 tf_logging.py:115] loss = 5.384631, step = 17100 (48.248 sec)
+I0817 19:13:36.561943 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:13:36.561887Z', 'value': 132.1511787293539, 'extras': [], 'unit': None, 'global_step': 17106}
+I0817 19:13:36.562170 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:13:36.562148Z', 'value': 132.6429484700204, 'extras': [], 'unit': None, 'global_step': 17106}
+I0817 19:14:21.942157 139765615351552 tf_logging.py:115] global_step/sec: 2.07145
+I0817 19:14:21.943638 139765615351552 tf_logging.py:115] loss = 4.806444, step = 17200 (48.276 sec)
+I0817 19:14:24.847839 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:14:24.847768Z', 'value': 132.15345562597287, 'extras': [], 'unit': None, 'global_step': 17206}
+I0817 19:14:24.848140 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:14:24.848100Z', 'value': 132.54396218283534, 'extras': [], 'unit': None, 'global_step': 17206}
+I0817 19:14:58.183128 139765615351552 tf_logging.py:115] Saving checkpoints for 17276 into /tmp/model.ckpt.
+I0817 19:15:11.099572 139765615351552 tf_logging.py:115] global_step/sec: 2.03428
+I0817 19:15:11.100559 139765615351552 tf_logging.py:115] loss = 4.920294, step = 17300 (49.157 sec)
+I0817 19:15:14.004206 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:15:14.004095Z', 'value': 132.14197760847384, 'extras': [], 'unit': None, 'global_step': 17306}
+I0817 19:15:14.004693 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:15:14.004625Z', 'value': 130.19698598090747, 'extras': [], 'unit': None, 'global_step': 17306}
+I0817 19:15:59.382940 139765615351552 tf_logging.py:115] global_step/sec: 2.07111
+I0817 19:15:59.385515 139765615351552 tf_logging.py:115] loss = 4.6721697, step = 17400 (48.285 sec)
+I0817 19:16:02.285490 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:16:02.285419Z', 'value': 132.14435152386375, 'extras': [], 'unit': None, 'global_step': 17406}
+I0817 19:16:02.285779 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:16:02.285751Z', 'value': 132.5563266520897, 'extras': [], 'unit': None, 'global_step': 17406}
+I0817 19:16:47.693110 139765615351552 tf_logging.py:115] global_step/sec: 2.06996
+I0817 19:16:47.694837 139765615351552 tf_logging.py:115] loss = 5.1578445, step = 17500 (48.309 sec)
+I0817 19:16:50.591053 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:16:50.590996Z', 'value': 132.14632052771083, 'extras': [], 'unit': None, 'global_step': 17506}
+I0817 19:16:50.591280 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:16:50.591258Z', 'value': 132.48982289027867, 'extras': [], 'unit': None, 'global_step': 17506}
+I0817 19:17:35.983735 139765615351552 tf_logging.py:115] global_step/sec: 2.07079
+I0817 19:17:35.984766 139765615351552 tf_logging.py:115] loss = 4.486764, step = 17600 (48.290 sec)
+I0817 19:17:38.885564 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:17:38.885466Z', 'value': 132.14844043540162, 'extras': [], 'unit': None, 'global_step': 17606}
+I0817 19:17:38.886013 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:17:38.885967Z', 'value': 132.5204746710599, 'extras': [], 'unit': None, 'global_step': 17606}
+I0817 19:18:24.273797 139765615351552 tf_logging.py:115] global_step/sec: 2.07082
+I0817 19:18:24.274988 139765615351552 tf_logging.py:115] loss = 5.360504, step = 17700 (48.290 sec)
+I0817 19:18:27.170423 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:18:27.170338Z', 'value': 132.15068353062912, 'extras': [], 'unit': None, 'global_step': 17706}
+I0817 19:18:27.170774 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:18:27.170737Z', 'value': 132.54665793923036, 'extras': [], 'unit': None, 'global_step': 17706}
+I0817 19:19:12.559410 139765615351552 tf_logging.py:115] global_step/sec: 2.07101
+I0817 19:19:12.560381 139765615351552 tf_logging.py:115] loss = 4.8473125, step = 17800 (48.285 sec)
+I0817 19:19:15.455128 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:19:15.455073Z', 'value': 132.1529032774212, 'extras': [], 'unit': None, 'global_step': 17806}
+I0817 19:19:15.455342 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:19:15.455323Z', 'value': 132.54697667271483, 'extras': [], 'unit': None, 'global_step': 17806}
+I0817 19:20:00.826723 139765615351552 tf_logging.py:115] global_step/sec: 2.0718
+I0817 19:20:00.827756 139765615351552 tf_logging.py:115] loss = 5.0454655, step = 17900 (48.267 sec)
+I0817 19:20:03.714793 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:20:03.714711Z', 'value': 132.15548180346374, 'extras': [], 'unit': None, 'global_step': 17906}
+I0817 19:20:03.715085 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:20:03.715056Z', 'value': 132.61606804744247, 'extras': [], 'unit': None, 'global_step': 17906}
+I0817 19:20:49.077090 139765615351552 tf_logging.py:115] global_step/sec: 2.07252
+I0817 19:20:49.078787 139765615351552 tf_logging.py:115] loss = 5.0700116, step = 18000 (48.251 sec)
+I0817 19:20:51.974976 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:20:51.974906Z', 'value': 132.15802277390225, 'extras': [], 'unit': None, 'global_step': 18006}
+I0817 19:20:51.975271 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:20:51.975233Z', 'value': 132.6144360450202, 'extras': [], 'unit': None, 'global_step': 18006}
+I0817 19:21:37.357320 139765615351552 tf_logging.py:115] global_step/sec: 2.07124
+I0817 19:21:37.358361 139765615351552 tf_logging.py:115] loss = 5.2664847, step = 18100 (48.280 sec)
+I0817 19:21:40.248678 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:21:40.248617Z', 'value': 132.16033198402283, 'extras': [], 'unit': None, 'global_step': 18106}
+I0817 19:21:40.248915 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:21:40.248895Z', 'value': 132.57730852553445, 'extras': [], 'unit': None, 'global_step': 18106}
+I0817 19:22:25.566047 139765615351552 tf_logging.py:115] global_step/sec: 2.07431
+I0817 19:22:25.567181 139765615351552 tf_logging.py:115] loss = 5.475635, step = 18200 (48.209 sec)
+I0817 19:22:28.466954 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:22:28.466851Z', 'value': 132.16344864208466, 'extras': [], 'unit': None, 'global_step': 18206}
+I0817 19:22:28.467396 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:22:28.467347Z', 'value': 132.72999531061203, 'extras': [], 'unit': None, 'global_step': 18206}
+I0817 19:23:13.808334 139765615351552 tf_logging.py:115] global_step/sec: 2.07287
+I0817 19:23:13.809366 139765615351552 tf_logging.py:115] loss = 5.0289283, step = 18300 (48.242 sec)
+I0817 19:23:16.705777 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:23:16.705707Z', 'value': 132.1662226372953, 'extras': [], 'unit': None, 'global_step': 18306}
+I0817 19:23:16.706043 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:23:16.706025Z', 'value': 132.673036401498, 'extras': [], 'unit': None, 'global_step': 18306}
+I0817 19:24:02.082585 139765615351552 tf_logging.py:115] global_step/sec: 2.0715
+I0817 19:24:02.083746 139765615351552 tf_logging.py:115] loss = 5.2983623, step = 18400 (48.274 sec)
+I0817 19:24:04.995064 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:24:04.995010Z', 'value': 132.16821849696674, 'extras': [], 'unit': None, 'global_step': 18406}
+I0817 19:24:04.995275 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:24:04.995258Z', 'value': 132.53447849458627, 'extras': [], 'unit': None, 'global_step': 18406}
+I0817 19:24:50.381937 139765615351552 tf_logging.py:115] global_step/sec: 2.07042
+I0817 19:24:50.382936 139765615351552 tf_logging.py:115] loss = 4.9210405, step = 18500 (48.299 sec)
+I0817 19:24:53.280451 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:24:53.280347Z', 'value': 132.17025238979286, 'extras': [], 'unit': None, 'global_step': 18506}
+I0817 19:24:53.280893 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:24:53.280843Z', 'value': 132.54555710970425, 'extras': [], 'unit': None, 'global_step': 18506}
+I0817 19:24:58.594352 139765615351552 tf_logging.py:115] Saving checkpoints for 18518 into /tmp/model.ckpt.
+I0817 19:25:39.356586 139765615351552 tf_logging.py:115] global_step/sec: 2.04187
+I0817 19:25:39.357635 139765615351552 tf_logging.py:115] loss = 5.092987, step = 18600 (48.975 sec)
+I0817 19:25:42.252522 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:25:42.252466Z', 'value': 132.16218501189803, 'extras': [], 'unit': None, 'global_step': 18606}
+I0817 19:25:42.252743 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:25:42.252725Z', 'value': 130.6864748990478, 'extras': [], 'unit': None, 'global_step': 18606}
+I0817 19:26:27.614521 139765615351552 tf_logging.py:115] global_step/sec: 2.0722
+I0817 19:26:27.616211 139765615351552 tf_logging.py:115] loss = 4.5779138, step = 18700 (48.259 sec)
+I0817 19:26:30.510257 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:26:30.510196Z', 'value': 132.16463145942257, 'extras': [], 'unit': None, 'global_step': 18706}
+I0817 19:26:30.510499 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:26:30.510478Z', 'value': 132.62125128094885, 'extras': [], 'unit': None, 'global_step': 18706}
+I0817 19:27:15.906210 139765615351552 tf_logging.py:115] global_step/sec: 2.07075
+I0817 19:27:15.909181 139765615351552 tf_logging.py:115] loss = 4.8939886, step = 18800 (48.293 sec)
+I0817 19:27:18.802577 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:27:18.802522Z', 'value': 132.16654956026494, 'extras': [], 'unit': None, 'global_step': 18806}
+I0817 19:27:18.802792 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:27:18.802773Z', 'value': 132.526215730274, 'extras': [], 'unit': None, 'global_step': 18806}
+I0817 19:28:04.217427 139765615351552 tf_logging.py:115] global_step/sec: 2.06991
+I0817 19:28:04.218620 139765615351552 tf_logging.py:115] loss = 4.587428, step = 18900 (48.309 sec)
+I0817 19:28:07.114624 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:28:07.114554Z', 'value': 132.16816315058423, 'extras': [], 'unit': None, 'global_step': 18906}
+I0817 19:28:07.114919 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:28:07.114881Z', 'value': 132.47221971936753, 'extras': [], 'unit': None, 'global_step': 18906}
+I0817 19:28:52.511451 139765615351552 tf_logging.py:115] global_step/sec: 2.07065
+I0817 19:28:52.512468 139765615351552 tf_logging.py:115] loss = 4.673156, step = 19000 (48.294 sec)
+I0817 19:28:55.410043 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:28:55.409988Z', 'value': 132.16999780718675, 'extras': [], 'unit': None, 'global_step': 19006}
+I0817 19:28:55.410258 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:28:55.410240Z', 'value': 132.5176648410491, 'extras': [], 'unit': None, 'global_step': 19006}
+I0817 19:29:40.743649 139765615351552 tf_logging.py:115] global_step/sec: 2.0733
+I0817 19:29:40.744857 139765615351552 tf_logging.py:115] loss = 5.3007684, step = 19100 (48.232 sec)
+I0817 19:29:43.639373 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:29:43.639316Z', 'value': 132.1727582057613, 'extras': [], 'unit': None, 'global_step': 19106}
+I0817 19:29:43.639583 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:29:43.639565Z', 'value': 132.69933444353666, 'extras': [], 'unit': None, 'global_step': 19106}
+I0817 19:30:29.030453 139765615351552 tf_logging.py:115] global_step/sec: 2.07096
+I0817 19:30:29.032382 139765615351552 tf_logging.py:115] loss = 4.778443, step = 19200 (48.288 sec)
+I0817 19:30:31.933115 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:30:31.933060Z', 'value': 132.1745741724817, 'extras': [], 'unit': None, 'global_step': 19206}
+I0817 19:30:31.933332 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:30:31.933307Z', 'value': 132.5223411967664, 'extras': [], 'unit': None, 'global_step': 19206}
+I0817 19:31:17.309701 139765615351552 tf_logging.py:115] global_step/sec: 2.07128
+I0817 19:31:17.310671 139765615351552 tf_logging.py:115] loss = 4.855244, step = 19300 (48.278 sec)
+I0817 19:31:20.208735 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:31:20.208666Z', 'value': 132.17662812139278, 'extras': [], 'unit': None, 'global_step': 19306}
+I0817 19:31:20.209017 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:31:20.208991Z', 'value': 132.57217259338034, 'extras': [], 'unit': None, 'global_step': 19306}
+I0817 19:32:05.531573 139765615351552 tf_logging.py:115] global_step/sec: 2.07376
+I0817 19:32:05.532474 139765615351552 tf_logging.py:115] loss = 5.0682087, step = 19400 (48.222 sec)
+I0817 19:32:08.429053 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:32:08.428981Z', 'value': 132.17943878249338, 'extras': [], 'unit': None, 'global_step': 19406}
+I0817 19:32:08.429337 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:32:08.429310Z', 'value': 132.72414339710932, 'extras': [], 'unit': None, 'global_step': 19406}
+I0817 19:32:53.784111 139765615351552 tf_logging.py:115] global_step/sec: 2.07242
+I0817 19:32:53.785147 139765615351552 tf_logging.py:115] loss = 4.817772, step = 19500 (48.253 sec)
+I0817 19:32:56.696650 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:32:56.696581Z', 'value': 132.1815587843081, 'extras': [], 'unit': None, 'global_step': 19506}
+I0817 19:32:56.696930 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:32:56.696903Z', 'value': 132.59412945904023, 'extras': [], 'unit': None, 'global_step': 19506}
+I0817 19:33:42.052197 139765615351552 tf_logging.py:115] global_step/sec: 2.07176
+I0817 19:33:42.053361 139765615351552 tf_logging.py:115] loss = 4.8453846, step = 19600 (48.268 sec)
+I0817 19:33:44.946405 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:33:44.946335Z', 'value': 132.18390572931713, 'extras': [], 'unit': None, 'global_step': 19606}
+I0817 19:33:44.946686 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:33:44.946659Z', 'value': 132.64315820898543, 'extras': [], 'unit': None, 'global_step': 19606}
+I0817 19:34:30.300297 139765615351552 tf_logging.py:115] global_step/sec: 2.07262
+I0817 19:34:30.301420 139765615351552 tf_logging.py:115] loss = 4.9367666, step = 19700 (48.248 sec)
+I0817 19:34:33.200110 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:34:33.200024Z', 'value': 132.18617466800265, 'extras': [], 'unit': None, 'global_step': 19706}
+I0817 19:34:33.200488 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:34:33.200437Z', 'value': 132.6323955238111, 'extras': [], 'unit': None, 'global_step': 19706}
+I0817 19:34:58.764444 139765615351552 tf_logging.py:115] Saving checkpoints for 19760 into /tmp/model.ckpt.
+I0817 19:35:19.229012 139765615351552 tf_logging.py:115] global_step/sec: 2.04379
+I0817 19:35:19.230087 139765615351552 tf_logging.py:115] loss = 4.7301335, step = 19800 (48.929 sec)
+I0817 19:35:22.123828 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:35:22.123726Z', 'value': 132.17918242920902, 'extras': [], 'unit': None, 'global_step': 19806}
+I0817 19:35:22.124281 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:35:22.124221Z', 'value': 130.81598965898763, 'extras': [], 'unit': None, 'global_step': 19806}
+I0817 19:36:07.458147 139765615351552 tf_logging.py:115] global_step/sec: 2.07344
+I0817 19:36:07.459455 139765615351552 tf_logging.py:115] loss = 4.5246983, step = 19900 (48.229 sec)
+I0817 19:36:10.352305 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:36:10.352250Z', 'value': 132.18179640953244, 'extras': [], 'unit': None, 'global_step': 19906}
+I0817 19:36:10.352526 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:36:10.352508Z', 'value': 132.70140937422204, 'extras': [], 'unit': None, 'global_step': 19906}
+I0817 19:36:55.678916 139765615351552 tf_logging.py:115] global_step/sec: 2.0738
+I0817 19:36:55.680190 139765615351552 tf_logging.py:115] loss = 4.6647162, step = 20000 (48.221 sec)
+I0817 19:36:58.581413 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'average_examples_per_sec', 'timestamp': '2018-08-17T19:36:58.581310Z', 'value': 132.18437842536903, 'extras': [], 'unit': None, 'global_step': 20006}
+I0817 19:36:58.581891 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'current_examples_per_sec', 'timestamp': '2018-08-17T19:36:58.581838Z', 'value': 132.70021478875103, 'extras': [], 'unit': None, 'global_step': 20006}
+I0817 19:37:04.613754 139765615351552 tf_logging.py:115] Saving checkpoints for 20019 into /tmp/model.ckpt.
+I0817 19:37:05.397595 139765615351552 tf_logging.py:115] Loss for final step: 4.6209955.
+I0817 19:37:05.398283 139765615351552 tf_logging.py:115] Starting to evaluate.
+I0817 19:37:05.482757 139765615351552 tf_logging.py:115] Calling model_fn.
+I0817 19:37:07.075171 139765615351552 tf_logging.py:115] Done calling model_fn.
+I0817 19:37:07.094630 139765615351552 tf_logging.py:115] Starting evaluation at 2018-08-17-19:37:07
+I0817 19:37:07.666364 139765615351552 tf_logging.py:115] Graph was finalized.
+2018-08-17 19:37:07.679346: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1456] Ignoring visible gpu device (device: 1, name: Quadro K600, pci bus id: 0000:04:00.0, compute capability: 3.0) with Cuda compute capability 3.0. The minimum required Cuda capability is 3.5.
+2018-08-17 19:37:07.679395: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1485] Adding visible gpu devices: 0
+2018-08-17 19:37:07.692824: I tensorflow/core/common_runtime/gpu/gpu_device.cc:966] Device interconnect StreamExecutor with strength 1 edge matrix:
+2018-08-17 19:37:07.692907: I tensorflow/core/common_runtime/gpu/gpu_device.cc:972]      0 1
+2018-08-17 19:37:07.692935: I tensorflow/core/common_runtime/gpu/gpu_device.cc:985] 0:   N N
+2018-08-17 19:37:07.692956: I tensorflow/core/common_runtime/gpu/gpu_device.cc:985] 1:   N N
+2018-08-17 19:37:07.693794: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1098] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 7528 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1080, pci bus id: 0000:05:00.0, compute capability: 6.1)
+I0817 19:37:07.708266 139765615351552 tf_logging.py:115] Restoring parameters from /tmp/model.ckpt-20019
+I0817 19:37:08.059611 139765615351552 tf_logging.py:115] Running local_init_op.
+I0817 19:37:08.094997 139765615351552 tf_logging.py:115] Done running local_init_op.
+I0817 19:40:32.465931 139765615351552 tf_logging.py:115] Finished evaluation at 2018-08-17-19:40:32
+I0817 19:40:32.466166 139765615351552 tf_logging.py:115] Saving dict for global step 20019: accuracy = 0.19674, global_step = 20019, loss = 4.862042
+I0817 19:40:33.100383 139765615351552 tf_logging.py:115] Saving 'checkpoint_path' summary for global step 20019: /tmp/model.ckpt-20019
+I0817 19:40:33.101203 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'accuracy', 'timestamp': '2018-08-17T19:40:33.101167Z', 'value': 0.19674000144004822, 'extras': [], 'unit': None, 'global_step': 20019}
+I0817 19:40:33.101362 139765615351552 tf_logging.py:115] Benchmark metric: {'name': 'loss', 'timestamp': '2018-08-17T19:40:33.101344Z', 'value': 4.86204195022583, 'extras': [], 'unit': None, 'global_step': 20019}
