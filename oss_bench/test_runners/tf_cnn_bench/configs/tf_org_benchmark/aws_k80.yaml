@@ -4,7 +4,10 @@ repeat: 5
 # override sub_configs
 num_batches: 100
 nodistortions: FLAG_ONLY
-per_gpu_thread_count: 1 # synth tests run much better with 1 than 2
+
+# K80 Synthetic seemed to benefit form 2 vs. 1 thread.
+# Additional analysis could be useful.
+per_gpu_thread_count: 2
 
 sub_configs:
   - '../tests/resnet/64/resnet50.1_gpu.64.ps_gpu.yaml'
