@@ -1,5 +1,3 @@
-# K80s on AWS with nccl benefits significantly from per_gpu_thread_count=2
-# gpu_thread_mode=global was nearly as good.
 run_configs:
   - test_id: resnet50.8_gpu.64
     gpus: 8
