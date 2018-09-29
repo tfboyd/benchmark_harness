@@ -9,8 +9,9 @@ num_batches: 100
 optimizer: sgd
 ps_server: gpu
 repeat: 3
-sub_configs: [tests/resnet/resnet50.1_gpu.32.ps_gpu.yaml, tests/resnet/resnet50.1_gpu.32.replicated_nccl.yaml,
-  tests/vgg/vgg16.1_gpu.32.ps_gpu.yaml, tests/vgg/vgg16.1_gpu.32.ps_cpu.yaml]
+#sub_configs: [tests/resnet/resnet50.1_gpu.32.ps_gpu.yaml, tests/resnet/resnet50.1_gpu.32.replicated_nccl.yaml,
+#  tests/vgg/vgg16.1_gpu.32.ps_gpu.yaml, tests/vgg/vgg16.1_gpu.32.ps_cpu.yaml]
+sub_configs: [tests/resnet/resnet50.8_gpu.256.full_training.fp16.yaml]
 test_id: resnet50.1_gpu.32.replicated_nccl
 test_suite_start_time: 20180116T212545
 timestamp: 1516138023
