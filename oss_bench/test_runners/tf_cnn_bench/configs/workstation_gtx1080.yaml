@@ -6,7 +6,7 @@ num_batches: 100
 nodistortions: FLAG_ONLY
 
 sub_configs:
-  - 'tests/resnet/resnet50.1_gpu.32.ps_gpu.yaml'
+  - 'tests/resnet/resnet50.8_gpu.256.full_training.fp16.yaml'
 
 # Debug Only
 #env_vars: 'LD_LIBRARY_PATH=/usr/local/google/home/tobyboyd/lib/cuda-9.0/lib64'
