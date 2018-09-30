@@ -65,6 +65,8 @@ class TestReporting(unittest.TestCase):
   def test_process_base_result_files(self):
     """Tests loading the config file."""
     result = {}
+    # TODO(anjalisridhar): Modified the file path. Change it back depending on
+    # how we run this test.
     reporting.process_base_result_files(result,
                                         'unittest_files/results/'
                                         'basic/config.yaml')
@@ -78,12 +80,14 @@ class TestReporting(unittest.TestCase):
   def test_parse_result_file(self):
     """Tests parsing one results file."""
     result = {}
+    # TODO(anjalisridhar): Modified the file path. Change it back depending on
+    # how we run this test.
     reporting.parse_result_file(result,
                                 'unittest_files/'
                                 'results/basic/worker_0_stdout.txt',
                                 self._mock_config('mock.test.id'))
-    self.assertEqual(result['imgs_sec'], 132.21041311752728)
-    self.assertEqual(result['batches_sampled'], 200)
+    self.assertEqual(result['imgs_sec'], 930.5073418393551)
+    self.assertEqual(result['batches_sampled'], 4)
 
   def _mock_config(self, test_id):
     config = {}
