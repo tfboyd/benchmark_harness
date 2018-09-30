@@ -17,6 +17,7 @@ def process_folder(folder_path, report_config=None, test_config=None):
   """
   report_config = {} if report_config is None else report_config
   results = _collect_results(folder_path, test_config)
+  print("\n\n debug: results ", results)
   agg_result = util.report_aggregate_results(results)
 
   util.upload_results(
