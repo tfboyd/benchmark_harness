@@ -26,7 +26,7 @@ class TestReporting(unittest.TestCase):
     report_config = self._report_config_example()
 
     reporting.process_folder('/foo/folder', report_config=report_config)
-
+    print("\n\n debug: call args ", mock_upload.call_args)
     test_result = mock_upload.call_args[0][0]
 
     # Spot checks test_result.
