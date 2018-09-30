@@ -1,12 +1,12 @@
 """Generates and uploads test results for mxnet based tests."""
 from __future__ import print_function
+from ast import literal_eval
 import os
-
-from test_runners.common import util
 import yaml
+from test_runners.common import util
 
 
-def process_folder(folder_path, report_config=None):
+def process_folder(folder_path, report_config=None, test_config=None):
   """Process one or more results of a single test found in the folder path.
 
   Args:
@@ -16,17 +16,17 @@ def process_folder(folder_path, report_config=None):
       higher level harness with high level system information.
   """
   report_config = {} if report_config is None else report_config
-  results = _collect_results(folder_path)
+  results = _collect_results(folder_path, test_config)
   agg_result = util.report_aggregate_results(results)
 
   util.upload_results(
       report_config,
       agg_result,
       framework='tensorflow',
-      test_harness='tf_models')
+      test_harness='keras_tf_models')
 
 
-def _collect_results(folder_path):
+def _collect_results(folder_path, test_config=None):
   """Walks folder path looking for and parsing results files."""
   results = []
   for r, _, files in os.walk(folder_path):
@@ -35,7 +35,7 @@ def _collect_results(folder_path):
         result = {}
         process_base_result_files(result, os.path.join(r, f))
         result_file = os.path.join(r, 'worker_0_stdout.log')
-        parse_result_file(result, result_file)
+        parse_result_file(result, result_file, test_config)
         results.append(result)
   return results
 
@@ -75,7 +75,7 @@ def process_base_result_files(result, config_file_path):
     print('{}  not found.'.format(extra_results_file))
 
 
-def parse_result_file(result, result_file_path):
+def parse_result_file(result, result_file_path, test_config=None):
   """Parses a result file."""
   try:
     result_file = open(result_file_path, 'r')
@@ -85,17 +85,26 @@ def parse_result_file(result, result_file_path):
   samples = 0
   sum_speed = 0
 
+  # number of samples in 100 batches = num_gpus * batch_size * 100
+  num_samples = test_config['gpus'] * test_config['batch_size'] * 100
+  print("\n\n debug: num_samples ", num_samples)
+
   # Processes results file and aggregates the results of one run.
   for line in result_file:
-    # Rows with 'tensorflow:Batch [' and 'exp/sec' contain speed data.
-    if (line.find('Benchmark metric:') > 0 and
-        line.find('current_examples_per_sec') > 0):
-      parts = line.split(',')
-      batch = int(parts[5].split(':')[1].replace('}', '').strip())
+    # For eg: "BenchmarkMetric: {'num_batches': 100, 'time_taken': 55.004655}"
+    if (line.find('BenchmarkMetric') != -1 and
+        line.find('num_batches') != -1):
+      start_index = result.find('{')
+      end_index = result.find('}')
+      result_parsed = result[start_index:end_index] + '}'
+      metric_dict = literal_eval(result_parsed)
+      # metric dict will be of the following format:
+      # {'num_batches':100, 'time_taken': 54.434641}
       # Ignores first 100 batches as a warm up
-      if batch > 100:
-        sum_speed += float(parts[2].split(':')[1].strip())
-        samples += 1
+      if metric_dict['num_batches'] > 100:
+        current_imgs_sec = num_samples / metric_dict['time_taken']
+        sum_speed += current_imgs_sec
+        samples +=1
 
   result['imgs_sec'] = sum_speed / samples
   result['batches_sampled'] = samples

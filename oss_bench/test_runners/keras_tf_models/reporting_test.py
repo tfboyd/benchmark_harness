@@ -10,7 +10,7 @@ import reporting
 class TestReporting(unittest.TestCase):
   """Tests for tf_models reporting module."""
 
-  @patch('test_runners.tf_models.reporting._collect_results')
+  @patch('test_runners.keras_tf_models.reporting._collect_results')
   @patch('upload.result_upload.upload_result')
   def test_process_folder(self, mock_upload, mock_collect_results):
     """Tests process folder and verifies args passed to upload_result."""
@@ -30,7 +30,7 @@ class TestReporting(unittest.TestCase):
     test_result = mock_upload.call_args[0][0]
 
     # Spot checks test_result.
-    self.assertEqual(test_result['test_harness'], 'tf_models')
+    self.assertEqual(test_result['test_harness'], 'keras_tf_models')
     self.assertEqual(test_result['test_environment'],
                      report_config['test_environment'])
     self.assertEqual(test_result['test_id'], test_id_0)
@@ -66,21 +66,22 @@ class TestReporting(unittest.TestCase):
     """Tests loading the config file."""
     result = {}
     reporting.process_base_result_files(result,
-                                        'test_runners/tf_models/unittest_files'
-                                        '/results/basic/config.yaml')
+                                        'test_runners/keras_tf_models/'
+                                        'unittest_files/results/'
+                                        'basic/config.yaml')
 
-    self.assertEqual(result['test_id'], 'resnet50v2.gpu_1.32')
-    self.assertEqual(result['gpu'], 1)
+    self.assertEqual(result['test_id'], 'resnet50v1.gpu_8.64')
+    self.assertEqual(result['gpu'], 8)
     self.assertEqual(result['data_type'], 'real')
     self.assertIn('config', result)
-    self.assertEqual(result['config']['pycmd'], 'imagenet_main.py')
+    self.assertEqual(result['config']['pycmd'], 'keras_imagenet_main.py')
 
   def test_parse_result_file(self):
     """Tests parsing one results file."""
     result = {}
     reporting.parse_result_file(result,
-                                'test_runners/tf_models/unittest_files/results'
-                                '/basic/worker_0_stdout.txt')
+                                'test_runners/keras_tf_models/unittest_files/'
+                                'results/basic/worker_0_stdout.txt')
 
     self.assertEqual(result['imgs_sec'], 132.21041311752728)
     self.assertEqual(result['batches_sampled'], 200)
@@ -88,8 +89,8 @@ class TestReporting(unittest.TestCase):
   def _mock_config(self, test_id):
     config = {}
     config['test_id'] = test_id
-    config['batch_size'] = 128
-    config['gpus'] = 2
+    config['batch_size'] = 64
+    config['gpus'] = 8
     config['model'] = 'resnet50'
     config['cmd'] = 'python some_script.py --arg0=foo --arg1=bar'
     return config

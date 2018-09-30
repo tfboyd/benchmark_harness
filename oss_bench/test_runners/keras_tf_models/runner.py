@@ -153,9 +153,9 @@ class TestRunner(object):
 
     suite_dir_name = '{}_{}'.format(test_config['test_suite_start_time'],
                                     test_config['test_id'])
-    # reporting.process_folder(
-    #     os.path.join(self.workspace, 'results', suite_dir_name),
-    #     report_config=self.auto_test_config)
+    reporting.process_folder(
+        os.path.join(self.workspace, 'results', suite_dir_name),
+        report_config=self.auto_test_config, test_config=test_config)
 
   def build_resnet_test_config(self,
                                test_id,
@@ -178,6 +178,7 @@ class TestRunner(object):
       use_synth: If True use synthetic data.
     """
     config = {}
+    # TODO(anjalisridhar): why is total_batches hardcoded to 600?
     config['total_batches'] = 600
     # Relative path in the repo to the test folder.
     config['cmd_path'] = 'official/resnet/keras'
@@ -242,7 +243,7 @@ class TestRunner(object):
   # TODO(anjalisridhar): change this to real data once this test harness works
   def resnet50_64_gpu_1_synthetic(self):
     """Tests ResNet50 synthetic data on 1 GPU with batch size 32."""
-    test_id = 'official.keras.resnet50.gpu_1.32.syn'
+    test_id = 'official.keras.resnet50.gpu_1.64.syn'
     args = {'tf_gpu_thread_mode': 'gpu_private',
             'intra_op_parallelism_threads': 1
             }
@@ -286,7 +287,7 @@ if __name__ == '__main__':
   parser.add_argument(
       '--test-list',
       type=str,
-      default='resnet50v1_32_gpu_1',
+      default='resnet50_64_gpu_1_synthetic',
       help='Comma separated list of tests to run.')
   parser.add_argument(
       '--train-data-dir',
