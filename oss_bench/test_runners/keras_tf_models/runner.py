@@ -1,4 +1,4 @@
-"""Runs benchmarks for TF Models."""
+"""Runs benchmarks for TF Models written and run using Keras APIs."""
 from __future__ import print_function
 import argparse
 import datetime
@@ -153,9 +153,9 @@ class TestRunner(object):
 
     suite_dir_name = '{}_{}'.format(test_config['test_suite_start_time'],
                                     test_config['test_id'])
-    reporting.process_folder(
-        os.path.join(self.workspace, 'results', suite_dir_name),
-        report_config=self.auto_test_config)
+    # reporting.process_folder(
+    #     os.path.join(self.workspace, 'results', suite_dir_name),
+    #     report_config=self.auto_test_config)
 
   def build_resnet_test_config(self,
                                test_id,
@@ -165,7 +165,7 @@ class TestRunner(object):
                                dtype='fp32',
                                version=1,
                                use_synth=False):
-    """Returns a base test config for ResNet50-v2 tests.
+    """Returns a base test config for ResNet50-v1 tests.
 
     Args:
       test_id: unique id for the test.
@@ -180,13 +180,14 @@ class TestRunner(object):
     config = {}
     config['total_batches'] = 600
     # Relative path in the repo to the test folder.
-    config['cmd_path'] = 'official/resnet'
-    config['pycmd'] = 'imagenet_main.py'
+    config['cmd_path'] = 'official/resnet/keras'
+    config['pycmd'] = 'keras_imagenet_main.py'
     config['test_id'] = test_id
-    config['repeat'] = 3
+    # TODO(anjalisridhar): Change this to 3 once testing is complete.
+    config['repeat'] = 1
     # Normalized name of model being tested
     if version == 1:
-      config['model'] = 'resnet50_v1.5'
+      config['model'] = 'resnet50_v1'
     else:
       config['model'] = 'resnet50_v2'
 
@@ -238,139 +239,15 @@ class TestRunner(object):
       arg_str += '--{} {} '.format(key, value)
     return 'python {} {}'.format(test_config['pycmd'], arg_str)
 
-  def resnet50_32_gpu_1_real(self):
-    """Tests ResNet50 real data data on 1 GPU with batch size 32."""
-    test_id = 'official.resnet50.gpu_1.32.real'
+  # TODO(anjalisridhar): change this to real data once this test harness works
+  def resnet50_64_gpu_1_synthetic(self):
+    """Tests ResNet50 synthetic data on 1 GPU with batch size 32."""
+    test_id = 'official.keras.resnet50.gpu_1.32.syn'
     args = {'tf_gpu_thread_mode': 'gpu_private',
-            'intra_op_parallelism_threads': 1}
+            'intra_op_parallelism_threads': 1
+            }
     config = self.build_resnet_test_config(
-        test_id, args, batch_size=32, gpus=1, version=1)
-    self.run_test_suite(config)
-
-  def resnet50_64_gpu_1_stock_real(self):
-    """Tests ResNet50 real data data on 1 GPU with batch size 64.
-
-    Test with stock config no tuning.
-    """
-    test_id = 'official.resnet50.gpu_1.stock.64.real'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=64, gpus=1, version=1)
-    self.run_test_suite(config)
-
-  def resnet50_64_gpu_8_stock_real(self):
-    """Tests ResNet50 real data data on 8 GPU with batch size 64.
-
-    Test with stock config no tuning.
-    """
-    test_id = 'official.resnet50.gpu_8.stock.64.real'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=64, gpus=8, version=1)
-    self.run_test_suite(config)
-
-  def resnet50_128_gpu_1_real(self):
-    """Tests ResNet50 real data data on 1 GPU with batch size 128."""
-    test_id = 'official.resnet50.gpu_1.128.real'
-    args = {'tf_gpu_thread_mode': 'gpu_private',
-            'intra_op_parallelism_threads': 1}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=128, gpus=1, version=1)
-    self.run_test_suite(config)
-
-  def resnet50_128_gpu_2_real(self):
-    """Tests ResNet50 real data data on 2 GPU with batch size 128."""
-    test_id = 'official.resnet50.gpu_2.128.real'
-    args = {'tf_gpu_thread_mode': 'gpu_private',
-            'num_parallel_calls': 2,
-            'intra_op_parallelism_threads': 1}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=128, gpus=2, version=1)
-    self.run_test_suite(config)
-
-  def resnet50_128_gpu_4_real(self):
-    """Tests ResNet50 real data data on 4 GPU with batch size 128."""
-    test_id = 'official.resnet50.gpu_4.128.real'
-    args = {'tf_gpu_thread_mode': 'gpu_private',
-            'num_parallel_calls': 2,
-            'intra_op_parallelism_threads': 1}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=128, gpus=4, version=1)
-    self.run_test_suite(config)
-
-  def resnet50_128_gpu_8_real(self):
-    """Tests ResNet50 real data data on 8 GPU with batch size 128."""
-    test_id = 'official.resnet50.gpu_8.128.real'
-    args = {'tf_gpu_thread_mode': 'gpu_private',
-            'all_reduce_alg': 'nccl',
-            'intra_op_parallelism_threads': 1,
-            'num_parallel_calls': 4}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=128, gpus=8, version=1)
-    self.run_test_suite(config)
-
-  def resnet50_128_gpu_1_stock_real(self):
-    """Tests ResNet50 real data data on 1 GPU with batch size 128.
-
-    Test with stock config no tuning.
-    """
-    test_id = 'official.resnet50.gpu_1.stock.128.real'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=128, gpus=1, version=1)
-    self.run_test_suite(config)
-
-  def resnet50_128_gpu_8_stock_real(self):
-    """Tests ResNet50 real data data on 8 GPU with batch size 128.
-
-    Test with stock config no tuning.
-    """
-    test_id = 'official.resnet50.gpu_8.stock.128.real'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=128, gpus=8, version=1)
-    self.run_test_suite(config)
-
-  def resnet50_256_gpu_1_real_fp16(self):
-    """Tests ResNet50 FP16 real data data on 1 GPU with batch size 256."""
-    test_id = 'official.resnet50.gpu_1.256.fp16.real'
-    args = {'tf_gpu_thread_mode': 'gpu_private',
-            'intra_op_parallelism_threads': 1}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=256, gpus=1, version=1, dtype='fp16')
-    self.run_test_suite(config)
-
-  def resnet50_256_gpu_8_real_fp16(self):
-    """Tests ResNet50 FP16 real data data on 8 GPU with batch size 256."""
-    test_id = 'official.resnet50.gpu_8.256.fp16.real'
-    args = {'tf_gpu_thread_mode': 'gpu_private',
-            'all_reduce_alg': 'nccl',
-            'intra_op_parallelism_threads': 1,
-            'num_parallel_calls': 4}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=256, gpus=8, version=1, dtype='fp16')
-    self.run_test_suite(config)
-
-  def resnet50_256_gpu_1_stock_real_fp16(self):
-    """Tests ResNet50 FP16 real data data on 1 GPU with batch size 256.
-
-    Test with stock config no tuning.
-    """
-    test_id = 'official.resnet50.gpu_1.stock.256.fp16.real'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=256, gpus=1, version=1, dtype='fp16')
-    self.run_test_suite(config)
-
-  def resnet50_256_gpu_8_stock_real_fp16(self):
-    """Tests ResNet50 FP16 real data data on 8 GPU with batch size 256.
-
-    Test with stock config no tuning.
-    """
-    test_id = 'official.resnet50.gpu_8.stock.256.fp16.real'
-    args = {}
-    config = self.build_resnet_test_config(
-        test_id, args, batch_size=256, gpus=8, version=1, dtype='fp16')
+        test_id, args, batch_size=32, gpus=1, version=1,use_synth=True)
     self.run_test_suite(config)
 
   def run_tests(self, test_list):
