@@ -35,7 +35,8 @@ class TestResultUpload(unittest.TestCase):
         test_environment='unit_test_env')
     system_info = result_info.build_system_info(
         platform='aws', platform_type='p3.8xlarge')
-    test_info = result_info.build_test_info(batch_size=32)
+    test_info = result_info.build_test_info(batch_size=32,
+                                            group_run_id='0000-uuid')
 
     mock_user = 'foo.boyd@nope'
     credentials = mock.Mock()
@@ -65,6 +66,7 @@ class TestResultUpload(unittest.TestCase):
 
     # Verifies test_info.
     self.assertEqual(32, test_info_actual['batch_size'])
+    self.assertEqual('0000-uuid', test_info_actual['group_run_id'])
 
     # Verifies result_info for primary (first) result.
     self.assertEqual(123.4, result_info_actual[0]['result'])

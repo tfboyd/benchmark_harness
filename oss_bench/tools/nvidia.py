@@ -29,6 +29,17 @@ def get_gpu_info():
     return '', ''
 
 
+def get_gpu_count():
+  cmd = 'nvidia-smi --query-gpu=driver_version,gpu_name --format=csv'
+  retcode, result = local_command.run_local_command(cmd)
+  lines = result.splitlines()
+  if retcode == 0 and len(lines) > 1:
+    return len(lines) - 1
+  else:
+    print('nvidia-smi did not return as expected:{}'.format(result))
+    return -1
+
+
 def get_running_processes():
   """Returns list of `dict` objects representing running processes on GPUs."""
   retcode, result = local_command.run_local_command('nvidia-smi')

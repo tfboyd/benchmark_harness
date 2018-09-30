@@ -105,7 +105,8 @@ def build_test_info(framework='tensorflow',
                     batch_size=None,
                     model=None,
                     accel_cnt=None,
-                    cmd=None):
+                    cmd=None,
+                    group_run_id=None):
   """Returns test info in a dict.
 
   Args:
@@ -120,6 +121,9 @@ def build_test_info(framework='tensorflow',
     accel_cnt (int, optional): Number of accelerators being utilized.
     cmd (str, optional): Command run for the test with args. Useful to record
       for tests that are run as subprocesses.
+    group_run_id (str, optional): Unique id indicating a result is part of
+      multiple runs of the same test on the same hardware that a reporting
+      system may want to aggregate.
 
   Returns:
     `dict` with test info.
@@ -143,4 +147,6 @@ def build_test_info(framework='tensorflow',
     test_info['framework_describe'] = framework_describe
   if cmd:
     test_info['cmd'] = cmd
+  if group_run_id:
+    test_info['group_run_id'] = group_run_id
   return test_info
