@@ -48,6 +48,7 @@ def upload_results(report_config, agg_result, framework=None,
   report_config = report_config_defaults(
       report_config, test_harness=test_harness)
 
+  print("\n\n debug: agg_result ", agg_result)
   # Main result config
   test_result, results = result_info.build_test_result(
       agg_result['config']['test_id'],
