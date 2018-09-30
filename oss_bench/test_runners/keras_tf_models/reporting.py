@@ -94,10 +94,10 @@ def parse_result_file(result, result_file_path, test_config=None):
     # For eg: "BenchmarkMetric: {'num_batches': 100, 'time_taken': 55.004655}"
     if (line.find('BenchmarkMetric') != -1 and
         line.find('num_batches') != -1):
-      start_index = result.find('{')
-      end_index = result.find('}')
-      result_parsed = result[start_index:end_index] + '}'
-      metric_dict = literal_eval(result_parsed)
+      start_index = line.find('{')
+      end_index = line.find('}')
+      line_parsed = line[start_index:end_index] + '}'
+      metric_dict = literal_eval(line_parsed)
       # metric dict will be of the following format:
       # {'num_batches':100, 'time_taken': 54.434641}
       # Ignores first 100 batches as a warm up
