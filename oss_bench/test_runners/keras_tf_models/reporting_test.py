@@ -81,7 +81,7 @@ class TestReporting(unittest.TestCase):
     reporting.parse_result_file(result,
                                 'unittest_files/'
                                 'results/basic/worker_0_stdout.txt',
-                                _mock_config('mock.test.id'))
+                                self._mock_config('mock.test.id'))
     self.assertEqual(result['imgs_sec'], 132.21041311752728)
     self.assertEqual(result['batches_sampled'], 200)
 
