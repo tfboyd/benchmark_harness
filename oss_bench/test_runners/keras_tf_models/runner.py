@@ -153,7 +153,6 @@ class TestRunner(object):
 
     suite_dir_name = '{}_{}'.format(test_config['test_suite_start_time'],
                                     test_config['test_id'])
-    print("\n\n test_config ", test_config)
     reporting.process_folder(
         os.path.join(self.workspace, 'results', suite_dir_name),
         report_config=self.auto_test_config, test_config=test_config)
