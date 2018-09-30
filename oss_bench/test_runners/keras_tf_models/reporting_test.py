@@ -66,7 +66,6 @@ class TestReporting(unittest.TestCase):
     """Tests loading the config file."""
     result = {}
     reporting.process_base_result_files(result,
-                                        'test_runners/keras_tf_models/'
                                         'unittest_files/results/'
                                         'basic/config.yaml')
 
@@ -80,9 +79,8 @@ class TestReporting(unittest.TestCase):
     """Tests parsing one results file."""
     result = {}
     reporting.parse_result_file(result,
-                                'test_runners/keras_tf_models/unittest_files/'
+                                'unittest_files/'
                                 'results/basic/worker_0_stdout.txt')
-
     self.assertEqual(result['imgs_sec'], 132.21041311752728)
     self.assertEqual(result['batches_sampled'], 200)
 
@@ -117,3 +115,6 @@ class TestReporting(unittest.TestCase):
     cpu_info['socket_count'] = 1
     report_config['cpu_info'] = cpu_info
     return report_config
+
+if __name__ == '__main__':
+  unittest.main()
