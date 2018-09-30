@@ -116,6 +116,25 @@ class BenchmarkRunner(object):
         auto_test_config=auto_config)
     run.run_tests(auto_config['tf_models_tests'])
 
+  def _keras_tf_model_bench(self, auto_config):
+    """Runs tf model benchmarks.
+
+    Args:
+      auto_config: Configuration for running tf_model_bench tests.
+    """
+    # Module is loaded by this module.
+    # pylint: disable=C6204
+    import test_runners.keras_tf_models.runner as runner
+
+    bench_home = os.path.join(self.git_repo_base, 'tf_models')
+
+    # call tf_garden runner with lists of tests from the test_config
+    run = runner.TestRunner(
+        os.path.join(self.logs_dir, 'keras_tf_models'),
+        bench_home,
+        auto_test_config=auto_config)
+    run.run_tests(auto_config['tf_models_tests'])
+
   def _tf_cnn_bench(self, auto_config):
     """Runs tf cnn benchmarks.
 
@@ -239,6 +258,16 @@ class BenchmarkRunner(object):
       else:
         print('Setup already tested for {} on {}'.format(
             'tf_models', test_config))
+
+    # Run keras tf_model_bench if list of tests is found
+    if 'keras_tf_models_tests' in test_config:
+      tested = self.check_if_run(test_config, 'keras_tf_models')
+      if not tested:
+        self._keras_tf_model_bench(test_config)
+        self.update_state(test_config, 'keras_tf_models')
+      else:
+        print('Setup already tested for {} on {}'.format(
+            'keras_tf_models', test_config))
 
   def check_if_run(self, test_config, test):
     if test_config.get('track'):

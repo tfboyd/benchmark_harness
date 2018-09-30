@@ -35,7 +35,6 @@ def _collect_results(folder_path, test_config=None):
         result = {}
         process_base_result_files(result, os.path.join(r, f))
         result_file = os.path.join(r, 'worker_0_stdout.log')
-        print("\n\n debug: result_file ", result_file)
         parse_result_file(result, result_file, test_config)
         results.append(result)
   return results

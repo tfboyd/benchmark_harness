@@ -25,6 +25,7 @@ class TestReporting(unittest.TestCase):
 
     report_config = self._report_config_example()
 
+    # TODO(anjalisridhar): there is no worker file here. Is this expected?
     reporting.process_folder('/foo/folder', report_config=report_config)
     print("\n\n debug: call args ", mock_upload.call_args)
     test_result = mock_upload.call_args[0][0]
@@ -87,7 +88,7 @@ class TestReporting(unittest.TestCase):
                                 'results/basic/worker_0_stdout.txt',
                                 self._mock_config('mock.test.id'))
     self.assertEqual(result['imgs_sec'], 930.5073418393551)
-    self.assertEqual(result['batches_sampled'], 4)
+    self.assertEqual(result['batches_sampled'], 2)
 
   def _mock_config(self, test_id):
     config = {}

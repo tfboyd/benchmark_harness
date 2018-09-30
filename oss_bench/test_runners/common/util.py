@@ -113,7 +113,7 @@ def report_aggregate_results(results_list):
     dict summarizing the results in the list.
   """
   if not results_list:
-    # TODO(anjalisridhar): This is empty for tests.
+    # TODO(anjalisridhar): This is empty for test:test_process_folder
     return
   agg_result = {}
   # Assumes first entry has same test_id as the rest of the results.
