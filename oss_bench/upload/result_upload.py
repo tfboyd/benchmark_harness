@@ -22,13 +22,15 @@ def upload_result(test_result,
                   table='result',
                   test_info=None,
                   system_info=None,
-                  extras=None):
+                  extras=None,
+                  stream=False):
   """Upload test result.
 
-  Note: Using Insert likely limits the number of inserts per day to 1000
-  according to the bigquery quota page. I (tobyboyd@) noticed this after the
-  fact.  Will upgrade to streaming inserts in near future, which is nearly
-  unlimited 50k+
+  Note: Using stream=False has a 1000 per day insert limit per table. Using
+  stream=True, the documented limit is 50K+. With streaming there can be
+  a small and possibly not noticeable delay to seeing the results the BigQuery
+  UI, but there can be a 90 minute more or less delay in the results being part
+  of exports.
 
   Note: BigQuery maps unicode() to STRING for python2.  If str is used that is
   mapped to BYTE.
@@ -42,15 +44,13 @@ def upload_result(test_result,
     test_info: `dict` of test info. Use `result_info.build_test_info`.
     system_info: `dict` of system info. Use `result_info.build_system_info`.
     extras: `dict` of values that will be serialized to JSON.
+    stream: Set to true to stream rows.
   """
-
-  # Project is disgarded in favor of what the user passes in.
   if project == 'LOCAL':
-    print('test_result:{}', test_result)
-    print('result_info:{}', result_info)
-    print('test_info:{}', test_info)
-    print('system_info:{}', system_info)
-    print('extras:{}', extras)
+    credentials = {}
+    row = _build_row(credentials, test_result, result_info, test_info,
+                     system_info, extras)
+    print('row:{}', row)
   else:
     credentials, _ = google.auth.default()
 
@@ -58,21 +58,39 @@ def upload_result(test_result,
                      system_info, extras)
 
     client = bigquery.Client(project=project, credentials=credentials)
-    conn = connect(client=client)
-    cursor = conn.cursor()
-    sql = """INSERT into {}.{} (result_id, test_id, test_harness,
-             test_environment, result_info, user, timestamp, system_info,
-             test_info, extras)
-               VALUES
-             (@result_id, @test_id, @test_harness, @test_environment,
-             @result_info, @user, @timestamp, @system_info, @test_info, @extras)
-             """.format(dataset, table)
 
-    cursor.execute(sql, parameters=row)
-    conn.commit()
-    # Cursor and connection closes on their own as well.
-    cursor.close()
-    conn.close()
+    if stream:
+      _stream_upload(client, dataset, table, row)
+    else:
+      _upload(client, dataset, table, row)
+
+
+def _upload(client, dataset, table, row):
+  """Uploads row to BigQuery."""
+  conn = connect(client=client)
+  cursor = conn.cursor()
+  sql = """INSERT into {}.{} (result_id, test_id, test_harness,
+           test_environment, result_info, user, timestamp, system_info,
+           test_info, extras)
+             VALUES
+           (@result_id, @test_id, @test_harness, @test_environment,
+           @result_info, @user, @timestamp, @system_info, @test_info, @extras)
+           """.format(dataset, table)
+
+  cursor.execute(sql, parameters=row)
+  conn.commit()
+  # Cursor and connection close on their own as well.
+  cursor.close()
+  conn.close()
+
+
+def _stream_upload(client, dataset, table, row):
+  """Uploads row to BigQuery via streaming interface."""
+  table_ref = client.dataset(dataset).table(table)
+  table_obj = client.get_table(table_ref)  # API request
+  errors = client.insert_rows(table_obj, [row])
+  if errors:
+    print('Error inserting rows:{}'.format(errors))
 
 
 def _build_row(credentials,
