@@ -25,7 +25,8 @@ def main():
       'google.com:tensorflow-performance',
       test_info=test_info,
       system_info=system_info,
-      extras=extras)
+      extras=extras,
+      stream=True)
 
 if __name__ == '__main__':
   main()
