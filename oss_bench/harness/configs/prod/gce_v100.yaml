@@ -31,6 +31,3 @@ tf_models_tests:
   - 'resnet50_128_gpu_2_real'
   - 'resnet50_128_gpu_4_real'
   - 'resnet50_128_gpu_8_real'
-
-#keras_tf_models_tests:
-#  - 'resnet50_64_gpu_1_synthetic'

@@ -25,9 +25,7 @@ class TestReporting(unittest.TestCase):
 
     report_config = self._report_config_example()
 
-    # TODO(anjalisridhar): there is no worker file here. Is this expected?
     reporting.process_folder('/foo/folder', report_config=report_config)
-    print("\n\n debug: call args ", mock_upload.call_args)
     test_result = mock_upload.call_args[0][0]
 
     # Spot checks test_result.
@@ -118,6 +116,3 @@ class TestReporting(unittest.TestCase):
     cpu_info['socket_count'] = 1
     report_config['cpu_info'] = cpu_info
     return report_config
-
-# if __name__ == '__main__':
-#   unittest.main()
