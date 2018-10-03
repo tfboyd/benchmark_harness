@@ -8,7 +8,7 @@ import reporting
 
 
 class TestReporting(unittest.TestCase):
-  """Tests for tf_models reporting module."""
+  """Tests for Keras tf_models reporting module."""
 
   @patch('test_runners.keras_tf_models.reporting._collect_results')
   @patch('upload.result_upload.upload_result')
@@ -66,8 +66,6 @@ class TestReporting(unittest.TestCase):
   def test_process_base_result_files(self):
     """Tests loading the config file."""
     result = {}
-    # TODO(anjalisridhar): Modified the file path. Change it back depending on
-    # how we run this test.
     reporting.process_base_result_files(result,
                                         'test_runners/keras_tf_models/'
                                         'unittest_files/results/'
@@ -82,8 +80,6 @@ class TestReporting(unittest.TestCase):
   def test_parse_result_file(self):
     """Tests parsing one results file."""
     result = {}
-    # TODO(anjalisridhar): Modified the file path. Change it back depending on
-    # how we run this test.
     reporting.parse_result_file(result,
                                 'test_runners/keras_tf_models/unittest_files/'
                                 'results/basic/worker_0_stdout.txt',
@@ -123,5 +119,5 @@ class TestReporting(unittest.TestCase):
     report_config['cpu_info'] = cpu_info
     return report_config
 
-if __name__ == '__main__':
-  unittest.main()
+# if __name__ == '__main__':
+#   unittest.main()
