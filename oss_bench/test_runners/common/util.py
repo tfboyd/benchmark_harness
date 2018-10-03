@@ -48,9 +48,9 @@ def upload_results(report_config, agg_result, framework=None,
   report_config = report_config_defaults(
       report_config, test_harness=test_harness)
 
-  if not agg_result:
-    # TODO(anjalisridhar) agg_result is none for tests at this point.
-    return
+  # if not agg_result:
+  #   # TODO(anjalisridhar) agg_result is none for tests at this point.
+  #   return
 
   # Main result config
   test_result, results = result_info.build_test_result(

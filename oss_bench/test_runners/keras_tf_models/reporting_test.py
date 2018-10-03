@@ -69,6 +69,7 @@ class TestReporting(unittest.TestCase):
     # TODO(anjalisridhar): Modified the file path. Change it back depending on
     # how we run this test.
     reporting.process_base_result_files(result,
+                                        'test_runners/keras_tf_models/unittest_files'
                                         'unittest_files/results/'
                                         'basic/config.yaml')
 
@@ -84,7 +85,7 @@ class TestReporting(unittest.TestCase):
     # TODO(anjalisridhar): Modified the file path. Change it back depending on
     # how we run this test.
     reporting.parse_result_file(result,
-                                'unittest_files/'
+                                'test_runners/keras_tf_models/unittest_files/'
                                 'results/basic/worker_0_stdout.txt',
                                 self._mock_config('mock.test.id'))
     self.assertEqual(result['imgs_sec'], 930.5073418393551)
