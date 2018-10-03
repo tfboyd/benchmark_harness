@@ -48,10 +48,6 @@ def upload_results(report_config, agg_result, framework=None,
   report_config = report_config_defaults(
       report_config, test_harness=test_harness)
 
-  # if not agg_result:
-  #   # TODO(anjalisridhar) agg_result is none for tests at this point.
-  #   return
-
   # Main result config
   test_result, results = result_info.build_test_result(
       agg_result['config']['test_id'],
@@ -112,9 +108,6 @@ def report_aggregate_results(results_list):
   Returns:
     dict summarizing the results in the list.
   """
-  if not results_list:
-    # TODO(anjalisridhar): This is empty for test:test_process_folder
-    return
   agg_result = {}
   # Assumes first entry has same test_id as the rest of the results.
   agg_result['test_id'] = results_list[0]['test_id']

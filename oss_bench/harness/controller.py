@@ -117,7 +117,7 @@ class BenchmarkRunner(object):
     run.run_tests(auto_config['tf_models_tests'])
 
   def _keras_tf_model_bench(self, auto_config):
-    """Runs tf model benchmarks.
+    """Runs keras tf model benchmarks.
 
     Args:
       auto_config: Configuration for running tf_model_bench tests.
@@ -133,7 +133,7 @@ class BenchmarkRunner(object):
         os.path.join(self.logs_dir, 'keras_tf_models'),
         bench_home,
         auto_test_config=auto_config)
-    run.run_tests(auto_config['tf_models_tests'])
+    run.run_tests(auto_config['keras_tf_models_tests'])
 
   def _tf_cnn_bench(self, auto_config):
     """Runs tf cnn benchmarks.

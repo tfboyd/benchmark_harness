@@ -1,4 +1,4 @@
-"""Generates and uploads test results for mxnet based tests."""
+"""Generates and uploads test results for keras tf models based tests."""
 from __future__ import print_function
 from ast import literal_eval
 import os
@@ -87,7 +87,6 @@ def parse_result_file(result, result_file_path, test_config=None):
 
   # number of samples in 100 batches = num_gpus * batch_size * 100
   num_samples = test_config['gpus'] * test_config['batch_size'] * 100
-  print("\n\n debug: num_samples ", num_samples)
 
   # Processes results file and aggregates the results of one run.
   for line in result_file:

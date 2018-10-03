@@ -119,7 +119,7 @@ class TestRunner(object):
       time.sleep(5)
       wait_time += 5
 
-    batch_killer = 'step = {}'.format(total_batches)
+    batch_killer = '\'num_batches\':{}'.format(total_batches)
     while t.is_alive():
       with open(stdout_file, 'r') as log:
         for line in log:
@@ -178,7 +178,8 @@ class TestRunner(object):
       use_synth: If True use synthetic data.
     """
     config = {}
-    # TODO(anjalisridhar): why is total_batches hardcoded to 600?
+    # Hardcode total batches to 600 since we don't want to run through the
+    # entire dataset.
     config['total_batches'] = 600
     # Relative path in the repo to the test folder.
     config['cmd_path'] = 'official/resnet/keras'
