@@ -69,7 +69,7 @@ class TestReporting(unittest.TestCase):
     # TODO(anjalisridhar): Modified the file path. Change it back depending on
     # how we run this test.
     reporting.process_base_result_files(result,
-                                        'test_runners/keras_tf_models/unittest_files'
+                                        'test_runners/keras_tf_models/'
                                         'unittest_files/results/'
                                         'basic/config.yaml')
 
