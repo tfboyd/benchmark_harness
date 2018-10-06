@@ -85,9 +85,6 @@ def parse_result_file(result, result_file_path, test_config=None):
   samples = 0
   sum_speed = 0
 
-  # number of samples in 100 batches = num_gpus * batch_size * 100
-  num_samples = test_config['gpus'] * test_config['batch_size'] * 100
-
   # Processes results file and aggregates the results of one run.
   for line in result_file:
     # For eg: "BenchmarkMetric: {'num_batches': 100, 'time_taken': 55.004655}"
@@ -101,7 +98,7 @@ def parse_result_file(result, result_file_path, test_config=None):
       # {'num_batches':100, 'time_taken': 54.434641}
       # Ignores first 100 batches as a warm up
       if metric_dict['num_batches'] > 100:
-        current_imgs_sec = num_samples / metric_dict['time_taken']
+        current_imgs_sec = metric_dict['images_per_second']
         sum_speed += current_imgs_sec
         samples +=1
 
