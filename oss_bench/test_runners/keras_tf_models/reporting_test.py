@@ -83,7 +83,7 @@ class TestReporting(unittest.TestCase):
                                 'results/basic/worker_0_stdout.txt',
                                 self._mock_config('mock.test.id'))
     self.assertEqual(result['imgs_sec'], 930.5073418393551)
-    self.assertEqual(result['batches_sampled'], 2)
+    self.assertEqual(result['batches_sampled'], 11)
 
   def _mock_config(self, test_id):
     config = {}

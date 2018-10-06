@@ -26,9 +26,17 @@ e predefined Callbacks that supports DistributionStrategy. You might encounter a
 u access one of the model's attributes as part of the callback since these attributes are not
  set. You can access each of the individual distributed models using the `_grouped_model` att
 ribute of your original model.
-BenchmarkMetric: {'num_batches':100, 'time_taken': 54.434641}
-BenchmarkMetric: {'num_batches':200, 'time_taken': 54.411821}
-BenchmarkMetric: {'num_batches':100, 'time_taken': 55.804836}
-BenchmarkMetric: {'num_batches':200, 'time_taken': 55.649592}
+BenchmarkMetric: {'num_batches':100, 'time_taken': 48.671711,'examples_per_second': 2103.891521}
+BenchmarkMetric: {'num_batches':200, 'time_taken': 48.085756,'examples_per_second': 2129.528750}
+BenchmarkMetric: {'num_batches':300, 'time_taken': 48.964159,'examples_per_second': 2091.325616}
+BenchmarkMetric: {'num_batches':400, 'time_taken': 48.667375,'examples_per_second': 2104.078961}
+BenchmarkMetric: {'num_batches':500, 'time_taken': 48.121663,'examples_per_second': 2127.939756}
+BenchmarkMetric: {'num_batches':600, 'time_taken': 47.983310,'examples_per_second': 2134.075370}
+BenchmarkMetric: {'num_batches':700, 'time_taken': 48.042953,'examples_per_second': 2131.426017}
+BenchmarkMetric: {'num_batches':800, 'time_taken': 48.086607,'examples_per_second': 2129.491067}
+BenchmarkMetric: {'num_batches':900, 'time_taken': 48.890342,'examples_per_second': 2094.483201}
+BenchmarkMetric: {'num_batches':1000, 'time_taken': 49.342174,'examples_per_second': 2075.303783}
+BenchmarkMetric: {'num_batches':1100, 'time_taken': 48.795862,'examples_per_second': 2098.538603}
+BenchmarkMetric: {'num_batches':1200, 'time_taken': 49.334362,'examples_per_second': 2075.632395
 BenchmarkMetric: {'time_per_epoch':165.000000, 'global_batch_size': 512, 'steps_per_epoch': 3
 00, 'examples_per_s': 930.909091}
