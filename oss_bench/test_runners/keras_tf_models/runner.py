@@ -240,12 +240,12 @@ class TestRunner(object):
   # TODO(anjalisridhar): change this to real data once this test harness works
   def resnet50_64_gpu_1_synthetic(self):
     """Tests ResNet50 synthetic data on 1 GPU with batch size 32."""
-    test_id = 'official.keras.resnet50.gpu_1.64.syn'
+    test_id = 'official.keras.resnet50.gpu_1.64'
     args = {'tf_gpu_thread_mode': 'gpu_private',
             'intra_op_parallelism_threads': 1
            }
     config = self.build_resnet_test_config(
-        test_id, args, batch_size=32, gpus=1, version=1, use_synth=True)
+        test_id, args, batch_size=64, gpus=1, version=1, use_synth=True)
     self.run_test_suite(config)
 
   def run_tests(self, test_list):
