@@ -84,8 +84,6 @@ class TestRunner(object):
     """
     # Timestamp and other values added for reporting
     result_dir = self.results_directory(test_config)
-    # set the model_dir to be inside the results_dir
-    test_config['args']['model_dir'] = os.path.join(result_dir, 'checkpoint')
     test_config['timestamp'] = int(time.time())
     test_config['workspace'] = self.workspace
     cmd = self._cmd_builder(test_config)
@@ -132,9 +130,6 @@ class TestRunner(object):
     for t in worker_threads:
       t.join()
 
-    # Model dir is over 200MB for most runs and data is not needed.
-    util.delete_files_in_folder(test_config['args']['model_dir'])
-
     return result_dir
 
   def run_test_suite(self, test_config):
@@ -164,7 +159,8 @@ class TestRunner(object):
                                gpus=1,
                                dtype='fp32',
                                version=1,
-                               use_synth=False):
+                               use_synth=False,
+                               total_batches=600):
     """Returns a base test config for ResNet50-v1 tests.
 
     Args:
@@ -176,11 +172,10 @@ class TestRunner(object):
       dtype: fp16 or fp32. defaults to fp32
       version: Version of ResNet50, default is 1.
       use_synth: If True use synthetic data.
+      total_batches: total batches to run for the test.
     """
     config = {}
-    # Hardcode total batches to 600 since we don't want to run through the
-    # entire dataset.
-    config['total_batches'] = 600
+    config['total_batches'] = total_batches
     # Relative path in the repo to the test folder.
     config['cmd_path'] = 'official/resnet/keras'
     config['pycmd'] = 'keras_imagenet_main.py'
@@ -239,7 +234,8 @@ class TestRunner(object):
     arg_str = ''
     for key, value in sorted(test_config['args'].iteritems()):
       arg_str += '--{} {} '.format(key, value)
-    return 'python {} {}'.format(test_config['pycmd'], arg_str)
+    # Sets -u as sometimes console is buffered preventing recording of `print`.
+    return 'python -u {} {}'.format(test_config['pycmd'], arg_str)
 
   # TODO(anjalisridhar): change this to real data once this test harness works
   def resnet50_64_gpu_1_synthetic(self):
@@ -247,9 +243,9 @@ class TestRunner(object):
     test_id = 'official.keras.resnet50.gpu_1.64.syn'
     args = {'tf_gpu_thread_mode': 'gpu_private',
             'intra_op_parallelism_threads': 1
-            }
+           }
     config = self.build_resnet_test_config(
-        test_id, args, batch_size=32, gpus=1, version=1,use_synth=True)
+        test_id, args, batch_size=32, gpus=1, version=1, use_synth=True)
     self.run_test_suite(config)
 
   def run_tests(self, test_list):
