@@ -108,7 +108,6 @@ def report_aggregate_results(results_list):
   Returns:
     dict summarizing the results in the list.
   """
-
   agg_result = {}
   # Assumes first entry has same test_id as the rest of the results.
   agg_result['test_id'] = results_list[0]['test_id']

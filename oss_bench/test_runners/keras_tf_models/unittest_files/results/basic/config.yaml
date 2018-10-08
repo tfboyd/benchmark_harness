@@ -1,0 +1,14 @@
+args: {batch_size: 64, data_dir: /data/tensorflow/imagenet/, resnet_size: 50, train_epochs: 3}
+batch_size: 64
+cmd: 'python keras_imagenet_main.py --batch_size 32 --data_dir /data/tensorflow/imagenet/
+  --resnet_size 50 --train_epochs 3 '
+cmd_path: official/resnet/keras
+gpus: 8
+model: resnet50
+pycmd: keras_imagenet_main.py
+repeat: 3
+test_id: resnet50v1.gpu_8.64
+test_suite_start_time: 20180131T214200
+timestamp: 1517434992
+total_batches: 20
+workspace: /tmp/benchmark_workspace
