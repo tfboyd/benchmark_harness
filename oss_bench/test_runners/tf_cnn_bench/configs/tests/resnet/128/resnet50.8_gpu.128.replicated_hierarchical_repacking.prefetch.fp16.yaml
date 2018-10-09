@@ -7,7 +7,7 @@ run_configs:
     variable_update: replicated
     num_batches: 100
     batch_size: 128
-    optimizer: 'sgd'
+    optimizer: 'momentum'
     hierarchical_copy: True
     gpu_thread_mode: gpu_shared
     datasets_use_prefetch: True
