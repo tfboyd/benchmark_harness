@@ -7,3 +7,5 @@ run_configs:
     num_batches: 6000  # Just over 1 epoch
     batch_size: 256
     optimizer: 'sgd'
+    per_gpu_thread_count: 1
+    use_fp16: True
