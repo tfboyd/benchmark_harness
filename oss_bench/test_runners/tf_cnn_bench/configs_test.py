@@ -18,8 +18,10 @@ class TestRunConfigs(unittest.TestCase):
     base_dir = 'test_runners/tf_cnn_bench/configs'
 
     relative_configs = [
-        'dgx_v100.yaml', 'dgx_v100_real.yaml', 'dgx_p100.yaml',
-        'dgx_p100_real.yaml', 'dgx_io_test.yaml', 'dgx_io_test_real.yaml',
+        'dgx_v100.yaml', 'dgx_v100_real.yaml',
+        'dgx_v100_xla.yaml', 'dgx_v100_xla_real.yaml',
+        'dgx_p100.yaml', 'dgx_p100_real.yaml',
+        'dgx_io_test.yaml', 'dgx_io_test_real.yaml',
         'io_warmup_real.yaml', 'v100_training_resnetv1.yaml',
         'v100_training_resnetv1.yaml', 'tf_org_benchmark/aws_k80.yaml',
         'tf_org_benchmark/dgx_p100.yaml', 'tf_org_benchmark/dgx_v100.yaml',

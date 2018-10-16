@@ -14,7 +14,9 @@ class TestHarnessConfigs(unittest.TestCase):
   def test_tf_models_methods(self, _):
     """Checks that the tests (methods) exist."""
     configs = [
+        'harness/configs/prod/dgx2_v100.yaml',
         'harness/configs/dev/default.yaml',
+        'harness/configs/prod/dgx_v100.yaml',
         'harness/configs/prod/dgx_v100.yaml',
         'harness/configs/prod/dgx_p100.yaml',
         'harness/configs/prod/dgx_p100_RC.yaml',
@@ -22,9 +24,9 @@ class TestHarnessConfigs(unittest.TestCase):
         'harness/configs/prod/dgx_v100_RC.yaml',
         'harness/configs/prod/dgx_v100_FINAL.yaml',
         'harness/configs/prod/aws_v100.yaml',
-        'harness/configs/prod/aws_v100_nccl2.yaml',
         'harness/configs/prod/gce_v100.yaml',
-        'harness/configs/prod/gce_v100_nccl2.yaml',
+        'harness/configs/prod/gce_v100_xla.yaml'
+
     ]
     for config in configs:
       self.check_config_paths(config)

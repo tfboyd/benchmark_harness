@@ -1,0 +1,19 @@
+run_configs:
+  - test_id: resnet50.16_gpu.256.replicated_nccl.xla.full_twink.fp16
+    xla_compile: True
+    gpus: 16
+    model: 'resnet50'
+    use_fp16: True
+    ps_server: gpu
+    data_format: NCHW
+    variable_update: replicated
+    num_batches: 100
+    batch_size: 256
+    optimizer: 'momentum'
+    all_reduce_spec: nccl
+    datasets_use_prefetch: True
+    gradient_repacking: 2
+    per_gpu_thread_count: 2
+    # Extra perf tweaks we do not normally use.
+    single_l2_loss_op: True
+    compute_lr_on_cpu: True

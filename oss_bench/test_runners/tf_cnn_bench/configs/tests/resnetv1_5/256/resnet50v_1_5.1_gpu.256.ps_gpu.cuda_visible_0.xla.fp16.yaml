@@ -1,0 +1,15 @@
+run_configs:
+  - test_id: resnet50v1_5.1_gpu.256.ps_gpu.cuda_visible_0.xla.fp16
+    xla_compile: True
+    gpus: 1
+    model: 'resnet50_v1.5'
+    use_fp16: True
+    ps_server: gpu
+    data_format: NCHW
+    variable_update: parameter_server
+    num_batches: 100
+    batch_size: 256
+    optimizer: 'momentum'
+    all_reduce_spec: ''''''
+    env_vars: 'CUDA_VISIBLE_DEVICES=0'
+    per_gpu_thread_count: 2

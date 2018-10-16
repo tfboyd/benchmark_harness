@@ -28,7 +28,12 @@ def build_run_command(run_config):
       'datasets_num_private_threads', 'variable_consistency',
       'compact_gradient_transfer', 'network_topology', 'train_dir',
       'summary_verbosity', 'save_summaries_steps', 'num_epochs',
-      'per_gpu_thread_count', 'gpu_thread_mode'
+      'per_gpu_thread_count', 'gpu_thread_mode', 'compute_lr_on_cpu',
+      'loss_type_to_report', 'compute_lr_on_cpu', 'single_l2_loss_op',
+      'xla_compile',
+      # Eval inline
+      'eval_during_training_every_n_steps', 'num_eval_epochs',
+      'stop_at_top_1_accuracy'
   ]
 
   for arg in pass_through_args:

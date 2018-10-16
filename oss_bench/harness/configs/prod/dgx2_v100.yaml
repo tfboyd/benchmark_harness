@@ -1,0 +1,22 @@
+# Config for a GCE reporting to production schema.
+test_environment: 'brain-lab'
+# System basics
+# platform is not part of the key in the dashboard.
+platform: 'NVIDIA'
+platform_type: 'DGX-2 (V100-SMX3)'
+
+# Build type info
+channel: CUSTOM
+build_type: CUDA_10
+
+# reporting
+report_auth: 'brain_lab_benchmarks.json'
+report_project: 'google.com:tensorflow-performance'
+report_dataset: 'benchmark_results'
+report_table: 'result'
+
+# tf-cnn-benchmarks
+tf_cnn_bench_configs:
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/io_warmup_real.yaml
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/dgx2_v100_real.yaml
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/dgx2_v100.yaml

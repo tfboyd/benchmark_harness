@@ -1,0 +1,18 @@
+# General settings
+repeat: 3
+
+# Worker settings override
+num_batches: 10
+num_warmup_batches: 100
+nodistortions: FLAG_ONLY
+
+# Data directory mounted in the docker
+data_dir: '/data/imagenet'
+# Causes .real to be appended to all test_ids if data_dir is found.
+test_id_hacks: True
+
+sub_configs:
+  - 'tests/resnetv1_5/256/resnet50v_1_5.1_gpu.256.ps_gpu.cuda_visible_0.xla.fp16.yaml'
+  - 'tests/resnetv1_5/256/resnet50v_1_5.8_gpu.256.replicated_nccl.xla.full_twink.fp16.yaml'
+  - 'tests/resnetv1_5/256/resnet50v_1_5.8_gpu.256.replicated_nccl.xla.fp16.yaml'
+
