@@ -25,9 +25,9 @@ RUN apt-get install -y --no-install-recommends \
       libcudnn7-dev=7.3.1.20-1+cuda10.0 \
       libnccl2=2.3.5-2+cuda10.0 \
       libnccl-dev=2.3.5-2+cuda10.0 \
-      python3 \
-      python3-pip \
-      python3-setuptools \
+      python \
+      python-pip \
+      python-setuptools \
       ca-certificates \
       virtualenv \
       htop \
