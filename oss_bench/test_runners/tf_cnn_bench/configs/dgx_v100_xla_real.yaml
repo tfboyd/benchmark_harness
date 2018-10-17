@@ -2,8 +2,8 @@
 repeat: 3
 
 # Worker settings override
-num_batches: 10
-num_warmup_batches: 100
+num_batches: 100
+num_warmup_batches: 10
 nodistortions: FLAG_ONLY
 
 # Data directory mounted in the docker
