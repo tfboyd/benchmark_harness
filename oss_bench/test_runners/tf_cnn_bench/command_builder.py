@@ -28,7 +28,7 @@ def build_run_command(run_config):
       'datasets_num_private_threads', 'variable_consistency',
       'compact_gradient_transfer', 'network_topology', 'train_dir',
       'summary_verbosity', 'save_summaries_steps', 'num_epochs',
-      'per_gpu_thread_count', 'gpu_thread_mode', 'compute_lr_on_cpu',
+      'per_gpu_thread_count', 'gpu_thread_mode',
       'loss_type_to_report', 'compute_lr_on_cpu', 'single_l2_loss_op',
       'xla_compile',
       # Eval inline
