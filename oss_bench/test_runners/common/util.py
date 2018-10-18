@@ -96,7 +96,8 @@ def upload_results(report_config, agg_result, framework=None,
       table=report_config['report_table'],
       test_info=test_info,
       system_info=system_info,
-      extras=agg_result)
+      extras=agg_result,
+      stream=True)
 
 
 def report_aggregate_results(results_list):
