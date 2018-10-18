@@ -16,16 +16,14 @@ RUN apt-get install -y --no-install-recommends \
       python-pip \
       python-setuptools \
       cuda-command-line-tools-10-0 \
-      cuda-cublas-dev-10-0 \
-      cuda-cudart-dev-10-0 \
-      cuda-cufft-dev-10-0 \
-      cuda-curand-dev-10-0 \
-      cuda-cusolver-dev-10-0 \
-      cuda-cusparse-dev-10-0 \
+      cuda-cublas-10-0 \
+      cuda-cudart-10-0 \
+      cuda-cufft-10-0 \
+      cuda-curand-10-0 \
+      cuda-cusolver-10-0 \
+      cuda-cusparse-10-0 \
       libcudnn7=7.3.1.20-1+cuda10.0 \
-      libcudnn7-dev=7.3.1.20-1+cuda10.0 \
       libnccl2=2.3.5-2+cuda10.0 \
-      libnccl-dev=2.3.5-2+cuda10.0 \
       ca-certificates \
       wget
 
