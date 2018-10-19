@@ -1,8 +1,8 @@
 run_configs:
-  - test_id: resnet50v1_5.1_gpu.256.ps_gpu.cuda_visible_0.xla.fp16
+  - test_id: resnet50.1_gpu.256.ps_gpu.cuda_visible_0.xla.fp16
     xla_compile: True
     gpus: 1
-    model: 'resnet50_v1.5'
+    model: 'resnet50'
     use_fp16: True
     ps_server: gpu
     data_format: NCHW
