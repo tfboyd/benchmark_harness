@@ -29,7 +29,7 @@ RUN apt-get install -y --no-install-recommends \
 
 RUN pip install --upgrade pip
 
-RUN pip install --upgrade --force-reinstall https://storage.googleapis.com/tf-performance/tf_binary/tensorflow-1.12.0rc1.7b08198.AVX2.CUDA10-cp27-cp27mu-linux_x86_64.whl
+RUN pip install --upgrade --force-reinstall https://storage.googleapis.com/tf-performance/tf_binary/tensorflow-1.12.0rc2.748435b.AVX2.CUDA10-cp27-cp27mu-linux_x86_64.whl
 
 # Install everything needed via apt-get
 RUN apt-get install -y git
