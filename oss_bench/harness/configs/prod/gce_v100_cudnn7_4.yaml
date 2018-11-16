@@ -1,0 +1,25 @@
+# Config for a GCE reporting to production schema.
+test_environment: 'gce'
+# System basics
+# platform is not part of the key in the dashboard.
+platform: 'gce'
+platform_type: 'v100-Alpha'
+
+# Build type info
+channel: CUSTOM
+build_type: CUDA_10_cuDNN_7_4
+
+# reporting
+report_auth: 'gce_upload.json'
+report_project: 'google.com:tensorflow-performance'
+report_dataset: 'benchmark_results'
+report_table: 'result'
+
+# tf-cnn-benchmarks
+tf_cnn_bench_configs:
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/io_warmup_real.yaml
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/dgx_v100_xla_real.yaml
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/dgx_v100_xla.yaml
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/dgx_v100_real.yaml
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/dgx_v100.yaml
+  - benchmark_harness/oss_bench/test_runners/tf_cnn_bench/configs/dgx_io_test_real.yaml
