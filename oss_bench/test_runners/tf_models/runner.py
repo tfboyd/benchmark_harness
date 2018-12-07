@@ -5,10 +5,12 @@ import datetime
 import os
 import time
 
-import reporting
+from six.moves import range
+import yaml
+
 from test_runners.common import cluster_local
 from test_runners.common import util
-import yaml
+import test_runners.tf_models.reporting as reporting
 
 
 class TestRunner(object):
@@ -148,7 +150,7 @@ class TestRunner(object):
         '%Y%m%dT%H%M%S')
 
     instance = cluster_local.UseLocalInstances()
-    for i in xrange(test_config['repeat']):
+    for i in range(test_config['repeat']):
       self.run_benchmark(test_config, instance, copy=i)
 
     suite_dir_name = '{}_{}'.format(test_config['test_suite_start_time'],
@@ -234,7 +236,7 @@ class TestRunner(object):
       str of the command to execute to run the test.
     """
     arg_str = ''
-    for key, value in sorted(test_config['args'].iteritems()):
+    for key, value in sorted(test_config['args'].items()):
       arg_str += '--{} {} '.format(key, value)
     return 'python {} {}'.format(test_config['pycmd'], arg_str)
 

@@ -3,7 +3,7 @@ from __future__ import print_function
 
 import unittest
 from mock import patch
-import docker_bootstrap
+from bootstrap import docker_bootstrap
 
 
 class TestDockerBootstrap(unittest.TestCase):

@@ -1,7 +1,7 @@
 """Tests git_info module."""
 import unittest
 
-import git_info
+import tools.git_info as git_info
 from mock import patch
 
 

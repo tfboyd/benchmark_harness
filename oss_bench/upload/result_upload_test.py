@@ -18,8 +18,8 @@ import unittest
 
 import mock
 from mock import patch
-import result_info
-import result_upload
+import upload.result_info as result_info
+import upload.result_upload as result_upload
 
 
 class TestResultUpload(unittest.TestCase):

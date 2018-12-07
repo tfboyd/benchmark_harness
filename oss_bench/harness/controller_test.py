@@ -5,7 +5,7 @@ import os
 import sys
 import unittest
 
-import controller
+from harness import controller
 from mock import Mock
 from mock import patch
 import tools.tracker as tracker

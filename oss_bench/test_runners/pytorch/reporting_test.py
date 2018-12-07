@@ -4,7 +4,8 @@ from __future__ import print_function
 import unittest
 
 from mock import patch
-import reporting
+
+import test_runners.pytorch.reporting as reporting
 
 
 class TestReporting(unittest.TestCase):

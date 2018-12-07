@@ -2,7 +2,7 @@
 import unittest
 
 from mock import patch
-import nvidia
+import tools.nvidia as nvidia
 
 
 class TestNvidiaTools(unittest.TestCase):

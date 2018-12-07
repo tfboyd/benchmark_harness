@@ -2,9 +2,10 @@
 from __future__ import print_function
 
 import unittest
+
 import yaml
 
-import command_builder
+from test_runners.tf_cnn_bench import command_builder
 
 
 class TestRCommandBuilder(unittest.TestCase):

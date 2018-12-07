@@ -3,7 +3,7 @@ from __future__ import print_function
 
 import unittest
 from mock import patch
-import util
+from test_runners.common import util
 
 
 class TestReporting(unittest.TestCase):

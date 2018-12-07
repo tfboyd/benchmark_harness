@@ -63,4 +63,4 @@ def _save_state_object(workspace, test_tracker):
 def _hash_key(framework, channel, build_type, version):
   """Returns hash of the unique values."""
   key_str = '{}{}{}{}'.format(framework, channel, build_type, version)
-  return hashlib.sha1(key_str).hexdigest()
+  return hashlib.sha1(key_str.encode()).hexdigest()

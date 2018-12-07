@@ -3,7 +3,7 @@ import os
 import unittest
 
 from mock import patch
-import tracker
+import tools.tracker as tracker
 
 TEST_DIR = './'
 

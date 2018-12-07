@@ -1,7 +1,7 @@
 """Tests nvidia_tools module."""
 import unittest
 
-import cpu
+import tools.cpu as cpu
 from mock import patch
 
 
