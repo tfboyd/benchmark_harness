@@ -113,7 +113,7 @@ def build_test_config_suite(full_config, debug_level):
     # Copies fields, with the exception of `run_configs` from the root config
     # into the run_config overwriting and supplementing fields in the
     # run_config.
-    for k, v in full_config.iteritems():
+    for k, v in full_config.items():
       if k != 'run_configs':
         config[k] = v
 

@@ -5,11 +5,12 @@ import datetime
 import os
 import time
 
-import command_builder
-import reporting
-from test_runners.common import cluster_local
-from upload import result_info
 import yaml
+
+from test_runners.common import cluster_local
+from test_runners.tf_cnn_bench import command_builder
+from test_runners.tf_cnn_bench import reporting
+from upload import result_info
 
 
 class TestRunner(object):
@@ -245,7 +246,7 @@ class TestRunner(object):
         # values from the global config will overwrite those in the sub_config
         # during via command_builder later in the process.
         if global_config:
-          for k, v in global_config.iteritems():
+          for k, v in global_config.items():
             if k != 'run_configs':
               full_config[k] = v
 

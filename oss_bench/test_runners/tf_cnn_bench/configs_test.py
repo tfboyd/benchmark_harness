@@ -6,7 +6,7 @@ import os
 import unittest
 
 from mock import patch
-import run_benchmark
+from test_runners.tf_cnn_bench import run_benchmark
 
 
 class TestRunConfigs(unittest.TestCase):

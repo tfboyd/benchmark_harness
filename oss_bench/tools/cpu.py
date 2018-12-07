@@ -1,6 +1,6 @@
 """Extract CPU info."""
 from __future__ import print_function
-import local_command
+import tools.local_command as local_command
 
 
 def get_cpu_info():

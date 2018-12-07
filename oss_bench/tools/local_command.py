@@ -1,6 +1,7 @@
 """Run command locally."""
 import subprocess
 
+
 def run_local_command(cmd):
   """Structures for a variety of different test results.
 
@@ -14,6 +15,8 @@ def run_local_command(cmd):
   stdout = ''
   while True:
     retcode = p.poll()
-    stdout += p.stdout.readline()
+    tmp_stdout = p.stdout.readline()
+    out_str = tmp_stdout.decode('utf-8')
+    stdout += out_str
     if retcode is not None:
       return retcode, stdout

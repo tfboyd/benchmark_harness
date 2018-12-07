@@ -6,7 +6,8 @@ import os
 import time
 import yaml
 from test_runners.common import cluster_local
-import reporting
+from test_runners.mxnet import reporting
+from six.moves import range
 
 
 class TestRunner(object):
@@ -140,7 +141,7 @@ class TestRunner(object):
         '%Y%m%dT%H%M%S')
 
     instance = cluster_local.UseLocalInstances()
-    for i in xrange(test_config['repeat']):
+    for i in range(test_config['repeat']):
       self.run_benchmark(test_config, instance, copy=i)
 
     suite_dir_name = '{}_{}'.format(test_config['test_suite_start_time'],
@@ -238,7 +239,7 @@ class TestRunner(object):
     config['args'] = args
     args['batch-size'] = batch_size * gpus
     # Sets gpus in the format of 0,1,2,3 for 4 GPUs.
-    args['gpus'] = ','.join(str(x) for x in xrange(gpus))
+    args['gpus'] = ','.join(str(x) for x in range(gpus))
 
     return config
 

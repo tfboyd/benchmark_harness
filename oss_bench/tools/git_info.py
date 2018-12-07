@@ -1,6 +1,6 @@
 """Extract information about local git repos."""
 from __future__ import print_function
-import local_command
+import tools.local_command as local_command
 
 
 def git_repo_describe(git_dir):

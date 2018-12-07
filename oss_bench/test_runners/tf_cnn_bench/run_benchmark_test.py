@@ -4,8 +4,9 @@ from __future__ import print_function
 import unittest
 
 from mock import patch
-import run_benchmark
 import yaml
+
+import test_runners.tf_cnn_bench.run_benchmark as run_benchmark
 
 
 class TestRunBenchmark(unittest.TestCase):

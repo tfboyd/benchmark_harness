@@ -4,7 +4,7 @@ from __future__ import print_function
 import unittest
 
 from mock import patch
-import reporting
+from test_runners.keras_tf_models import reporting
 
 
 class TestReporting(unittest.TestCase):

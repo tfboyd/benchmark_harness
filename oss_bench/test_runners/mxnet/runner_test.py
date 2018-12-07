@@ -4,7 +4,7 @@ from __future__ import print_function
 import unittest
 
 from mock import patch
-import runner
+import test_runners.mxnet.runner as runner
 
 
 class TestRunBenchmark(unittest.TestCase):

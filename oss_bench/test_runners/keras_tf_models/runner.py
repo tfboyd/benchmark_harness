@@ -5,7 +5,9 @@ import datetime
 import os
 import time
 
-import reporting
+from six.moves import range
+
+from test_runners.keras_tf_models import reporting
 from test_runners.common import cluster_local
 from test_runners.common import util
 import yaml
@@ -143,7 +145,7 @@ class TestRunner(object):
         '%Y%m%dT%H%M%S')
 
     instance = cluster_local.UseLocalInstances()
-    for i in xrange(test_config['repeat']):
+    for i in range(test_config['repeat']):
       self.run_benchmark(test_config, instance, copy=i)
 
     suite_dir_name = '{}_{}'.format(test_config['test_suite_start_time'],
@@ -232,7 +234,7 @@ class TestRunner(object):
       str of the command to execute to run the test.
     """
     arg_str = ''
-    for key, value in sorted(test_config['args'].iteritems()):
+    for key, value in sorted(test_config['args'].items()):
       arg_str += '--{} {} '.format(key, value)
     # Sets -u as sometimes console is buffered preventing recording of `print`.
     return 'python -u {} {}'.format(test_config['pycmd'], arg_str)

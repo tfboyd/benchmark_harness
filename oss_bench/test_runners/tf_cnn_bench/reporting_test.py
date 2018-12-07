@@ -4,7 +4,7 @@ from __future__ import print_function
 import unittest
 
 from mock import patch
-import reporting
+import test_runners.tf_cnn_bench.reporting as reporting
 
 
 class TestReporting(unittest.TestCase):
