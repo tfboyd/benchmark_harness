@@ -83,15 +83,15 @@ def build_system_info(platform=None,
   """
   system_info = {}
   if platform:
-    system_info['platform'] = unicode(platform)
+    system_info['platform'] = platform
   if platform_type:
-    system_info['platform_type'] = unicode(platform_type)
+    system_info['platform_type'] = platform_type
   if accel_type:
-    system_info['accel_type'] = unicode(accel_type)
+    system_info['accel_type'] = accel_type
   if cpu_cores:
     system_info['cpu_cores'] = cpu_cores
   if cpu_type:
-    system_info['cpu_type'] = unicode(cpu_type)
+    system_info['cpu_type'] = cpu_type
   if cpu_type:
     system_info['cpu_sockets'] = cpu_sockets
   return system_info
