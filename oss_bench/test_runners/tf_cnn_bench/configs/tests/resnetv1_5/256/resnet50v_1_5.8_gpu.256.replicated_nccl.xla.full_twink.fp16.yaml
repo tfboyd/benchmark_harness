@@ -17,3 +17,4 @@ run_configs:
     # Extra perf tweaks we do not normally use.
     single_l2_loss_op: True
     compute_lr_on_cpu: True
+    loss_type_to_report: base_loss

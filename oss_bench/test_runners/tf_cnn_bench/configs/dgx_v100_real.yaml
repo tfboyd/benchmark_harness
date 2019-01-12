@@ -19,4 +19,5 @@ sub_configs:
   - 'tests/resnet/256/resnet50.2to4_gpu.256.replicated_nccl.fp16.yaml'
   - 'tests/resnetv1_5/256/resnet50v_1_5.8_gpu.256.replicated_nccl.prefetch.fp16.yaml'
   - 'tests/resnetv1_5/256/resnet50v_1_5.1_gpu.256.ps_gpu.cuda_visible_0.fp16.yaml'
-
+  - 'tests/resnetv1_5/128/resnet50v_1_5.1_gpu.128.ps_gpu.cuda_visible_0.yaml'
+  - 'tests/resnetv1_5/128/resnet50v_1_5.8_gpu.128.replicated_nccl.prefetch.yaml'
