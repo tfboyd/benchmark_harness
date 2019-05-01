@@ -11,5 +11,5 @@ data_dir: '/data/imagenet'
 test_id_hacks: True
 
 sub_configs:
-  - 'tests/resnet/resnet50.1_gpu.32.ps_gpu.yaml'
-  - 'tests/vgg/vgg16.1_gpu.32.ps_gpu.yaml'
+  - 'tests/resnet/64/resnet50.1_gpu.64.ps_gpu.yaml'
+
