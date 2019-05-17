@@ -40,7 +40,8 @@ class Bootstrap(object):
                gpu_process_check=True,
                pure_docker=False,
                docker_no_cache=True,
-               bootstrap_log='./log.txt'):
+               bootstrap_log='./log.txt',
+               python='python'):
     self.docker_folder = docker_folder
     self.workspace = workspace
     self.test_config = test_config
@@ -54,6 +55,7 @@ class Bootstrap(object):
     self.docker_tag = docker_tag
     self.docker_no_cache = docker_no_cache
     self.bootstrap_log = bootstrap_log
+    self.python = python
 
   def run_local_command(self, cmd, stdout=None):
     """Run a command in a subprocess and log result.
@@ -168,11 +170,11 @@ class Bootstrap(object):
       extra_args = '--ipc=host'
 
     run_cmd = (
-        '{} run {} --rm {} {} python '
+        '{} run {} --rm {} {} {} '
         '/workspace/git/benchmark_harness/oss_bench/harness/controller.py '
         '--workspace=/workspace --test-config={} --framework={}')
     run_cmd = run_cmd.format(docker, extra_args, mounts, docker_image,
-                             self.test_config, self.framework)
+                             self.python, self.test_config, self.framework)
     return run_cmd
 
   def run_tests(self):
@@ -243,7 +245,8 @@ def main():
       gpu_process_check=FLAGS.gpu_process_check,
       pure_docker=FLAGS.pure_docker,
       docker_no_cache=FLAGS.docker_no_cache,
-      bootstrap_log=bootstrap_log)
+      bootstrap_log=bootstrap_log,
+      python=FLAGS.python)
   bootstrap.run_tests()
 
 
@@ -305,6 +308,11 @@ if __name__ == '__main__':
       type=str,
       default='tensorflow',
       help='Framework to be tested.')
+  parser.add_argument(
+      '--python',
+      type=str,
+      default='python',
+      help='python executable, python or python3')
   parser.add_argument(
       '--docker-no-cache',
       type=bool,
