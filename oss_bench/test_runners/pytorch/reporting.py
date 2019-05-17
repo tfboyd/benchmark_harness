@@ -68,13 +68,12 @@ def parse_result_file(result_file_path):
   for line in result_file:
     # Identifies lines with performance data to aggregate
     if line.find('Epoch') > -1:
-      #  Example: Epoch: [0][0/40037] Time 12.788 (12.788)  Data 9.518 (9.518)
+      #  Example: Epoch: [0][  0/40037] Time 12.788 (12.788)  Data 9.518 (9.518)
       parts = line.split()
-      batch_parts = parts[1].replace(']', ' ').replace('[', '').split()[1]
-      batch = int(batch_parts.split('/')[0])
+      batch = int(parts[2].split('/')[0])
       # Ignores first 10 batches as a warm up, tf_benchmarks does the same.
       if batch > 20:
-        total_time += float(parts[3].rstrip())
+        total_time += float(parts[4].rstrip())
         samples += 1
 
       # After 100 batches are found, calculate average and break.

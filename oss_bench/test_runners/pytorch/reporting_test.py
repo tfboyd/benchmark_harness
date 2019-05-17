@@ -29,7 +29,7 @@ class TestReporting(unittest.TestCase):
 
     # Spot checks results and GCE project info used for reporting.
     results = mock_upload.call_args[0][1]
-    self.assertEqual(results[0]['result'], 280.91838703453595)
+    self.assertEqual(results[0]['result'], 177.07878258336976)
 
     # Spot checks test_info.
     arg_test_info = mock_upload.call_args[1]['test_info']
@@ -48,8 +48,8 @@ class TestReporting(unittest.TestCase):
         'test_runners/pytorch/unittest_files/results/basic/'
         'worker_0_stdout.txt')
 
-    self.assertEqual(result['imgs_sec'], 280.91838703453595)
-    self.assertEqual(result['batches_sampled'], 91)
+    self.assertEqual(result['imgs_sec'], 177.07878258336976)
+    self.assertEqual(result['batches_sampled'], 19)
     self.assertEqual(result['test_id'], 'resnet50.gpu_1.32.real')
     self.assertEqual(result['gpu'], 2)
     self.assertEqual(result['data_type'], 'real')
