@@ -183,7 +183,7 @@ class TestRunner(object):
                                                           multi_gpu,
                                                           self.imagenet_dir)     
     else:
-      config['pycmd'] = '{} python3 main.py {} {}'.format(visible_devices
+      config['pycmd'] = '{} python3 main.py {} {}'.format(visible_devices,
                                                           '{}',
                                                           self.imagenet_dir)
     config['test_id'] = test_id
