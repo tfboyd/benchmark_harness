@@ -157,7 +157,7 @@ class TestRunner(object):
         report_config=self.auto_test_config)
 
   def build_resnet_test_config(self, test_id, test_args, batch_size=32, gpus=1,
-                               total_batches=150, repeat=3):
+                               total_batches=300, repeat=3):
     """Returns a base test config for ResNet50-v1.5 tests.
 
     Args:
@@ -176,7 +176,14 @@ class TestRunner(object):
     # PyTorch Automatically uses all GPUs it can see.
     gpu_list = ','.join(str(x) for x in range(gpus))
     visible_devices = 'CUDA_VISIBLE_DEVICES={}'.format(gpu_list)
-    config['pycmd'] = '{} python3 main.py {} {}'.format(visible_devices, '{}',
+    if gpus > 1:
+      multi_gpu = (" --dist-url 'tcp://127.0.0.1:6001' --dist-backend 'nccl'"
+                   "--multiprocessing-distributed --world-size 1 --rank 0 ")
+      config['pycmd'] = 'python3 main.py {} {} {}'.format('{}',
+                                                          multi_gpu,
+                                                          self.imagenet_dir)     
+    else:
+      config['pycmd'] = 'python3 main.py {} {}'.format('{}',
                                                        self.imagenet_dir)
     config['test_id'] = test_id
     config['repeat'] = repeat
