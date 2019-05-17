@@ -121,7 +121,7 @@ class TestRunner(object):
 
     # TODO(tobyboyd@) fix fragile check for batch to stop on.
     # Example: Epoch: [0][130/40037] Time 0.397
-    batch_killer = '[{}/'.format(total_batches)
+    batch_killer = '{}/'.format(total_batches)
     while t.is_alive():
       with open(stdout_file, 'r') as log:
         for line in log:
