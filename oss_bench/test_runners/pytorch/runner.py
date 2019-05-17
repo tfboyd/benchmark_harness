@@ -176,7 +176,7 @@ class TestRunner(object):
     # PyTorch Automatically uses all GPUs it can see.
     gpu_list = ','.join(str(x) for x in range(gpus))
     visible_devices = 'CUDA_VISIBLE_DEVICES={}'.format(gpu_list)
-    config['pycmd'] = '{} python main.py {} {}'.format(visible_devices, '{}',
+    config['pycmd'] = '{} python3 main.py {} {}'.format(visible_devices, '{}',
                                                        self.imagenet_dir)
     config['test_id'] = test_id
     config['repeat'] = repeat
