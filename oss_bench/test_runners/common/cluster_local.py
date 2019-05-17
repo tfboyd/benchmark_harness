@@ -65,6 +65,7 @@ class LocalInstance(object):
       f = open(stdout, 'a', 1)
       f.write(cmd + '\n')
     for line in self.run_command(cmd):
+      line = line.decode('utf-8')
       if (line.strip('\n')):
         print(line.strip('\n'))
         if f:
