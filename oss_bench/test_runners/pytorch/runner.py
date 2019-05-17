@@ -181,13 +181,13 @@ class TestRunner(object):
                    "--multiprocessing-distributed --world-size 1 --rank 0 ")
       config['pycmd'] = 'python3 main.py {} {} {}'.format('{}',
                                                           multi_gpu,
-                                                          self.imagenet_dir)     
+                                                          self.imagenet_dir)
     else:
       config['pycmd'] = '{} python3 main.py {} {}'.format(visible_devices,
                                                           '{}',
                                                           self.imagenet_dir)
     config['test_id'] = test_id
-    config['repeat'] = repeat
+    config['repeat'] = self.auto_test_config.get('repeat', repeat)
     # Normalized name of model being tested
     config['model'] = 'resnet50_v1.5'
     config['gpus'] = gpus
