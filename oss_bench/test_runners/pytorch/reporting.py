@@ -73,12 +73,12 @@ def parse_result_file(result_file_path):
       batch_parts = parts[1].replace(']', ' ').replace('[', '').split()[1]
       batch = int(batch_parts.split('/')[0])
       # Ignores first 10 batches as a warm up, tf_benchmarks does the same.
-      if batch > 10:
+      if batch > 20:
         total_time += float(parts[3].rstrip())
         samples += 1
 
       # After 100 batches are found, calculate average and break.
-      if batch > 100:
+      if batch > 200:
         break
   total_batch_size = config['batch_size'] * config['gpus']
   result['imgs_sec'] = (1 / (total_time / samples)) * total_batch_size
