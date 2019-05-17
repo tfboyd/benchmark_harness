@@ -19,8 +19,7 @@ report_table: 'result'
 pytorch_tests:
   - warmup_resnet_imagenet_128_gpu_8_real
   - renset50_128_gpu_1_real
-  - renset50_128_gpu_2_real
-  - renset50_128_gpu_4_real
   - renset50_128_gpu_8_real
 
+print_freq: 10
 input_threads: 36
