@@ -56,10 +56,11 @@ class BenchmarkRunner(object):
       f = open(stdout, 'a')
       f.write(cmd + '\n')
     for line in self._run_local_command(cmd):
-      if line.strip('\n'):
-        print(line.strip('\n'))
+      line_str = line.decode('utf-8')
+      if line_str.strip('\n'):
+        print(line_str.strip('\n'))
         if f:
-          f.write(line.strip('\n') + '\n')
+          f.write(line_str.strip('\n') + '\n')
 
   def _run_local_command(self, cmd):
     p = subprocess.Popen(
